@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class Character : MonoBehaviour, IHittable, IDestroyable
+public abstract class Character : IsometricObject, IHittable, IDestroyable
 {
     [SerializeField]
     protected CharacterSettings settings;
@@ -82,8 +82,10 @@ public abstract class Character : MonoBehaviour, IHittable, IDestroyable
         attack.SetTarget(lookAt);
     }
     
-    protected virtual void Update()
+    protected override void Update()
     {
+        base.Update();
+        
         animator.SetFloat(Velocity, movement.Velocity);
     }
 
