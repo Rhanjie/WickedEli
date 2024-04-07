@@ -28,7 +28,7 @@ namespace Characters
         {
             var position = transform.position;
             var targetPosition = LookAt.transform.position;
-            var direction = new Vector2(targetPosition.x - position.x, targetPosition.y - position.y).normalized;
+            var direction = new Vector2(targetPosition.x - position.x, targetPosition.y - position.y);
 
             return direction;
         }

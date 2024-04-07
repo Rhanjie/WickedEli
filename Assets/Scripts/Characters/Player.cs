@@ -99,7 +99,7 @@ namespace Characters
 
         public void PerformMove(InputAction.CallbackContext context)
         {
-            var delta = context.ReadValue<Vector2>().normalized;
+            var delta = context.ReadValue<Vector2>();
             
             movement.Move(delta);
         }
