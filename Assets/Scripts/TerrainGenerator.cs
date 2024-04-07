@@ -9,6 +9,8 @@ public class TerrainGenerator : MonoBehaviour
     [SerializeField]
     private TerrainGeneratorSettings settings;
     
+    private INoise noise;
+    
     private Tilemap _tilemap;
     private int[,] _mapData;
     
@@ -27,13 +29,23 @@ public class TerrainGenerator : MonoBehaviour
     private void GenerateMap()
     {
         _tilemap.ClearAllTiles();
+
+        noise = new DiamondSquareNoise();
+        var noiseData = noise.Generate(6, 1000);
         
-        _mapData = new int[settings.width, settings.height];
+        _mapData = new int[settings.size, settings.size];
         for (var y = 0; y < _mapData.GetLength(0); y++)
         {
             for (var x = 0; x < _mapData.GetLength(1); x++)
             {
-                var id = _mapData[y, x] = Random.Range(0, settings.tiles.Count);
+                var noiseValue = noiseData[y, x];
+                Debug.LogError(noiseValue);
+
+                var id = 0;
+                if (noiseValue <= 10)
+                    id = 1;
+                else id = 2;
+                
                 var position = new Vector3Int(x, y, 0);
 
                 if (!settings.tiles.ContainsKey(id))

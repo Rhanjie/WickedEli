@@ -6,8 +6,7 @@ using UnityEngine.Tilemaps;
 [CreateAssetMenu(fileName = "TerrainSettings", menuName = "Settings/Terrain")]
 public class TerrainGeneratorSettings : SerializedScriptableObject
 {
-    public int width;
-    public int height;
-    
+    public int size;
+
     public Dictionary<int, TileBase> tiles;
 }
