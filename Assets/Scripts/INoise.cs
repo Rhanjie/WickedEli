@@ -1,4 +1,4 @@
 ﻿public interface INoise
 {
-    public int[,] Generate(uint size, int seed);
+    public float[,] Generate(uint size, int seed);
 }

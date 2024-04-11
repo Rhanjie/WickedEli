@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class DiamondSquareNoise : INoise
 {
@@ -9,16 +10,16 @@ public class DiamondSquareNoise : INoise
     
     private int randomStart = 16;
 
-    private int[,] noise;
+    private float[,] noise;
 
     private System.Random randomEngine;
     
-    public int[,] Generate(uint sizePower, int seed)
+    public float[,] Generate(uint sizePower, int seed)
     {
         randomEngine = new System.Random(seed);
 
         size = (int) Mathf.Pow(2, sizePower) + 1;
-        noise = new int[size, size];
+        noise = new float[size, size];
 
         var roughness = 2f;
         var chunkSize = size - 1;
@@ -33,7 +34,7 @@ public class DiamondSquareNoise : INoise
             SquareStep(chunkSize);
             DiamondStep(chunkSize);
 
-            randomRange /= 2;
+            //randomRange /= 2;
             chunkSize /= 2;
             roughness /= 2f;
         }
@@ -49,13 +50,22 @@ public class DiamondSquareNoise : INoise
         {
             for (var x = 0; x < size - 1; x += chunkSize)
             {
-                var left = noise[y, x];
-                var right = noise[y, x + chunkSize];
-                var upper = noise[y + chunkSize, x];
-                var lower = noise[y + chunkSize, x + chunkSize];
-                var randomValue = randomEngine.Next(randomRange.x, randomRange.y);
-                
-                noise[y + half, x + half] = (left + right + upper + lower) / 4 + randomValue;
+                try
+                {
+                    var left = noise[y, x];
+                    var right = noise[y, x + chunkSize];
+                    var upper = noise[y + chunkSize, x];
+                    var lower = noise[y + chunkSize, x + chunkSize];
+
+                    var randomValue = randomEngine.Next(randomRange.x, randomRange.y);
+
+                    noise[y + half, x + half] = (float)Math.Round(left + right + upper + lower) / 4f + randomValue;
+                }
+
+                catch (Exception exception)
+                {
+                    Debug.LogError(exception.Message);
+                }
             }
         }
     }
@@ -70,10 +80,10 @@ public class DiamondSquareNoise : INoise
             {
                 var count = 0;
 
-                var left = 0;
-                var right = 0;
-                var upper = 0;
-                var lower = 0;
+                var left = 0f;
+                var right = 0f;
+                var upper = 0f;
+                var lower = 0f;
                 
                 if (y - half >= 0)
                 {

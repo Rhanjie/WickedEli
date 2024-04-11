@@ -40,10 +40,10 @@ public class TerrainGenerator : MonoBehaviour
             for (var x = 0; x < _mapData.GetLength(1); x++)
             {
                 var noiseValue = noiseData[y, x];
-                mapPrettyPrint += $"{noiseValue}, ";
+                mapPrettyPrint += $"{Math.Round(noiseValue)}, ";
 
                 //TODO: Add range
-                var id = Math.Abs(noiseValue);
+                var id = (int) Math.Abs(noiseValue);
                 if (id > 10)
                     id = 10;
                 
