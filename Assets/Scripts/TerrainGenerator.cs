@@ -31,20 +31,21 @@ public class TerrainGenerator : MonoBehaviour
         _tilemap.ClearAllTiles();
 
         noise = new DiamondSquareNoise();
-        var noiseData = noise.Generate(6, 1000);
+        var noiseData = noise.Generate(6, Random.Range(0, 20000));
         
+        var mapPrettyPrint = "";
         _mapData = new int[settings.size, settings.size];
         for (var y = 0; y < _mapData.GetLength(0); y++)
         {
             for (var x = 0; x < _mapData.GetLength(1); x++)
             {
                 var noiseValue = noiseData[y, x];
-                Debug.LogError(noiseValue);
+                mapPrettyPrint += $"{noiseValue}, ";
 
-                var id = 0;
-                if (noiseValue <= 10)
-                    id = 1;
-                else id = 2;
+                //TODO: Add range
+                var id = Math.Abs(noiseValue);
+                if (id > 10)
+                    id = 10;
                 
                 var position = new Vector3Int(x, y, 0);
 
@@ -53,7 +54,11 @@ public class TerrainGenerator : MonoBehaviour
 
                 _tilemap.SetTile(position, settings.tiles[id]);
             }
+            
+            mapPrettyPrint += "\n";
         }
+
+        Debug.LogError(mapPrettyPrint);
 
         CenterTerrain();
     }
