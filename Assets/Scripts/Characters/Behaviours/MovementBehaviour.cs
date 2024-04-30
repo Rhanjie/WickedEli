@@ -44,6 +44,8 @@ public class MovementBehaviour : MonoBehaviour, IMoveable
     
     public void Move(Vector2 delta)
     {
+        delta = delta.normalized;
+        
         _horizontalMove = delta.x;
         _verticalMove = delta.y;
     }
@@ -59,12 +61,7 @@ public class MovementBehaviour : MonoBehaviour, IMoveable
     
     private Vector2 CalculateMovement()
     {
-        if (_settings == null)
-        {
-            Debug.LogError("EH PROBLEM Z SETTIGSAMI");
-        }
-        
-        var targetSpeed = new Vector2(_horizontalMove, _verticalMove) * _settings.speed;
+        var targetSpeed = new Vector2(_horizontalMove, _verticalMove).normalized * _settings.speed;
         var speedDifference = targetSpeed - physics.velocity;
         
         var movement = speedDifference * _settings.acceleration;
@@ -73,7 +70,7 @@ public class MovementBehaviour : MonoBehaviour, IMoveable
 
     private Vector2 CalculateFriction()
     {
-        if (Mathf.Abs(_horizontalMove) >= 0.01f)
+        if (Mathf.Abs(_horizontalMove) >= 0.01f || Mathf.Abs(_verticalMove) >= 0.01f)
             return Vector2.zero;
 
         var frictionX = Mathf.Min(Mathf.Abs(physics.velocity.x), Mathf.Abs(_settings.friction));
