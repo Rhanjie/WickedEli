@@ -33,14 +33,12 @@ public class TerrainGenerator : MonoBehaviour
         noise = new DiamondSquareNoise();
         var noiseData = noise.Generate(6, Random.Range(0, 20000), 0.5f);
         
-        var mapPrettyPrint = "";
         _mapData = new int[settings.size, settings.size];
         for (var y = 0; y < _mapData.GetLength(0); y++)
         {
             for (var x = 0; x < _mapData.GetLength(1); x++)
             {
                 var noiseValue = noiseData[y, x];
-                mapPrettyPrint += $"{Math.Round(noiseValue)}, ";
 
                 //TODO: Add range
                 var id = (int) Math.Abs(noiseValue);
@@ -58,11 +56,7 @@ public class TerrainGenerator : MonoBehaviour
                 _tilemap.SetTileFlags(position, TileFlags.None);
                 _tilemap.SetColor(position, color);
             }
-            
-            mapPrettyPrint += "\n";
         }
-
-        Debug.LogError(mapPrettyPrint);
 
         CenterTerrain();
     }
