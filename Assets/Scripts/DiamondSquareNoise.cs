@@ -1,27 +1,27 @@
 ﻿using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class DiamondSquareNoise : INoise
 {
     private int size;
+    
+    private float range = 0.5f;
 
-    private Vector2Int randomRange = new Vector2Int(-2, 2);
-    
-    
     private int randomStart = 16;
 
     private float[,] noise;
 
     private System.Random randomEngine;
     
-    public float[,] Generate(uint sizePower, int seed)
+    public float[,] Generate(uint sizePower, int seed, float roughness)
     {
         randomEngine = new System.Random(seed);
 
         size = (int) Mathf.Pow(2, sizePower) + 1;
+        range = 2f;
         noise = new float[size, size];
-
-        var roughness = 2f;
+        
         var chunkSize = size - 1;
 
         noise[0, 0] = randomEngine.Next(1, randomStart);
@@ -34,9 +34,8 @@ public class DiamondSquareNoise : INoise
             SquareStep(chunkSize);
             DiamondStep(chunkSize);
 
-            //randomRange /= 2;
+            range -= range * 0.5f * roughness;
             chunkSize /= 2;
-            roughness /= 2f;
         }
 
         return noise;
@@ -57,9 +56,10 @@ public class DiamondSquareNoise : INoise
                     var upper = noise[y + chunkSize, x];
                     var lower = noise[y + chunkSize, x + chunkSize];
 
-                    var randomValue = randomEngine.Next(randomRange.x, randomRange.y);
+                    var average = (left + right + upper + lower) / 4f;
+                    var randomValue = (Random.value * (range * 2.0f)) - range;
 
-                    noise[y + half, x + half] = (float)Math.Round(left + right + upper + lower) / 4f + randomValue;
+                    noise[y + half, x + half] = average + randomValue;
                 }
 
                 catch (Exception exception)
@@ -74,9 +74,9 @@ public class DiamondSquareNoise : INoise
     {
         var half = chunkSize / 2;
         
-        for (var y = 0; y < size; y += half)
+        for (var y = 0; y < size - 1; y += half)
         {
-            for (var x = (y + half) % chunkSize; x < size; x += chunkSize)
+            for (var x = (y + half) % chunkSize; x < size - 1; x += chunkSize)
             {
                 var count = 0;
 
@@ -99,19 +99,28 @@ public class DiamondSquareNoise : INoise
                 
                 if (x - half >= 0)
                 {
-                    right = noise[x - half, x];
+                    right = noise[y, x - half];
                     count += 1;
                 }
                 
                 if (x + half < size)
                 {
-                    upper = noise[x + half, x];
+                    upper = noise[y, x + half];
                     count += 1;
                 }
+
+                var average = (left + right + upper + lower) / count;
+                var randomValue = (Random.value * (range * 2.0f)) - range;
                 
-                var randomValue = randomEngine.Next(randomRange.x, randomRange.y);
+                noise[y, x] = average + randomValue;
                 
-                noise[y, x] = (left + right + upper + lower) / count + randomValue;
+                if (x == 0) {
+                    noise[size - 1, y] = average;
+                }
+
+                if (y == 0) {
+                    noise[x, size - 1] = average;
+                }
             }
         }
     }

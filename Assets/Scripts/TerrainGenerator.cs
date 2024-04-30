@@ -31,7 +31,7 @@ public class TerrainGenerator : MonoBehaviour
         _tilemap.ClearAllTiles();
 
         noise = new DiamondSquareNoise();
-        var noiseData = noise.Generate(6, Random.Range(0, 20000));
+        var noiseData = noise.Generate(6, Random.Range(0, 20000), 0.5f);
         
         var mapPrettyPrint = "";
         _mapData = new int[settings.size, settings.size];
@@ -46,13 +46,17 @@ public class TerrainGenerator : MonoBehaviour
                 var id = (int) Math.Abs(noiseValue);
                 if (id > 10)
                     id = 10;
-                
-                var position = new Vector3Int(x, y, 0);
 
                 if (!settings.tiles.ContainsKey(id))
                     throw new Exception($"Not found tile with ID: {id}");
 
+                var position = new Vector3Int(x, y, 0);
+                var noiseColor = (byte)(255f - noiseValue * 10f);
+                var color = new Color32(noiseColor, noiseColor, noiseColor, 255);
+
                 _tilemap.SetTile(position, settings.tiles[id]);
+                _tilemap.SetTileFlags(position, TileFlags.None);
+                _tilemap.SetColor(position, color);
             }
             
             mapPrettyPrint += "\n";
