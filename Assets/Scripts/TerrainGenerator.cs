@@ -39,20 +39,18 @@ public class TerrainGenerator : MonoBehaviour
             for (var x = 0; x < _mapData.GetLength(1); x++)
             {
                 var noiseValue = noiseData[y, x];
-
-                //TODO: Add range
-                var id = (int) Math.Abs(noiseValue);
-                if (id > 10)
-                    id = 10;
-
-                if (!settings.tiles.ContainsKey(id))
-                    throw new Exception($"Not found tile with ID: {id}");
+                
+                var index = (int) Math.Round(noiseValue);
+                var tileData = settings.TryGetFromIndex(index);
+                
+                if (tileData == null)
+                    throw new Exception($"Not found tile with index: {index}");
 
                 var position = new Vector3Int(x, y, 0);
-                var noiseColor = (byte)(255f - noiseValue * 10f);
+                var noiseColor = (byte)(255f - noiseValue * 5f);
                 var color = new Color32(noiseColor, noiseColor, noiseColor, 255);
-
-                _tilemap.SetTile(position, settings.tiles[id]);
+                
+                _tilemap.SetTile(position, tileData.Value.GetRandomVariant());
                 _tilemap.SetTileFlags(position, TileFlags.None);
                 _tilemap.SetColor(position, color);
             }
@@ -64,10 +62,5 @@ public class TerrainGenerator : MonoBehaviour
     private void CenterTerrain()
     {
         transform.position = new Vector3(0, -_mapData.GetLength(0), 0f);
-    }
-
-    private void Update()
-    {
-        
     }
 }

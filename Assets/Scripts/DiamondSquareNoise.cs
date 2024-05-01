@@ -24,10 +24,10 @@ public class DiamondSquareNoise : INoise
         
         var chunkSize = size - 1;
 
-        noise[0, 0] = randomEngine.Next(1, randomStart);
-        noise[0, chunkSize] = randomEngine.Next(1, randomStart);
-        noise[chunkSize, 0] = randomEngine.Next(1, randomStart);
-        noise[chunkSize, chunkSize] = randomEngine.Next(1, randomStart);
+        noise[0, 0] = randomEngine.Next(randomStart / 3, randomStart);
+        noise[0, chunkSize] = randomEngine.Next(randomStart / 3, randomStart);
+        noise[chunkSize, 0] = randomEngine.Next(randomStart / 3, randomStart);
+        noise[chunkSize, chunkSize] = randomEngine.Next(randomStart / 3, randomStart);
         
         while (chunkSize > 1)
         {
