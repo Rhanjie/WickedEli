@@ -6,31 +6,42 @@ using UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using Zenject;
 
-namespace Characters
+namespace Characters.Players
 {
     public class Player : Character
     {
-        [SerializeField]
-        private HUD hud;
-
-        private Camera _mainCamera;
-        private IInteractable _target = null;
-    
-        protected override void Start()
+        [Serializable]
+        public new struct Settings
         {
-            OnHealthChanged += hud.UpdateHealth;
+            public int test;
+        }
+
+        [Serializable]
+        public new struct References
+        {
+            public HUD hud;
+            public Camera mainCamera;
+        }
+
+        protected Settings PlayerSettings;
+        protected References PlayerReferences;
+        
+        private IInteractable _target = null;
+
+        [Inject]
+        private void Construct(Settings settings, References references)
+        {
+            PlayerSettings = settings;
+            PlayerReferences = references;
             
-            _mainCamera = GameObject
-                .FindWithTag("MainCamera")
-                .GetComponent<Camera>();
-            
-            base.Start();
+            OnHealthChanged += PlayerReferences.hud.UpdateHealth;
         }
 
         private void OnDestroy()
         {
-            OnHealthChanged -= hud.UpdateHealth;
+            OnHealthChanged -= PlayerReferences.hud.UpdateHealth;
         }
 
         protected override void Update()
@@ -42,15 +53,10 @@ namespace Characters
             InteractionChecker();
             InteractionListener();
         }
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.DrawWireCube(body.transform.position, new Vector2(3, 5));
-        }
-
+        
         private void InteractionChecker()
         {
-            var position = body.transform.position;
+            var position = CharacterReferences.body.transform.position;
             var size = new Vector2(3, 5);
             var layerMask = LayerMask.GetMask("Interactable");
 
@@ -78,12 +84,12 @@ namespace Characters
 
             _target = foundTarget;
         
-            hud.ToggleInteractionText(true);
+            PlayerReferences.hud.ToggleInteractionText(true);
         }
 
         private void ClearInteraction()
         {
-            hud.ToggleInteractionText(false);
+            PlayerReferences.hud.ToggleInteractionText(false);
             _target = null;
         }
 
@@ -102,12 +108,12 @@ namespace Characters
         {
             var delta = context.ReadValue<Vector2>();
             
-            movement.Move(delta);
+            CharacterReferences.movement.Move(delta);
         }
     
         public void PerformAttack()
         {
-            attack.Attack();
+            CharacterReferences.attack.Attack();
         }
 
         public override void Destroy()
@@ -119,13 +125,13 @@ namespace Characters
 
         public void OpenDictionary(string title, string content)
         {
-            hud.OpenDictionary(title, content);
+            PlayerReferences.hud.OpenDictionary(title, content);
         }
 
         private void UpdateTargetPosition()
         {
             var mousePosition = Mouse.current.position;
-            var convertedPosition = _mainCamera.ScreenToWorldPoint(mousePosition.value);
+            var convertedPosition = PlayerReferences.mainCamera.ScreenToWorldPoint(mousePosition.value);
 
             LookAt.transform.position = convertedPosition;
         }

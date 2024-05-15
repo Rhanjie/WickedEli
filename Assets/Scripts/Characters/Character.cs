@@ -1,44 +1,67 @@
+using System;
 using Characters.Behaviours;
 using Characters.Interfaces;
-using Characters.Settings;
 using DG.Tweening;
+using Sirenix.OdinInspector;
+using Terrain;
 using UnityEngine;
 using UnityEngine.Events;
+using Zenject;
 
 namespace Characters
 {
     public abstract class Character : IsometricObject, IHittable, IDestroyable
     {
-        [SerializeField]
-        protected CharacterSettings settings;
+        [Serializable]
+        public struct Settings
+        {
+            [Title("General")]
+            public string title;
     
-        [SerializeField]
-        protected MovementBehaviour movement;
+            [Title("Attack")]
+            public int health;
+            public int damage;
+            public float range;
+            public float insensitivityTime;
+            public float attackTime;
+            public float nextAttackDelay;
     
-        [SerializeField]
-        protected AttackBehaviour attack;
-    
-        [SerializeField]
-        protected SpriteRenderer body;
-    
-        [SerializeField]
-        private Animator animator;
-    
-        [SerializeField]
-        private AudioSource audioSource;
-    
-        [SerializeField]
-        private Transform lookAt;
+            [Title("Movement")]
+            public float speed;
+            public float acceleration;
+            public float friction;
+        }
+
+        [Serializable]
+        public new struct References
+        {
+            public MovementBehaviour movement;
+            public AttackBehaviour attack;
+            public SpriteRenderer body;
+            public Animator animator;
+            public AudioSource audioSource;
+            public Transform lookAt;
+        }
+
+        [Inject]
+        public void Construct(Settings settings, References references)
+        {
+            CharacterSettings = settings;
+            CharacterReferences = references;
+        }
+
+        protected Settings CharacterSettings;
+        protected References CharacterReferences;
 
         public Transform LookAt
         {
-            get => lookAt;
+            get => CharacterReferences.lookAt;
             set
             {
-                lookAt = value;
+                CharacterReferences.lookAt = value;
             
-                movement.SetTarget(lookAt);
-                attack.SetTarget(lookAt);
+                CharacterReferences.movement.SetTarget(value);
+                CharacterReferences.attack.SetTarget(value);
             }
         }
 
@@ -65,7 +88,7 @@ namespace Characters
         protected virtual void Start()
         {
             Handler = transform;
-            CurrentHealth = settings.health;
+            CurrentHealth = CharacterSettings.health;
 
             UpdateBehaviours();
         }
@@ -77,18 +100,18 @@ namespace Characters
 
         private void UpdateBehaviours()
         {
-            movement.UpdateSettings(settings);
-            movement.SetTarget(lookAt);
+            //_references.movement.UpdateSettings(_settings);
+            CharacterReferences.movement.SetTarget(CharacterReferences.lookAt);
         
-            attack.UpdateSettings(settings);
-            attack.SetTarget(lookAt);
+            //_references.attack.UpdateSettings(_settings);
+            CharacterReferences.attack.SetTarget(CharacterReferences.lookAt);
         }
     
         protected override void Update()
         {
             base.Update();
         
-            animator.SetFloat(Velocity, movement.Velocity);
+            CharacterReferences.animator.SetFloat(Velocity, CharacterReferences.movement.Velocity);
         }
 
         public void Hit(int damage)
@@ -105,10 +128,10 @@ namespace Characters
 
         private void HitAnimation()
         {
-            if (audioSource != null && !audioSource.isPlaying)
-                audioSource.Play();
+            if (CharacterReferences.audioSource != null && !CharacterReferences.audioSource.isPlaying)
+                CharacterReferences.audioSource.Play();
         
-            body.DOColor(Color.black, settings.insensitivityTime)
+            CharacterReferences.body.DOColor(Color.black, CharacterSettings.insensitivityTime)
                 .SetLoops(2, LoopType.Yoyo)
                 .OnStart(() => _isInsensitive = true)
                 .OnComplete(() => _isInsensitive = false);

@@ -11,7 +11,7 @@ namespace Terrain
     public class TerrainGenerator : MonoBehaviour
     {
         [Serializable]
-        public class Settings
+        public struct Settings
         {
             public int size;
             public List<TileData> tiles;

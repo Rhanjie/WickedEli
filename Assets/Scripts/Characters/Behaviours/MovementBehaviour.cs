@@ -18,13 +18,13 @@ namespace Characters.Behaviours
     
     
         private Camera _mainCamera;
-        private CharacterSettings _settings;
+        private Character.Settings _settings;
         private Transform _lookAt;
     
         private float _horizontalMove;
         private float _verticalMove;
 
-        public void UpdateSettings(CharacterSettings settings)
+        public void UpdateSettings(Character.Settings settings)
         {
             _settings = settings;
         }

@@ -1,32 +1,39 @@
+using System;
 using UnityEngine;
+using Zenject;
 
 //https://www.evozon.com/two-unity-tricks-isometric-games/
-
-public class IsometricObject : MonoBehaviour
+namespace Terrain
 {
-    private const int IsometricRangePerYUnit = 100;
-    
-    [SerializeField]
-    protected Transform attachedTo;
-
-    [SerializeField]
-    protected int offset = 0;
-    
-    protected Renderer[] Renderers;
-
-    private void Awake()
+    public class IsometricObject : MonoBehaviour
     {
-        Renderers = GetComponentsInChildren<Renderer>();
-    }
+        [Serializable]
+        public abstract class References
+        {
+            public Renderer[] renderers;
+            public Transform attachedTo;
+            public int offset;
+        }
+    
+        private const int IsometricRangePerYUnit = 100;
 
-    protected virtual void Update()
-    {
-        if (attachedTo == null)
-            attachedTo = transform;
+        private References _references;
 
-        foreach (var rendererComponent in Renderers)
-        { 
-            rendererComponent.sortingOrder = -(int)(attachedTo.position.y * IsometricRangePerYUnit) + offset;
+        [Inject]
+        private void Construct(References references)
+        {
+            _references = references;
+            
+            if (_references.attachedTo == null)
+                _references.attachedTo = transform;
+        }
+
+        protected virtual void Update()
+        {
+            foreach (var rendererComponent in _references.renderers)
+            { 
+                rendererComponent.sortingOrder = -(int)(_references.attachedTo.position.y * IsometricRangePerYUnit) + _references.offset;
+            }
         }
     }
 }

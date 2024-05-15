@@ -32,14 +32,14 @@ namespace Characters.Behaviours
         [SerializeField]
         private LayerMask layerMask;
     
-        private CharacterSettings _settings;
+        private Character.Settings _settings;
         private Transform _lookAt;
 
         private bool _isAnimation;
         private bool _reversedAttack;
         private bool _canAttack = true;
 
-        public void UpdateSettings(CharacterSettings settings)
+        public void UpdateSettings(Character.Settings settings)
         {
             _settings = settings;
         }
