@@ -1,7 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-namespace Terrain
+namespace Terrain.Installers
 {
     [CreateAssetMenu(fileName = "TerrainGeneratorSettingsInstaller", menuName = "Settings/Terrain")]
     public class TerrainGeneratorSettingsInstaller : ScriptableObjectInstaller<TerrainGeneratorSettingsInstaller>

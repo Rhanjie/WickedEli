@@ -2,6 +2,7 @@ using Characters;
 using UnityEngine;
 using Zenject;
 using Terrain;
+using Characters.Players;
 
 public class PlayerReferencesInstaller : MonoInstaller
 {

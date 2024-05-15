@@ -1,5 +1,6 @@
 using Characters;
 using Characters.Interfaces;
+using Characters.Players;
 using UnityEngine;
 
 namespace Interactable

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using Terrain.Noises;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Zenject;

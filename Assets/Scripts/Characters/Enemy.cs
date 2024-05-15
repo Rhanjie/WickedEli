@@ -1,4 +1,5 @@
 using UnityEngine;
+using Characters.Players;
 
 namespace Characters
 {
@@ -59,7 +60,7 @@ namespace Characters
                 return;
             }
         
-            LookAt = player.tra;
+            LookAt = player.transform;
         }
 
         private void ResetTarget()
