@@ -8,10 +8,13 @@ using Random = UnityEngine.Random;
 [Serializable]
 public struct TileData : IComparable
 {
+    [Title("Parameters")]
     [MinMaxSlider(0, 1000, true)]
     public Vector2 indices;
+    public Color32 color;
     public List<TileBase> variants;
     
+    [Title("Settings")]
     public bool walkable;
     public bool hurtable;
 

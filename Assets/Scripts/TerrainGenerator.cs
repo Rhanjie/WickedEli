@@ -48,7 +48,12 @@ public class TerrainGenerator : MonoBehaviour
 
                 var position = new Vector3Int(x, y, 0);
                 var noiseColor = (byte)(255f - noiseValue * 5f);
-                var color = new Color32(noiseColor, noiseColor, noiseColor, 255);
+                var color = tileData.Value.color;
+
+                color.r += noiseColor;
+                color.g += noiseColor;
+                color.b += noiseColor;
+                color.a = 255;
                 
                 _tilemap.SetTile(position, tileData.Value.GetRandomVariant());
                 _tilemap.SetTileFlags(position, TileFlags.None);

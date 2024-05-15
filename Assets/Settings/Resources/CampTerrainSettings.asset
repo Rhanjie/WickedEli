@@ -24,18 +24,27 @@ MonoBehaviour:
   size: 64
   tiles:
   - indices: {x: 0, y: 10}
+    color:
+      serializedVersion: 2
+      rgba: 4278190080
     variants:
-    - {fileID: 11400000, guid: 6d3d3b13af79d3143bd75284c393037a, type: 2}
-    - {fileID: 11400000, guid: 4a69536e32b00cc41a1d091ad68d4894, type: 2}
+    - {fileID: 11400000, guid: c0330bca674afbf47b2664a57ab79849, type: 2}
+    - {fileID: 11400000, guid: c0330bca674afbf47b2664a57ab79849, type: 2}
     walkable: 1
     hurtable: 0
   - indices: {x: 11, y: 13}
+    color:
+      serializedVersion: 2
+      rgba: 4294967142
     variants:
-    - {fileID: 11400000, guid: 75ef954c9c666094db2ea215a0791caf, type: 2}
+    - {fileID: 11400000, guid: c0330bca674afbf47b2664a57ab79849, type: 2}
     walkable: 1
-    hurtable: 0
+    hurtable: 1
   - indices: {x: 14, y: 50}
+    color:
+      serializedVersion: 2
+      rgba: 4280308223
     variants:
-    - {fileID: 11400000, guid: d5b150369afaf97479bb3a8e828d83ba, type: 2}
-    walkable: 1
+    - {fileID: 11400000, guid: c0330bca674afbf47b2664a57ab79849, type: 2}
+    walkable: 0
     hurtable: 1
