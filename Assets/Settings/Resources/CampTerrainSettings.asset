@@ -16,10 +16,8 @@ MonoBehaviour:
     SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects:
-    - {fileID: 11400000, guid: 6d3d3b13af79d3143bd75284c393037a, type: 2}
-    - {fileID: 11400000, guid: 4a69536e32b00cc41a1d091ad68d4894, type: 2}
-    - {fileID: 11400000, guid: d5b150369afaf97479bb3a8e828d83ba, type: 2}
-    - {fileID: 11400000, guid: 75ef954c9c666094db2ea215a0791caf, type: 2}
+    - {fileID: 11400000, guid: c0330bca674afbf47b2664a57ab79849, type: 2}
+    - {fileID: 11400000, guid: 4d4aabad06ce73c4899115c086447713, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -59,7 +57,7 @@ MonoBehaviour:
       Data: 1
     - Name: $v
       Entry: 10
-      Data: 1
+      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -71,7 +69,7 @@ MonoBehaviour:
       Data: 2
     - Name: $v
       Entry: 10
-      Data: 2
+      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -83,7 +81,7 @@ MonoBehaviour:
       Data: 3
     - Name: $v
       Entry: 10
-      Data: 2
+      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -95,7 +93,7 @@ MonoBehaviour:
       Data: 4
     - Name: $v
       Entry: 10
-      Data: 2
+      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -107,7 +105,7 @@ MonoBehaviour:
       Data: 5
     - Name: $v
       Entry: 10
-      Data: 3
+      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -119,7 +117,7 @@ MonoBehaviour:
       Data: 6
     - Name: $v
       Entry: 10
-      Data: 3
+      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -131,7 +129,7 @@ MonoBehaviour:
       Data: 7
     - Name: $v
       Entry: 10
-      Data: 3
+      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -143,7 +141,7 @@ MonoBehaviour:
       Data: 8
     - Name: $v
       Entry: 10
-      Data: 3
+      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -155,7 +153,7 @@ MonoBehaviour:
       Data: 9
     - Name: $v
       Entry: 10
-      Data: 3
+      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -167,7 +165,7 @@ MonoBehaviour:
       Data: 10
     - Name: $v
       Entry: 10
-      Data: 3
+      Data: 1
     - Name: 
       Entry: 8
       Data: 
