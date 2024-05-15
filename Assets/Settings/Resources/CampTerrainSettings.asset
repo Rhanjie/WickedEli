@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
-    SerializedBytes: 
+    SerializedBytes: []
     ReferencedUnityObjects: []
     SerializedBytesString: 
     Prefab: {fileID: 0}
@@ -25,7 +25,6 @@ MonoBehaviour:
   tiles:
   - indices: {x: 0, y: 10}
     color:
-      serializedVersion: 2
       rgba: 4278190080
     variants:
     - {fileID: 11400000, guid: c0330bca674afbf47b2664a57ab79849, type: 2}
@@ -34,16 +33,14 @@ MonoBehaviour:
     hurtable: 0
   - indices: {x: 11, y: 13}
     color:
-      serializedVersion: 2
-      rgba: 4294967142
+      rgba: 4284481507
     variants:
     - {fileID: 11400000, guid: c0330bca674afbf47b2664a57ab79849, type: 2}
     walkable: 1
     hurtable: 1
   - indices: {x: 14, y: 50}
     color:
-      serializedVersion: 2
-      rgba: 4280308223
+      rgba: 4287025663
     variants:
     - {fileID: 11400000, guid: c0330bca674afbf47b2664a57ab79849, type: 2}
     walkable: 0
