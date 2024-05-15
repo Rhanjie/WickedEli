@@ -1,4 +1,6 @@
-namespace Characters.Interfaces
+using Characters;
+
+namespace Interactable
 {
     public interface IInteractable
     {

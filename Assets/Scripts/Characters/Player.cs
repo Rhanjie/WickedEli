@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Characters.Interfaces;
+using Interactable;
 using UI;
 using UnityEngine;
 using UnityEngine.InputSystem;

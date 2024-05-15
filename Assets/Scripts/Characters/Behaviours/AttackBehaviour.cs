@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using Characters.Interfaces;
+using Characters.Settings;
 using DG.Tweening;
 using UnityEngine;
 

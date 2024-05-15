@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Characters;
+using UnityEngine;
 
-namespace Characters.Interfaces
+namespace Interactable
 {
     public class Book : MonoBehaviour, IInteractable
     {

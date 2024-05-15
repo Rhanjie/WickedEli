@@ -1,7 +1,10 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "PlayerSettings", menuName = "Settings/Player")]
-public class PlayerSettings : CharacterSettings
+namespace Characters.Settings
 {
-    public int test = 0;
+    [CreateAssetMenu(fileName = "PlayerSettings", menuName = "Settings/Player")]
+    public class PlayerSettings : CharacterSettings
+    {
+        public int test = 0;
+    }
 }
