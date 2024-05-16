@@ -10,7 +10,7 @@ public class PlayerSettingsInstaller : ScriptableObjectInstaller<PlayerSettingsI
     [SerializeField] private Player.Settings playerSettings;
     
     public override void InstallBindings()
-    {;
+    {
         Container.BindInstances(characterSettings, playerSettings);
     }
 }

@@ -1,18 +1,21 @@
-using Characters;
+using Terrain;
 using UnityEngine;
 using Zenject;
-using Terrain;
-using Characters.Players;
 
-public class PlayerReferencesInstaller : MonoInstaller
+namespace Characters.Players
 {
-    [SerializeField] private IsometricObject.References objectSettings;
-    [SerializeField] private Character.References characterReferences;
-    [SerializeField] private Player.References playerReferences;
-
-    public override void InstallBindings()
+    public class PlayerReferencesInstaller : MonoInstaller
     {
-        Container.BindInstances(objectSettings, characterReferences, playerReferences);
-        Container.BindInterfacesTo<Character>().AsSingle();
+        [SerializeField] private IsometricObject.References objectSettings;
+        [SerializeField] private Character.References characterReferences;
+        [SerializeField] private Player.References playerReferences;
+
+        public override void InstallBindings()
+        {
+            Container.Bind<Renderer>().FromComponentsInChildren();
+
+            Container.BindInstances(objectSettings, characterReferences, playerReferences);
+            Container.BindInterfacesAndSelfTo<Player>().AsSingle();
+        }
     }
 }

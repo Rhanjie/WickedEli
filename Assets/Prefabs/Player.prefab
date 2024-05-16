@@ -276,6 +276,7 @@ GameObject:
   - component: {fileID: 1547920222713669407}
   - component: {fileID: 5356067227805271294}
   - component: {fileID: 7578155902178428243}
+  - component: {fileID: 1346829101480325953}
   m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
@@ -315,16 +316,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4074ccbbc75641045a6ed6fb9c1c5b5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attachedTo: {fileID: 6514898406879903663}
-  offset: 0
-  settings: {fileID: 11400000, guid: 27610464a683c954eaf68f4db0333a00, type: 2}
-  movement: {fileID: 6779854854295258811}
-  attack: {fileID: 3110556423869892845}
-  body: {fileID: 4049953656240933743}
-  animator: {fileID: 1356449264568908331}
-  audioSource: {fileID: 7578155902178428243}
-  lookAt: {fileID: 1550727680177390006}
-  hud: {fileID: 3491359489494137186}
 --- !u!114 &6779854854295258811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -635,6 +626,28 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1346829101480325953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2543698408449452239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 975a50536ccef904cb8b67d28151c0b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterReferences:
+    movement: {fileID: 6779854854295258811}
+    attack: {fileID: 3110556423869892845}
+    body: {fileID: 4049953656240933743}
+    animator: {fileID: 1356449264568908331}
+    audioSource: {fileID: 7578155902178428243}
+    lookAt: {fileID: 0}
+  playerReferences:
+    hud: {fileID: 3491359489494137186}
+    mainCamera: {fileID: 0}
 --- !u!1 &2829339253631108757
 GameObject:
   m_ObjectHideFlags: 0

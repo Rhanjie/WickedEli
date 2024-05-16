@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -8,9 +9,8 @@ namespace Terrain
     public class IsometricObject : MonoBehaviour
     {
         [Serializable]
-        public abstract class References
+        public class References
         {
-            public Renderer[] renderers;
             public Transform attachedTo;
             public int offset;
         }
@@ -18,11 +18,13 @@ namespace Terrain
         private const int IsometricRangePerYUnit = 100;
 
         private References _references;
+        private List<Renderer> _renderers;
 
         [Inject]
-        private void Construct(References references)
+        private void Construct(References references, List<Renderer> renderers)
         {
             _references = references;
+            _renderers = renderers;
             
             if (_references.attachedTo == null)
                 _references.attachedTo = transform;
@@ -30,7 +32,7 @@ namespace Terrain
 
         protected virtual void Update()
         {
-            foreach (var rendererComponent in _references.renderers)
+            foreach (var rendererComponent in _renderers)
             { 
                 rendererComponent.sortingOrder = -(int)(_references.attachedTo.position.y * IsometricRangePerYUnit) + _references.offset;
             }

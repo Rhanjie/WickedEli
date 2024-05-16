@@ -13,7 +13,7 @@ namespace Characters
     public abstract class Character : IsometricObject, IHittable, IDestroyable
     {
         [Serializable]
-        public struct Settings
+        public class Settings
         {
             [Title("General")]
             public string title;
@@ -33,7 +33,7 @@ namespace Characters
         }
 
         [Serializable]
-        public new struct References
+        public new class References
         {
             public MovementBehaviour movement;
             public AttackBehaviour attack;
@@ -48,6 +48,11 @@ namespace Characters
         {
             CharacterSettings = settings;
             CharacterReferences = references;
+            
+            Handler = transform;
+            CurrentHealth = CharacterSettings.health;
+
+            UpdateBehaviours();
         }
 
         protected Settings CharacterSettings;
@@ -84,26 +89,13 @@ namespace Characters
         private bool _isInsensitive;
     
         private static readonly int Velocity = Animator.StringToHash("Velocity");
-
-        protected virtual void Start()
-        {
-            Handler = transform;
-            CurrentHealth = CharacterSettings.health;
-
-            UpdateBehaviours();
-        }
-    
-        private void OnValidate()
-        {
-            UpdateBehaviours();
-        }
-
+        
         private void UpdateBehaviours()
         {
-            //_references.movement.UpdateSettings(_settings);
+            CharacterReferences.movement.UpdateSettings(CharacterSettings);
             CharacterReferences.movement.SetTarget(CharacterReferences.lookAt);
         
-            //_references.attack.UpdateSettings(_settings);
+            CharacterReferences.attack.UpdateSettings(CharacterSettings);
             CharacterReferences.attack.SetTarget(CharacterReferences.lookAt);
         }
     

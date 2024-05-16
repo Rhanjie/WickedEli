@@ -13,13 +13,13 @@ namespace Characters.Players
     public class Player : Character
     {
         [Serializable]
-        public new struct Settings
+        public new class Settings
         {
             public int test;
         }
 
         [Serializable]
-        public new struct References
+        public new class References
         {
             public HUD hud;
             public Camera mainCamera;
