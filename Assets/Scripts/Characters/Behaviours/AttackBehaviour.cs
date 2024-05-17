@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Characters.Interfaces;
 using DG.Tweening;
 using UnityEngine;
@@ -8,7 +9,17 @@ namespace Characters.Behaviours
 {
     public class AttackBehaviour : IAttackable, ITickable
     {
-        [SerializeField]
+        [Serializable]
+        public class Settings
+        {
+            //TODO: Move to Item class
+            public int damage;
+            public float range;
+            public float attackTime;
+            public float nextAttackDelay;
+        }
+        
+        [Serializable]
         public class References
         {
             public Transform handPoint;
@@ -22,7 +33,8 @@ namespace Characters.Behaviours
 
         [SerializeField] private LayerMask layerMask;
     
-        private LivingEntity.Settings _settings;
+        private References _references;
+        private Settings _settings;
         private Transform _lookAt;
 
         private bool _isAnimation;
@@ -30,8 +42,9 @@ namespace Characters.Behaviours
         private bool _canAttack = true;
 
         [Inject]
-        public void Construct(References references, LivingEntity.Settings settings)
+        public void Construct(References references, Settings settings)
         {
+            _references = references;
             _settings = settings;
         }
 
@@ -80,18 +93,18 @@ namespace Characters.Behaviours
 
             StartCoroutine(StartHitting());
 
-            handPoint.DOLocalRotate(newRotation, _settings.attackTime, RotateMode.FastBeyond360)
+            _references.handPoint.DOLocalRotate(newRotation, _settings.attackTime, RotateMode.FastBeyond360)
                 .SetEase(Ease.InCubic)
                 .SetRelative(true)
                 .OnStart(() => slashEffect.emitting = true)
                 .OnComplete(() =>
                 {
-                    slashEffect.emitting = false;
+                    _references.slashEffect.emitting = false;
                     _isAnimation = false;
                 });
         
             var newWeaponRotation = new Vector3(0, 0, 100 * direction);
-            weapon.DOLocalRotate(newWeaponRotation, _settings.attackTime, RotateMode.FastBeyond360)
+            _references.weapon.DOLocalRotate(newWeaponRotation, _settings.attackTime, RotateMode.FastBeyond360)
                 .SetEase(Ease.InCubic)
                 .SetRelative(true);
         }
@@ -102,8 +115,8 @@ namespace Characters.Behaviours
             
             yield return new WaitForSeconds(_settings.attackTime / 1.5f);
         
-            slashEffect.emitting = true;
-            var results = Physics2D.OverlapCircleAll(hitPoint.position, _settings.range, layerMask);
+            _references.slashEffect.emitting = true;
+            var results = Physics2D.OverlapCircleAll(_references.hitPoint.position, _settings.range, layerMask);
 
             var hitAnything = results.Length > 0;
             PlaySound(hitAnything);
@@ -124,10 +137,10 @@ namespace Characters.Behaviours
 
         private void PlaySound(bool hitAnything)
         {
-            if (audioSource == null)
+            if (_references.audioSource == null)
                 return;
             
-            audioSource.PlayOneShot(hitAnything ? hitSound : missSound);
+            _references.audioSource.PlayOneShot(hitAnything ? _references.hitSound : _references.missSound);
         }
     }
 }

@@ -14,21 +14,9 @@ namespace Characters
         [Serializable]
         public class Settings
         {
-            [Title("General")]
             public string title;
             public int health;
-    
-            [Title("Attack")]
-            public int damage;
-            public float range;
             public float insensitivityTime;
-            public float attackTime;
-            public float nextAttackDelay;
-    
-            [Title("Movement")]
-            public float speed;
-            public float acceleration;
-            public float friction;
         }
         
         [Serializable]

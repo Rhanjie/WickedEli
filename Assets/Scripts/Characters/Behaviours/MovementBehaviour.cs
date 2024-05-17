@@ -1,4 +1,5 @@
-﻿using Characters.Interfaces;
+﻿using System;
+using Characters.Interfaces;
 using Characters.Settings;
 using UnityEngine;
 using Zenject;
@@ -7,6 +8,14 @@ namespace Characters.Behaviours
 {
     public class MovementBehaviour : IMoveable
     {
+        [Serializable]
+        public class Settings
+        {
+            public float speed;
+            public float acceleration;
+            public float friction;
+        }
+        
         public Vector2 Position { get; private set; }
         public float Velocity { get; private set; }
         public bool IsFacingRight { get; private set; }
@@ -18,15 +27,16 @@ namespace Characters.Behaviours
         }
         
         private References _references;
-        private LivingEntity.Settings _settings;
+        private Settings _settings;
         private Transform _lookAt;
     
         private float _horizontalMove;
         private float _verticalMove;
 
         [Inject]
-        public void Construct(References references, LivingEntity.Settings settings)
+        public void Construct(References references, Settings settings)
         {
+            _references = references;
             _settings = settings;
         }
 
