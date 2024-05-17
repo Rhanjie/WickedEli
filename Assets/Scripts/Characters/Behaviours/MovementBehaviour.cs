@@ -1,30 +1,31 @@
 ﻿using Characters.Interfaces;
 using Characters.Settings;
 using UnityEngine;
+using Zenject;
 
 namespace Characters.Behaviours
 {
-    public class MovementBehaviour : MonoBehaviour, IMoveable
+    public class MovementBehaviour : IMoveable
     {
         public Vector2 Position { get; private set; }
         public float Velocity { get; private set; }
         public bool IsFacingRight { get; private set; }
-    
-        [SerializeField]
-        private Transform body;
-    
-        [SerializeField]
-        private Rigidbody2D physics;
-    
-    
-        private Camera _mainCamera;
-        private Character.Settings _settings;
+
+        public class References
+        {
+            public Transform body;
+            public Rigidbody2D physics;
+        }
+        
+        private References _references;
+        private LivingEntity.Settings _settings;
         private Transform _lookAt;
     
         private float _horizontalMove;
         private float _verticalMove;
 
-        public void UpdateSettings(Character.Settings settings)
+        [Inject]
+        public void Construct(References references, LivingEntity.Settings settings)
         {
             _settings = settings;
         }
@@ -40,7 +41,7 @@ namespace Characters.Behaviours
             var friction = CalculateFriction();
             ApplyForce(friction, ForceMode2D.Impulse);
         
-            Velocity = physics.velocity.magnitude;
+            Velocity = _references.physics.velocity.magnitude;
         }
     
         public void Move(Vector2 delta)
@@ -53,8 +54,8 @@ namespace Characters.Behaviours
 
         public void Stop()
         {
-            physics.velocity = Vector3.zero;
-            physics.angularVelocity = 0;
+            _references.physics.velocity = Vector3.zero;
+            _references.physics.angularVelocity = 0;
 
             _horizontalMove = 0;
             _verticalMove = 0;
@@ -63,7 +64,7 @@ namespace Characters.Behaviours
         private Vector2 CalculateMovement()
         {
             var targetSpeed = new Vector2(_horizontalMove, _verticalMove).normalized * _settings.speed;
-            var speedDifference = targetSpeed - physics.velocity;
+            var speedDifference = targetSpeed - _references.physics.velocity;
         
             var movement = speedDifference * _settings.acceleration;
             return movement;
@@ -74,6 +75,8 @@ namespace Characters.Behaviours
             if (Mathf.Abs(_horizontalMove) >= 0.01f || Mathf.Abs(_verticalMove) >= 0.01f)
                 return Vector2.zero;
 
+            var physics = _references.physics;
+            
             var frictionX = Mathf.Min(Mathf.Abs(physics.velocity.x), Mathf.Abs(_settings.friction));
             frictionX *= -Mathf.Sign(physics.velocity.x);
         
@@ -88,7 +91,7 @@ namespace Characters.Behaviours
             if (force == Vector2.zero)
                 return;
         
-            physics.AddForce(force, mode);
+            _references.physics.AddForce(force, mode);
         }
     
         public void SetTarget(Transform target)
@@ -124,10 +127,10 @@ namespace Characters.Behaviours
         {
             IsFacingRight = !IsFacingRight;
 
-            var localScale = body.localScale;
+            var localScale = _references.body.localScale;
             localScale.x *= -1f;
 
-            body.localScale = localScale;
+            _references.body.localScale = localScale;
         }
     }
 }

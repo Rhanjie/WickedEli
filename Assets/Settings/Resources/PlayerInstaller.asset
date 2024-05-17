@@ -22,6 +22,6 @@ MonoBehaviour:
     nextAttackDelay: 0.1
     speed: 16
     acceleration: 30
-    friction: -50
+    friction: 50
   playerSettings:
     test: 123

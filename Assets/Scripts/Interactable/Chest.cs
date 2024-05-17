@@ -10,9 +10,9 @@ namespace Interactable
         [SerializeField]
         private int health;
 
-        public void Interact(Character character)
+        public void Interact(LivingEntity livingEntity)
         {
-            if (character is Player player)
+            if (livingEntity is Player player)
             {
                 player.CurrentHealth += health;
                 

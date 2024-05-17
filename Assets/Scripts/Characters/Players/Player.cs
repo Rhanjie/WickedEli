@@ -10,7 +10,7 @@ using Zenject;
 
 namespace Characters.Players
 {
-    public class Player : Character
+    public class Player : LivingEntity
     {
         [Serializable]
         public new class Settings
@@ -56,19 +56,14 @@ namespace Characters.Players
         
         private void InteractionChecker()
         {
-            var position = CharacterReferences.body.transform.position;
+            var position = EntityReferences.body.transform.position;
             var size = new Vector2(3, 5);
             var layerMask = LayerMask.GetMask("Interactable");
 
             var results = Physics2D.OverlapBoxAll(position, size, layerMask).ToList();
             
-            //TODO: Probably not needed because the list is already sorted by distance
-            //results = results.OrderBy(result => 
-            //    new Vector2(position.x - result.transform.position.x, position.y - result.transform.position.y).magnitude).ToList();
-        
             var interactables = results
                 .Select(result => result.GetComponent<IInteractable>())
-                .Where(interactable => interactable != null)
                 .ToArray();
         
             if (interactables.Length == 0)
@@ -108,12 +103,12 @@ namespace Characters.Players
         {
             var delta = context.ReadValue<Vector2>();
             
-            CharacterReferences.movement.Move(delta);
+            Movement.Move(delta);
         }
     
         public void PerformAttack()
         {
-            CharacterReferences.attack.Attack();
+            Attack.Attack();
         }
 
         public override void Destroy()

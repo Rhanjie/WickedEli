@@ -1,50 +1,41 @@
 ﻿using System.Collections;
 using Characters.Interfaces;
-using Characters.Settings;
 using DG.Tweening;
 using UnityEngine;
+using Zenject;
 
 namespace Characters.Behaviours
 {
-    public class AttackBehaviour : MonoBehaviour, IAttackable
+    public class AttackBehaviour : IAttackable, ITickable
     {
         [SerializeField]
-        private Transform handPoint;
+        public class References
+        {
+            public Transform handPoint;
+            public Transform weapon;
+            public TrailRenderer slashEffect;
+            public AudioSource audioSource;
+            public AudioClip hitSound;
+            public AudioClip missSound;
+            public Transform hitPoint;
+        }
+
+        [SerializeField] private LayerMask layerMask;
     
-        [SerializeField]
-        private Transform weapon;
-    
-        [SerializeField]
-        private TrailRenderer slashEffect;
-        
-        [SerializeField]
-        private AudioSource audioSource;
-        
-        [SerializeField]
-        private AudioClip hitSound;
-        
-        [SerializeField]
-        private AudioClip missSound;
-    
-        [SerializeField]
-        private Transform hitPoint;
-    
-        [SerializeField]
-        private LayerMask layerMask;
-    
-        private Character.Settings _settings;
+        private LivingEntity.Settings _settings;
         private Transform _lookAt;
 
         private bool _isAnimation;
         private bool _reversedAttack;
         private bool _canAttack = true;
 
-        public void UpdateSettings(Character.Settings settings)
+        [Inject]
+        public void Construct(References references, LivingEntity.Settings settings)
         {
             _settings = settings;
         }
 
-        private void Update()
+        public void Tick()
         {
             if (!_isAnimation && _lookAt != null)
                 CalculateHandDirection();

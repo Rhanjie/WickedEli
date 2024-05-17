@@ -12,9 +12,9 @@ namespace Interactable
         [SerializeField]
         private string content;
 
-        public void Interact(Character character)
+        public void Interact(LivingEntity livingEntity)
         {
-            if (character is Player player)
+            if (livingEntity is Player player)
                 player.OpenDictionary(title, content);
         }
     }

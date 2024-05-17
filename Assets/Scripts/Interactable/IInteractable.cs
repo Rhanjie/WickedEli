@@ -4,6 +4,6 @@ namespace Interactable
 {
     public interface IInteractable
     {
-        public void Interact(Character character);
+        public void Interact(LivingEntity livingEntity);
     }
 }
