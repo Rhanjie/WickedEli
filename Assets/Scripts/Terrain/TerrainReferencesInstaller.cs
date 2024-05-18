@@ -8,8 +8,7 @@ namespace Terrain.Installers
 {
     public class TerrainReferencesInstaller : MonoInstaller
     {
-        [SerializeField]
-        private TerrainGeneratorSettings settings;
+        public TerrainGeneratorSettings settings;
         
         public override void InstallBindings()
         {

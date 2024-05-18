@@ -1,5 +1,6 @@
 using System;
 using Sirenix.OdinInspector;
+using Terrain.Installers;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Zenject;
@@ -9,9 +10,7 @@ namespace Terrain
 {
     public class TerrainGenerator : MonoBehaviour
     {
-        [SerializeField] [HideInPlayMode] [LabelText("Needed in edit mode")]
         private TerrainGeneratorSettings settings;
-        
         private TileData[,] _mapData;
 
         [Inject]
@@ -23,6 +22,10 @@ namespace Terrain
         [Button("Generate map")]
         private void GenerateMap()
         {
+#if UNITY_EDITOR
+            settings = GetComponent<TerrainReferencesInstaller>().settings;
+#endif
+            
             var tilemap = GetComponentInChildren<Tilemap>();
             var noiseData = settings.Noise.Generate(6, Random.Range(0, 20000), 0.5f);
         
