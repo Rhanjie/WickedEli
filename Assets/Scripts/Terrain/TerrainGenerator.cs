@@ -7,21 +7,17 @@ using Random = UnityEngine.Random;
 
 namespace Terrain
 {
-    public partial class TerrainGenerator : MonoBehaviour
+    public class TerrainGenerator : MonoBehaviour
     {
-        [SerializeField]
+        [SerializeField] [LabelText("Reference needed only in edit mode")]
         private TerrainGeneratorSettings settings;
+        
         private TileData[,] _mapData;
 
         [Inject]
         private void Construct(TerrainGeneratorSettings injectedSettings)
         {
             settings = injectedSettings;
-        }
-
-        private void Start()
-        {
-            GenerateMap();
         }
 
         [Button("Generate map")]
