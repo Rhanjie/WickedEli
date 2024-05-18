@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using Characters;
+using Characters.Players;
+using UnityEngine;
 
-namespace Characters.Interfaces
+namespace Interactable
 {
     public class Book : MonoBehaviour, IInteractable
     {
@@ -10,9 +12,9 @@ namespace Characters.Interfaces
         [SerializeField]
         private string content;
 
-        public void Interact(Character character)
+        public void Interact(LivingEntity livingEntity)
         {
-            if (character is Player player)
+            if (livingEntity is Player player)
                 player.OpenDictionary(title, content);
         }
     }

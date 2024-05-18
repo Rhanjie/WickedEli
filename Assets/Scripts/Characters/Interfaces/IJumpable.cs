@@ -1,4 +1,7 @@
-public interface IJumpable
+namespace Characters.Interfaces
 {
-    void Jump();
+    public interface IJumpable
+    {
+        void Jump();
+    }
 }

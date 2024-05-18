@@ -171,7 +171,7 @@ Transform:
   m_GameObject: {fileID: 816639727720533255}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.000000059604645, z: 0.05}
+  m_LocalPosition: {x: -0.179, y: 0.000000059604645, z: 0.05}
   m_LocalScale: {x: 1.4, y: 0.4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -215,11 +215,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -672483835
+  m_SortingLayer: -1
   m_SortingOrder: -1343
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.78431374}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -270,12 +270,12 @@ GameObject:
   m_Component:
   - component: {fileID: 6514898406879903663}
   - component: {fileID: 2455163752553981873}
-  - component: {fileID: 6779854854295258811}
-  - component: {fileID: 3110556423869892845}
   - component: {fileID: 2557039380946053326}
   - component: {fileID: 1547920222713669407}
   - component: {fileID: 5356067227805271294}
   - component: {fileID: 7578155902178428243}
+  - component: {fileID: 1346829101480325953}
+  - component: {fileID: 7040617318775148013}
   m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
@@ -315,52 +315,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4074ccbbc75641045a6ed6fb9c1c5b5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attachedTo: {fileID: 6514898406879903663}
-  offset: 0
-  settings: {fileID: 11400000, guid: 27610464a683c954eaf68f4db0333a00, type: 2}
-  movement: {fileID: 6779854854295258811}
-  attack: {fileID: 3110556423869892845}
-  body: {fileID: 4049953656240933743}
-  animator: {fileID: 1356449264568908331}
-  audioSource: {fileID: 7578155902178428243}
-  lookAt: {fileID: 1550727680177390006}
-  hud: {fileID: 3491359489494137186}
---- !u!114 &6779854854295258811
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2543698408449452239}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1195388922694d10b5a1e08b05bc312c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  body: {fileID: 7678435571045375785}
-  physics: {fileID: 1547920222713669407}
---- !u!114 &3110556423869892845
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2543698408449452239}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51ed88760ed04fa9b6abb5910d01d871, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  handPoint: {fileID: 8134936715514168390}
-  weapon: {fileID: 4913393720529840452}
-  slashEffect: {fileID: 7977669838975612448}
-  audioSource: {fileID: 84725864357924033}
-  hitSound: {fileID: 8300000, guid: 2ad8eeb3622977b449028c79103b2723, type: 3}
-  missSound: {fileID: 8300000, guid: 91dd43d1eadad404f8275e5d221caaf8, type: 3}
-  hitPoint: {fileID: 4246844026310705007}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!114 &2557039380946053326
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -635,6 +589,58 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1346829101480325953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2543698408449452239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 975a50536ccef904cb8b67d28151c0b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectSettings:
+    attachedTo: {fileID: 0}
+    offset: 0
+  entityReferences:
+    body: {fileID: 4049953656240933743}
+    animator: {fileID: 1356449264568908331}
+    audioSource: {fileID: 7578155902178428243}
+    lookAt: {fileID: 1550727680177390006}
+  playerReferences:
+    hud: {fileID: 3491359489494137186}
+    mainCamera: {fileID: 0}
+  movementReferences:
+    body: {fileID: 7678435571045375785}
+    physics: {fileID: 1547920222713669407}
+    animator: {fileID: 1356449264568908331}
+  attackReferences:
+    handPoint: {fileID: 8134936715514168390}
+    weapon: {fileID: 2697090512980688407}
+    slashEffect: {fileID: 7977669838975612448}
+    audioSource: {fileID: 7578155902178428243}
+    hitPoint: {fileID: 4246844026310705007}
+--- !u!114 &7040617318775148013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2543698408449452239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08eca9f7688a0a24685b89133b020c8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scriptableObjectInstallers:
+  - {fileID: 11400000, guid: d30dc26bfe4b89a4b9acdf4fab57246f, type: 2}
+  _monoInstallers:
+  - {fileID: 1346829101480325953}
+  _installerPrefabs: []
+  _autoRun: 1
+  _kernel: {fileID: 0}
 --- !u!1 &2829339253631108757
 GameObject:
   m_ObjectHideFlags: 0
@@ -722,7 +728,7 @@ MonoBehaviour:
   m_Follow: {fileID: 6514898406879903663}
   m_Lens:
     FieldOfView: 34
-    OrthographicSize: 10
+    OrthographicSize: 15
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -1342,6 +1348,10 @@ PrefabInstance:
     - target: {fileID: 5256536638706869173, guid: 767457d22badb1c4c9192825e3b3eb41, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5362483425935907765, guid: 767457d22badb1c4c9192825e3b3eb41, type: 3}
+      propertyPath: m_BlockingMask.m_Bits
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

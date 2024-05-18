@@ -1,116 +1,78 @@
-using System;
-using Characters.Behaviours;
-using DG.Tweening;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Events;
+using Characters.Players;
 
-public abstract class Character : IsometricObject, IHittable, IDestroyable
+namespace Characters
 {
-    [SerializeField]
-    protected CharacterSettings settings;
-    
-    [SerializeField]
-    protected MovementBehaviour movement;
-    
-    [SerializeField]
-    protected AttackBehaviour attack;
-    
-    [SerializeField]
-    protected SpriteRenderer body;
-    
-    [SerializeField]
-    private Animator animator;
-    
-    [SerializeField]
-    private AudioSource audioSource;
-    
-    [SerializeField]
-    private Transform lookAt;
-
-    public Transform LookAt
+    public class Character : LivingEntity
     {
-        get => lookAt;
-        set
+        protected override void Update()
         {
-            lookAt = value;
+            base.Update();
+        
+            FindTarget();
+        
+            if (LookAt != null)
+                FollowTarget();
+        
+            else MovementBehaviour.Stop();
+        }
+
+        private void FollowTarget()
+        {
+            if (IsTargetInRange())
+                AttackBehaviour.Attack();
+        
+            else MovementBehaviour.Move(GetDirectionToTarget());
+        }
+
+        private Vector2 GetDirectionToTarget()
+        {
+            var position = transform.position;
+            var targetPosition = LookAt.transform.position;
+            var direction = new Vector2(targetPosition.x - position.x, targetPosition.y - position.y);
+
+            return direction;
+        }
+
+        private bool IsTargetInRange()
+        {
+            var position = transform.position;
+            var targetPosition = LookAt.transform.position;
+
+            var distance = new Vector2(targetPosition.x - position.x, targetPosition.y - position.y).magnitude;
+
+            return distance <= EntitySettings.range;
+        }
+
+        private void FindTarget()
+        {
+            var position = EntityReferences.body.transform.position;
+            var size = new Vector2(20, 13);
+            var layerMask = LayerMask.GetMask("Player");
+
+            var result = Physics2D.OverlapBox(position, size, 0, layerMask);
+        
+            var player = result != null ? result.GetComponent<Player>() : null;
+            if (player == null)
+            {
+                ResetTarget();
             
-            movement.SetTarget(lookAt);
-            attack.SetTarget(lookAt);
+                return;
+            }
+        
+            LookAt = player.transform;
         }
-    }
 
-    public Transform Handler { get; protected set; }
-
-    public int CurrentHealth
-    {
-        get => _currentHealth;
-        set
+        private void ResetTarget()
         {
-            var difference = value - _currentHealth;
-            OnHealthChanged?.Invoke(difference);
-            _currentHealth = value;
+            LookAt = null;
+        }
+
+        public override void Destroy()
+        {
+            //TODO: Effect
+        
+            gameObject.SetActive(false);
         }
     }
-
-    public UnityAction<int> OnHealthChanged;
-
-    private int _currentHealth;
-    private bool _isInsensitive;
-    
-    private static readonly int Velocity = Animator.StringToHash("Velocity");
-
-    protected virtual void Start()
-    {
-        Handler = transform;
-        CurrentHealth = settings.health;
-
-        UpdateBehaviours();
-    }
-    
-    private void OnValidate()
-    {
-        UpdateBehaviours();
-    }
-
-    private void UpdateBehaviours()
-    {
-        movement.UpdateSettings(settings);
-        movement.SetTarget(lookAt);
-        
-        attack.UpdateSettings(settings);
-        attack.SetTarget(lookAt);
-    }
-    
-    protected override void Update()
-    {
-        base.Update();
-        
-        animator.SetFloat(Velocity, movement.Velocity);
-    }
-
-    public void Hit(int damage)
-    {
-        if (_isInsensitive)
-            return;
-
-        CurrentHealth -= damage;
-        if (CurrentHealth <= 0)
-            Destroy();
-
-        else HitAnimation();
-    }
-
-    private void HitAnimation()
-    {
-        if (audioSource != null && !audioSource.isPlaying)
-            audioSource.Play();
-        
-        body.DOColor(Color.black, settings.insensitivityTime)
-            .SetLoops(2, LoopType.Yoyo)
-            .OnStart(() => _isInsensitive = true)
-            .OnComplete(() => _isInsensitive = false);
-    }
-
-    public abstract void Destroy();
 }
