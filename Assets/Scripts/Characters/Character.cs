@@ -20,7 +20,7 @@ namespace Characters
         private void FollowTarget()
         {
             if (IsTargetInRange())
-                Attack.Attack();
+                MeleeAttack.Attack();
         
             else Movement.Move(GetDirectionToTarget());
         }

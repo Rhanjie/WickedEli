@@ -4,10 +4,11 @@ using Characters.Interfaces;
 using DG.Tweening;
 using UnityEngine;
 using Zenject;
+using Object = UnityEngine.Object;
 
 namespace Characters.Behaviours
 {
-    public class AttackBehaviour : IAttackable, ITickable
+    public class MeleeAttackBehaviour : IAttackBehaviour, ITickable
     {
         [Serializable]
         public class Settings
@@ -17,6 +18,10 @@ namespace Characters.Behaviours
             public float range;
             public float attackTime;
             public float nextAttackDelay;
+            
+            public LayerMask layerMask;
+            public AudioClip hitSound;
+            public AudioClip missSound;
         }
         
         [Serializable]
@@ -26,15 +31,13 @@ namespace Characters.Behaviours
             public Transform weapon;
             public TrailRenderer slashEffect;
             public AudioSource audioSource;
-            public AudioClip hitSound;
-            public AudioClip missSound;
             public Transform hitPoint;
         }
 
-        [SerializeField] private LayerMask layerMask;
-    
+        private Transform _handler;
         private References _references;
         private Settings _settings;
+        
         private Transform _lookAt;
 
         private bool _isAnimation;
@@ -42,8 +45,9 @@ namespace Characters.Behaviours
         private bool _canAttack = true;
 
         [Inject]
-        public void Construct(References references, Settings settings)
+        public void Construct(Transform handler, References references, Settings settings)
         {
+            _handler = handler;
             _references = references;
             _settings = settings;
         }
@@ -72,13 +76,13 @@ namespace Characters.Behaviours
         private void CalculateHandDirection()
         {
             var direction = GetDirectionToTarget();
-            handPoint.up = direction;
+            _references.handPoint.up = direction;
         }
 
         private Vector2 GetDirectionToTarget()
         {
             var targetPosition = _lookAt.position;
-            var handPosition = transform.position;
+            var handPosition = _handler.position;
             var direction = new Vector2(handPosition.x - targetPosition.x, handPosition.y - targetPosition.y);
 
             return direction;
@@ -96,7 +100,7 @@ namespace Characters.Behaviours
             _references.handPoint.DOLocalRotate(newRotation, _settings.attackTime, RotateMode.FastBeyond360)
                 .SetEase(Ease.InCubic)
                 .SetRelative(true)
-                .OnStart(() => slashEffect.emitting = true)
+                .OnStart(() => _references.slashEffect.emitting = true)
                 .OnComplete(() =>
                 {
                     _references.slashEffect.emitting = false;
@@ -116,7 +120,7 @@ namespace Characters.Behaviours
             yield return new WaitForSeconds(_settings.attackTime / 1.5f);
         
             _references.slashEffect.emitting = true;
-            var results = Physics2D.OverlapCircleAll(_references.hitPoint.position, _settings.range, layerMask);
+            var results = Physics2D.OverlapCircleAll(_references.hitPoint.position, _settings.range, _settings.layerMask);
 
             var hitAnything = results.Length > 0;
             PlaySound(hitAnything);
@@ -124,7 +128,7 @@ namespace Characters.Behaviours
             foreach (var result in results)
             {
                 var hittable = result.transform.GetComponent<IHittable>();
-                if (hittable == null || hittable.Handler == transform)
+                if (hittable == null || hittable.Handler == _handler)
                     continue;
             
                 hittable.Hit(_settings.damage);
@@ -140,7 +144,7 @@ namespace Characters.Behaviours
             if (_references.audioSource == null)
                 return;
             
-            _references.audioSource.PlayOneShot(hitAnything ? _references.hitSound : _references.missSound);
+            _references.audioSource.PlayOneShot(hitAnything ? _settings.hitSound : _settings.missSound);
         }
     }
 }

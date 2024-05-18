@@ -1,12 +1,11 @@
 ﻿using System;
 using Characters.Interfaces;
-using Characters.Settings;
 using UnityEngine;
 using Zenject;
 
 namespace Characters.Behaviours
 {
-    public class MovementBehaviour : IMoveable
+    public class MovementBehaviour : IMovementBehaviour, IFixedTickable
     {
         [Serializable]
         public class Settings
@@ -16,31 +15,33 @@ namespace Characters.Behaviours
             public float friction;
         }
         
-        public Vector2 Position { get; private set; }
-        public float Velocity { get; private set; }
-        public bool IsFacingRight { get; private set; }
-
         public class References
         {
             public Transform body;
             public Rigidbody2D physics;
         }
         
+        private Transform _handler;
         private References _references;
         private Settings _settings;
         private Transform _lookAt;
     
         private float _horizontalMove;
         private float _verticalMove;
+        
+        public Vector2 Position { get; private set; }
+        public float Velocity { get; private set; }
+        public bool IsFacingRight { get; private set; }
 
         [Inject]
-        public void Construct(References references, Settings settings)
+        public void Construct(Transform handler, References references, Settings settings)
         {
+            _handler = handler;
             _references = references;
             _settings = settings;
         }
 
-        private void FixedUpdate()
+        public void FixedTick()
         {
             if (_lookAt != null)
                 CalculateTargetDirection();
@@ -119,7 +120,7 @@ namespace Characters.Behaviours
         private Vector2 GetDirectionToMouse()
         {
             var targetPosition = _lookAt.position;
-            var handPosition = transform.position;
+            var handPosition = _handler.position;
             var direction = new Vector2(
                 handPosition.x - targetPosition.x, 
                 handPosition.y - targetPosition.y

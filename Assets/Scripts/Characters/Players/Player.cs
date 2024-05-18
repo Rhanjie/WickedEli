@@ -107,7 +107,7 @@ namespace Characters.Players
     
         public void PerformAttack()
         {
-            Attack.Attack();
+            MeleeAttack.Attack();
         }
 
         public override void Destroy()

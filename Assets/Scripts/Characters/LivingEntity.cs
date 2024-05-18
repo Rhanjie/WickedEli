@@ -7,7 +7,7 @@ namespace Characters
     public abstract class LivingEntity : StaticEntity
     {
         protected MovementBehaviour Movement;
-        protected AttackBehaviour Attack;
+        protected MeleeAttackBehaviour MeleeAttack;
 
         private static readonly int Velocity = Animator.StringToHash("Velocity");
         
@@ -19,15 +19,15 @@ namespace Characters
                 EntityReferences.lookAt = value;
             
                 Movement.SetTarget(value);
-                Attack.SetTarget(value);
+                MeleeAttack.SetTarget(value);
             }
         }
 
         [Inject]
-        public void Construct(MovementBehaviour movement, AttackBehaviour attack)
+        public void Construct(MovementBehaviour movement, MeleeAttackBehaviour meleeAttack)
         {
             Movement = movement;
-            Attack = attack;
+            MeleeAttack = meleeAttack;
 
             UpdateBehaviours();
         }
@@ -35,7 +35,7 @@ namespace Characters
         private void UpdateBehaviours()
         {
             Movement.SetTarget(EntityReferences.lookAt);
-            Attack.SetTarget(EntityReferences.lookAt);
+            MeleeAttack.SetTarget(EntityReferences.lookAt);
         }
     
         protected override void Update()

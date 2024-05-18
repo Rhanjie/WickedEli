@@ -1,6 +1,6 @@
 namespace Characters.Interfaces
 {
-    public interface IAttackable
+    public interface IAttackBehaviour
     {
         void Attack();
     }
