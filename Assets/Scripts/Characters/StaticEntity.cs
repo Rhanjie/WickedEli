@@ -17,6 +17,7 @@ namespace Characters
             public string title;
             public int health;
             public float insensitivityTime;
+            public float range;
         }
         
         [Serializable]

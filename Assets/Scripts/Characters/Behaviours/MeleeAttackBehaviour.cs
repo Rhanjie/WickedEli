@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections;
+using System.Collections.Generic;
 using Characters.Interfaces;
 using DG.Tweening;
 using UnityEngine;
 using Zenject;
-using Object = UnityEngine.Object;
+using MEC;
 
 namespace Characters.Behaviours
 {
@@ -95,7 +95,7 @@ namespace Characters.Behaviours
             var direction = _reversedAttack ? -1 : 1;
             var newRotation = new Vector3(0, 0, 180 * direction);
 
-            StartCoroutine(StartHitting());
+            Timing.RunCoroutine(StartHitting());
 
             _references.handPoint.DOLocalRotate(newRotation, _settings.attackTime, RotateMode.FastBeyond360)
                 .SetEase(Ease.InCubic)
@@ -113,11 +113,11 @@ namespace Characters.Behaviours
                 .SetRelative(true);
         }
 
-        private IEnumerator StartHitting()
+        private IEnumerator<float> StartHitting()
         {
             _canAttack = false;
             
-            yield return new WaitForSeconds(_settings.attackTime / 1.5f);
+            yield return Timing.WaitForSeconds(_settings.attackTime / 1.5f);
         
             _references.slashEffect.emitting = true;
             var results = Physics2D.OverlapCircleAll(_references.hitPoint.position, _settings.range, _settings.layerMask);
@@ -134,7 +134,7 @@ namespace Characters.Behaviours
                 hittable.Hit(_settings.damage);
             }
 
-            yield return new WaitForSeconds(_settings.attackTime / 3f + _settings.nextAttackDelay);
+            yield return Timing.WaitForSeconds(_settings.attackTime / 3f + _settings.nextAttackDelay);
 
             _canAttack = true;
         }
