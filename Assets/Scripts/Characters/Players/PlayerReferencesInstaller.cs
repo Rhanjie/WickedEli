@@ -19,15 +19,16 @@ namespace Characters.Players
         {
             //IsometricObject
             Container.Bind<Renderer>().FromComponentsInChildren().AsTransient();
-            Container.Bind<Transform>().FromComponentSibling().AsCached();
+            Container.Bind<Transform>().FromNewComponentOnRoot().AsCached();
 
             //LivingEntity
-            Container.Bind<IMovementBehaviour>().To<MovementBehaviour>().AsTransient();
-            Container.Bind<IAttackBehaviour>().To<MeleeAttackBehaviour>().AsTransient();
+            Container.BindInterfacesAndSelfTo<MovementBehaviour>().AsTransient();
+            Container.BindInterfacesAndSelfTo<MeleeAttackBehaviour>().AsTransient();
 
             //IsometricObject, StaticEntity, Player
             Container.BindInstances(objectSettings, entityReferences, playerReferences);
             Container.BindInstances(movementReferences, attackReferences);
+
             Container.BindInterfacesAndSelfTo<Player>().AsSingle();
         }
     }

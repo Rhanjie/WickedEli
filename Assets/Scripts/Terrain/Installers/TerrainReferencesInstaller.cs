@@ -10,7 +10,6 @@ namespace Terrain.Installers
         public override void InstallBindings()
         {
             Container.BindInstance(references);
-            Container.BindInterfacesTo<TerrainGenerator>().AsSingle();
         }
     }
 }
