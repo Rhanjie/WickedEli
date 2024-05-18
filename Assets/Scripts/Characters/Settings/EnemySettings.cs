@@ -1,7 +1,10 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "EnemySettings", menuName = "Settings/Enemy")]
-public class EnemySettings : CharacterSettings
+namespace Characters.Settings
 {
-    public int experience;
+    //[CreateAssetMenu(fileName = "EnemySettings", menuName = "Settings/Enemy")]
+    //public class EnemySettings : CharacterSettings
+    //{
+    //    public int experience;
+    //}
 }

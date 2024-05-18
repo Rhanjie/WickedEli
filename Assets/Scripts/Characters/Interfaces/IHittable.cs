@@ -1,8 +1,11 @@
 using UnityEngine;
 
-interface IHittable
+namespace Characters.Interfaces
 {
-    public Transform Handler { get; }
+    interface IHittable
+    {
+        public Transform Handler { get; }
 
-    public void Hit(int damage);
+        public void Hit(int damage);
+    }
 }

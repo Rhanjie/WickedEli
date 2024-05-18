@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88e64582d8bd4a369fc390def8339466, type: 3}
+  m_Name: CampGeneratorSettings
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects:
+    - {fileID: 11400000, guid: 7cea59f6d43824b459d420548377bd11, type: 2}
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: Noise
+      Entry: 10
+      Data: 0
+  size: 64
+  tiles:
+  - indices: {x: 0, y: 10}
+    color:
+      serializedVersion: 2
+      rgba: 0
+    variants:
+    - {fileID: 11400000, guid: c0330bca674afbf47b2664a57ab79849, type: 2}
+    - {fileID: 11400000, guid: c0330bca674afbf47b2664a57ab79849, type: 2}
+    walkable: 0
+    hurtable: 0
+  - indices: {x: 11, y: 13}
+    color:
+      serializedVersion: 2
+      rgba: 6291427
+    variants:
+    - {fileID: 11400000, guid: c0330bca674afbf47b2664a57ab79849, type: 2}
+    walkable: 0
+    hurtable: 0
+  - indices: {x: 14, y: 50}
+    color:
+      serializedVersion: 2
+      rgba: 8835583
+    variants:
+    - {fileID: 11400000, guid: c0330bca674afbf47b2664a57ab79849, type: 2}
+    walkable: 0
+    hurtable: 0
