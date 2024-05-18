@@ -9,7 +9,7 @@ namespace Terrain
 {
     public class TerrainGenerator : MonoBehaviour
     {
-        [SerializeField] [LabelText("Reference needed only in edit mode")]
+        [SerializeField] [HideInPlayMode] [LabelText("Needed in edit mode")]
         private TerrainGeneratorSettings settings;
         
         private TileData[,] _mapData;

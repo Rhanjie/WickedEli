@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4a2181bbb1b846afa63ce57244a9174e, type: 3}
-  m_Name: DiamondSquareNoise
+  m_Name: DiamondSquare
   m_EditorClassIdentifier: 
   range: 0.5
   randomStart: 16

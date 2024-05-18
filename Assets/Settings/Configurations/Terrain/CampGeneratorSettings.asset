@@ -25,5 +25,30 @@ MonoBehaviour:
     - Name: Noise
       Entry: 10
       Data: 0
-  size: 200
-  tiles: []
+  size: 64
+  tiles:
+  - indices: {x: 0, y: 10}
+    color:
+      serializedVersion: 2
+      rgba: 0
+    variants:
+    - {fileID: 11400000, guid: c0330bca674afbf47b2664a57ab79849, type: 2}
+    - {fileID: 11400000, guid: c0330bca674afbf47b2664a57ab79849, type: 2}
+    walkable: 0
+    hurtable: 0
+  - indices: {x: 11, y: 13}
+    color:
+      serializedVersion: 2
+      rgba: 6291427
+    variants:
+    - {fileID: 11400000, guid: c0330bca674afbf47b2664a57ab79849, type: 2}
+    walkable: 0
+    hurtable: 0
+  - indices: {x: 14, y: 50}
+    color:
+      serializedVersion: 2
+      rgba: 8835583
+    variants:
+    - {fileID: 11400000, guid: c0330bca674afbf47b2664a57ab79849, type: 2}
+    walkable: 0
+    hurtable: 0

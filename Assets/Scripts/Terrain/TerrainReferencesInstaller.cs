@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using Terrain.Noises;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -7,7 +8,8 @@ namespace Terrain.Installers
 {
     public class TerrainReferencesInstaller : MonoInstaller
     {
-        public TerrainGeneratorSettings settings;
+        [SerializeField]
+        private TerrainGeneratorSettings settings;
         
         public override void InstallBindings()
         {
