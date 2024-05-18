@@ -1,4 +1,5 @@
 ﻿using System;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -9,21 +10,35 @@ namespace Terrain.Noises
     {
         private int size;
     
-        public float range = 0.5f;
-        public int randomStart = 16;
+        [Tooltip("If zero, then seed will be randomized")]
+        [SerializeField] private int seed;
+        [SerializeField] private int randomStart = 16;
+        
+        [Range(0, 8)] [Tooltip("Randomizing noise")]
+        [SerializeField] private float startRandomRange = 2f;
+        
+        [SerializeField] private bool decreaseRandomRange = true;
+        
+        [ShowIf("decreaseRandomRange")] [Tooltip("Smaller roughness = smoother results")]
+        [Range(1, 2)] [SerializeField] private float roughness = 2f;
 
         private float[,] noise;
 
         private System.Random randomEngine;
     
-        public float[,] Generate(uint sizePower, int seed, float roughness)
+        public float[,] Generate(uint sizePower)
         {
+            if (seed == 0)
+                seed = Random.Range(0, 20000);
+            
             randomEngine = new System.Random(seed);
 
+            //TODO: Change to universal solution
             size = (int) Mathf.Pow(2, sizePower) + 1;
-            range = 2f;
+            
             noise = new float[size, size];
-        
+
+            var randomRange = startRandomRange;
             var chunkSize = size - 1;
 
             noise[0, 0] = randomEngine.Next(randomStart / 3, randomStart);
@@ -36,7 +51,9 @@ namespace Terrain.Noises
                 SquareStep(chunkSize);
                 DiamondStep(chunkSize);
 
-                range -= range * 0.5f * roughness;
+                if (decreaseRandomRange)
+                    randomRange = (float) Math.Max(randomRange / roughness, 0.1);
+
                 chunkSize /= 2;
             }
 
@@ -59,7 +76,7 @@ namespace Terrain.Noises
                         var lower = noise[y + chunkSize, x + chunkSize];
 
                         var average = (left + right + upper + lower) / 4f;
-                        var randomValue = (Random.value * (range * 2.0f)) - range;
+                        var randomValue = (Random.value * (startRandomRange * 2.0f)) - startRandomRange;
 
                         noise[y + half, x + half] = average + randomValue;
                     }
@@ -112,7 +129,7 @@ namespace Terrain.Noises
                     }
 
                     var average = (left + right + upper + lower) / count;
-                    var randomValue = (Random.value * (range * 2.0f)) - range;
+                    var randomValue = (Random.value * (startRandomRange * 2.0f)) - startRandomRange;
                 
                     noise[y, x] = average + randomValue;
                 

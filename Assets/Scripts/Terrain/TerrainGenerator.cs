@@ -27,7 +27,7 @@ namespace Terrain
 #endif
             
             var tilemap = GetComponentInChildren<Tilemap>();
-            var noiseData = settings.Noise.Generate(6, Random.Range(0, 20000), 0.5f);
+            var noiseData = settings.Noise.Generate(6);
         
             _mapData = new TileData[settings.size, settings.size];
             for (var y = 0; y < _mapData.GetLength(0); y++)
@@ -36,19 +36,22 @@ namespace Terrain
                 {
                     var noiseValue = noiseData[y, x];
                 
-                    var index = (int) Math.Round(noiseValue);
+                    var index = Math.Abs((int) Math.Round(noiseValue));
                     var tileData = settings.TryGetFromIndex(index);
                 
                     if (tileData == null)
                         throw new Exception($"Not found tile with index: {index}");
 
                     var position = new Vector3Int(x, y, 0);
-                    var noiseColor = (byte)(255f - noiseValue * 5f);
                     var color = tileData.Value.color;
+                    if (color == Color.clear)
+                        color = Color.white;
+                    
+                    var noiseColor = noiseValue * 5f;
 
-                    color.r += noiseColor;
-                    color.g += noiseColor;
-                    color.b += noiseColor;
+                    color.r = (byte) Mathf.Clamp(color.r - noiseColor, 0, 255);
+                    color.g = (byte) Mathf.Clamp(color.g - noiseColor, 0, 255);
+                    color.b = (byte) Mathf.Clamp(color.b - noiseColor, 0, 255);
                     color.a = 255;
                 
                     tilemap.SetTile(position, tileData.Value.GetRandomVariant());
