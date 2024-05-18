@@ -11,31 +11,19 @@ namespace Characters.Players
 {
     public class Player : LivingEntity
     {
-        [Serializable]
-        public new class Settings
-        {
-            public int test;
-        }
-
-        [Serializable]
-        public new class References
-        {
-            public HUD hud;
-            public Camera mainCamera;
-        }
+        private IInteractable _target;
+        protected References PlayerReferences;
 
         protected Settings PlayerSettings;
-        protected References PlayerReferences;
-        
-        private IInteractable _target = null;
 
-        [Inject]
-        private void Construct(Settings settings, References references)
+        protected override void Update()
         {
-            PlayerSettings = settings;
-            PlayerReferences = references;
-            
-            OnHealthChanged += PlayerReferences.hud.UpdateHealth;
+            base.Update();
+
+            UpdateTargetPosition();
+
+            InteractionChecker();
+            InteractionListener();
         }
 
         private void OnDestroy()
@@ -43,16 +31,15 @@ namespace Characters.Players
             OnHealthChanged -= PlayerReferences.hud.UpdateHealth;
         }
 
-        protected override void Update()
+        [Inject]
+        private void Construct(Settings settings, References references)
         {
-            base.Update();
-        
-            UpdateTargetPosition();
+            PlayerSettings = settings;
+            PlayerReferences = references;
 
-            InteractionChecker();
-            InteractionListener();
+            OnHealthChanged += PlayerReferences.hud.UpdateHealth;
         }
-        
+
         private void InteractionChecker()
         {
             var position = EntityReferences.body.transform.position;
@@ -60,15 +47,15 @@ namespace Characters.Players
             var layerMask = LayerMask.GetMask("Interactable");
 
             var results = Physics2D.OverlapBoxAll(position, size, layerMask).ToList();
-            
+
             var interactables = results
                 .Select(result => result.GetComponent<IInteractable>())
                 .ToArray();
-        
+
             if (interactables.Length == 0)
             {
                 ClearInteraction();
-            
+
                 return;
             }
 
@@ -77,7 +64,7 @@ namespace Characters.Players
                 return;
 
             _target = foundTarget;
-        
+
             PlayerReferences.hud.ToggleInteractionText(true);
         }
 
@@ -93,7 +80,7 @@ namespace Characters.Players
             {
                 if (_target == null)
                     return;
-            
+
                 _target.Interact(this);
             }
         }
@@ -101,10 +88,10 @@ namespace Characters.Players
         public void PerformMove(InputAction.CallbackContext context)
         {
             var delta = context.ReadValue<Vector2>();
-            
+
             MovementBehaviour.Move(delta);
         }
-    
+
         public void PerformAttack()
         {
             AttackBehaviour.Attack();
@@ -113,7 +100,7 @@ namespace Characters.Players
         public override void Destroy()
         {
             //TODO: Gameover
-        
+
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
@@ -128,6 +115,19 @@ namespace Characters.Players
             var convertedPosition = PlayerReferences.mainCamera.ScreenToWorldPoint(mousePosition.value);
 
             LookAt.transform.position = convertedPosition;
+        }
+
+        [Serializable]
+        public new class Settings
+        {
+            public int test;
+        }
+
+        [Serializable]
+        public new class References
+        {
+            public HUD hud;
+            public Camera mainCamera;
         }
     }
 }

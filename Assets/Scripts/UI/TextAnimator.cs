@@ -7,14 +7,11 @@ namespace UI
 {
     public class TextAnimator : MonoBehaviour
     {
-        [SerializeField]
-        private Text textObject;
+        [SerializeField] private Text textObject;
 
-        [SerializeField]
-        private float animationTime = 0.5f;
-    
-        [SerializeField]
-        private string defaultText = "";
+        [SerializeField] private float animationTime = 0.5f;
+
+        [SerializeField] private string defaultText = "";
 
         public UnityEvent OnAnimationComplete { get; private set; }
 
@@ -29,7 +26,7 @@ namespace UI
             textObject.text = "";
 
             text = text.Replace("\\n", "\n");
-        
+
             textObject.DOText(text, animationTime)
                 .OnStart(() => textObject.text = "")
                 .OnComplete(() => OnAnimationComplete?.Invoke());

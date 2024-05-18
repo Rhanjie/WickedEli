@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,14 +5,11 @@ namespace UI
 {
     public class HUD : MonoBehaviour
     {
-        [SerializeField]
-        private Text interactionText;
-        
-        [SerializeField]
-        private Dictionary dictionary;
-        
-        [SerializeField]
-        private HeartContainer heartContainer;
+        [SerializeField] private Text interactionText;
+
+        [SerializeField] private Dictionary dictionary;
+
+        [SerializeField] private HeartContainer heartContainer;
 
         public void UpdateHealth(int difference)
         {
@@ -27,7 +23,7 @@ namespace UI
         {
             interactionText.gameObject.SetActive(value);
         }
-        
+
         public void OpenDictionary(string title, string content)
         {
             dictionary.Open(title, content);

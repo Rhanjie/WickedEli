@@ -1,5 +1,5 @@
-using UnityEngine;
 using Characters.Players;
+using UnityEngine;
 
 namespace Characters
 {
@@ -8,12 +8,12 @@ namespace Characters
         protected override void Update()
         {
             base.Update();
-        
+
             FindTarget();
-        
+
             if (LookAt != null)
                 FollowTarget();
-        
+
             else MovementBehaviour.Stop();
         }
 
@@ -21,7 +21,7 @@ namespace Characters
         {
             if (IsTargetInRange())
                 AttackBehaviour.Attack();
-        
+
             else MovementBehaviour.Move(GetDirectionToTarget());
         }
 
@@ -51,15 +51,15 @@ namespace Characters
             var layerMask = LayerMask.GetMask("Player");
 
             var result = Physics2D.OverlapBox(position, size, 0, layerMask);
-        
+
             var player = result != null ? result.GetComponent<Player>() : null;
             if (player == null)
             {
                 ResetTarget();
-            
+
                 return;
             }
-        
+
             LookAt = player.transform;
         }
 
@@ -71,7 +71,7 @@ namespace Characters
         public override void Destroy()
         {
             //TODO: Effect
-        
+
             gameObject.SetActive(false);
         }
     }

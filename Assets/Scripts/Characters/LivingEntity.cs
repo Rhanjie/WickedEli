@@ -1,13 +1,16 @@
 using Characters.Interfaces;
 using UnityEngine;
 using Zenject;
+using Terrain = Map.Terrain;
 
 namespace Characters
 {
     public abstract class LivingEntity : StaticEntity
     {
-        protected IMovementBehaviour MovementBehaviour;
         protected IAttackBehaviour AttackBehaviour;
+        protected IMovementBehaviour MovementBehaviour;
+        
+        private static readonly int VelocityHash = Animator.StringToHash("Velocity");
 
         public Transform LookAt
         {
@@ -18,11 +21,16 @@ namespace Characters
                 AttackBehaviour.SetTarget(value);
             }
         }
-        
-        private static readonly int VelocityHash = Animator.StringToHash("Velocity");
+
+        protected override void Update()
+        {
+            base.Update();
+
+            EntityReferences.animator.SetFloat(VelocityHash, MovementBehaviour.Velocity);
+        }
 
         [Inject]
-        public void Construct(IMovementBehaviour movementBehaviour, IAttackBehaviour attackBehaviour)
+        public void Construct(IMovementBehaviour movementBehaviour, IAttackBehaviour attackBehaviour, Terrain terrain)
         {
             MovementBehaviour = movementBehaviour;
             AttackBehaviour = attackBehaviour;
@@ -33,13 +41,6 @@ namespace Characters
         private void UpdateBehaviours()
         {
             AttackBehaviour.SetTarget(EntityReferences.lookAt);
-        }
-    
-        protected override void Update()
-        {
-            base.Update();
-        
-            EntityReferences.animator.SetFloat(VelocityHash, MovementBehaviour.Velocity);
         }
     }
 }

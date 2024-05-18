@@ -6,11 +6,9 @@ namespace Interactable
 {
     public class Book : MonoBehaviour, IInteractable
     {
-        [SerializeField]
-        private string title;
-        
-        [SerializeField]
-        private string content;
+        [SerializeField] private string title;
+
+        [SerializeField] private string content;
 
         public void Interact(LivingEntity livingEntity)
         {
