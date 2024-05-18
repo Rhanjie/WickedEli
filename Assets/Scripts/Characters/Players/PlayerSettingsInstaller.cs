@@ -1,16 +1,22 @@
-using Characters;
+using Characters.Behaviours;
 using UnityEngine;
 using Zenject;
-using Characters.Players;
 
-[CreateAssetMenu(fileName = "PlayerInstaller", menuName = "Settings/Player")]
-public class PlayerSettingsInstaller : ScriptableObjectInstaller<PlayerSettingsInstaller>
+namespace Characters.Players
 {
-    [SerializeField] private LivingEntity.Settings characterSettings;
-    [SerializeField] private Player.Settings playerSettings;
-    
-    public override void InstallBindings()
+    [CreateAssetMenu(fileName = "PlayerInstaller", menuName = "Settings/Player")]
+    public class PlayerSettingsInstaller : ScriptableObjectInstaller<PlayerSettingsInstaller>
     {
-        Container.BindInstances(characterSettings, playerSettings);
+        [SerializeField] private StaticEntity.Settings characterSettings;
+        [SerializeField] private Player.Settings playerSettings;
+    
+        [SerializeField] private MovementBehaviour.Settings movementSettings;
+        [SerializeField] private MeleeAttackBehaviour.Settings attackSettings;
+    
+        public override void InstallBindings()
+        {
+            Container.BindInstances(characterSettings, playerSettings);
+            Container.BindInstances(movementSettings, attackSettings);
+        }
     }
 }

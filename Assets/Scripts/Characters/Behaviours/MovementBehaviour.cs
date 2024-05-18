@@ -42,12 +42,10 @@ namespace Characters.Behaviours
             _settings = settings;
         }
 
-        private Vector2 _lastMovement;
-
         public void FixedTick()
         {
-            _lastMovement = CalculateMovement();
-            ApplyForce(_lastMovement, ForceMode2D.Force);
+            var movement = CalculateMovement();
+            ApplyForce(movement, ForceMode2D.Force);
 
             var friction = CalculateFriction();
             ApplyForce(friction, ForceMode2D.Impulse);
@@ -116,7 +114,7 @@ namespace Characters.Behaviours
 
         private Vector2 GetDirection()
         {
-            return _lastMovement.normalized;
+            return new Vector2(_horizontalMove, _verticalMove).normalized;
         }
     
         private bool ShouldBeFlipped(float horizontalDirection)
