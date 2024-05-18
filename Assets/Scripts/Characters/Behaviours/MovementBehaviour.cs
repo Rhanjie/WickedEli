@@ -15,22 +15,23 @@ namespace Characters.Behaviours
             public float friction;
         }
         
+        [Serializable]
         public class References
         {
             public Transform body;
             public Rigidbody2D physics;
+            public Animator animator;
         }
         
         private Transform _handler;
         private References _references;
         private Settings _settings;
-        private Transform _lookAt;
-    
+
         private float _horizontalMove;
         private float _verticalMove;
-        
+
+        public float Velocity { get; protected set; }
         public Vector2 Position { get; private set; }
-        public float Velocity { get; private set; }
         public bool IsFacingRight { get; private set; }
 
         [Inject]
@@ -41,20 +42,21 @@ namespace Characters.Behaviours
             _settings = settings;
         }
 
+        private Vector2 _lastMovement;
+
         public void FixedTick()
         {
-            if (_lookAt != null)
-                CalculateTargetDirection();
-        
-            var movement = CalculateMovement();
-            ApplyForce(movement, ForceMode2D.Force);
+            _lastMovement = CalculateMovement();
+            ApplyForce(_lastMovement, ForceMode2D.Force);
 
             var friction = CalculateFriction();
             ApplyForce(friction, ForceMode2D.Impulse);
+            
+            CalculateMovementDirection();
         
             Velocity = _references.physics.velocity.magnitude;
         }
-    
+
         public void Move(Vector2 delta)
         {
             delta = delta.normalized;
@@ -104,29 +106,17 @@ namespace Characters.Behaviours
         
             _references.physics.AddForce(force, mode);
         }
-    
-        public void SetTarget(Transform target)
-        {
-            _lookAt = target;
-        }
 
-        private void CalculateTargetDirection()
+        private void CalculateMovementDirection()
         {
-            var direction = GetDirectionToMouse();
+            var direction = GetDirection();
             if (ShouldBeFlipped(direction.x))
                 Flip();
         }
 
-        private Vector2 GetDirectionToMouse()
+        private Vector2 GetDirection()
         {
-            var targetPosition = _lookAt.position;
-            var handPosition = _handler.position;
-            var direction = new Vector2(
-                handPosition.x - targetPosition.x, 
-                handPosition.y - targetPosition.y
-            );
-
-            return direction;
+            return _lastMovement.normalized;
         }
     
         private bool ShouldBeFlipped(float horizontalDirection)

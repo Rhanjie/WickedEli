@@ -14,15 +14,15 @@ namespace Characters
             if (LookAt != null)
                 FollowTarget();
         
-            else Movement.Stop();
+            else MovementBehaviour.Stop();
         }
 
         private void FollowTarget()
         {
             if (IsTargetInRange())
-                MeleeAttack.Attack();
+                AttackBehaviour.Attack();
         
-            else Movement.Move(GetDirectionToTarget());
+            else MovementBehaviour.Move(GetDirectionToTarget());
         }
 
         private Vector2 GetDirectionToTarget()

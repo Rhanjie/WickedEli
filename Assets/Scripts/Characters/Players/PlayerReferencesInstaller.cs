@@ -7,14 +7,14 @@ namespace Characters.Players
     public class PlayerReferencesInstaller : MonoInstaller
     {
         [SerializeField] private IsometricObject.References objectSettings;
-        [SerializeField] private LivingEntity.References characterReferences;
+        [SerializeField] private StaticEntity.References entityReferences;
         [SerializeField] private Player.References playerReferences;
 
         public override void InstallBindings()
         {
             Container.Bind<Renderer>().FromComponentsInChildren();
 
-            Container.BindInstances(objectSettings, characterReferences, playerReferences);
+            Container.BindInstances(objectSettings, entityReferences, playerReferences);
             Container.BindInterfacesAndSelfTo<Player>().AsSingle();
         }
     }

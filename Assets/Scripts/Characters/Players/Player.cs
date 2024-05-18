@@ -102,12 +102,12 @@ namespace Characters.Players
         {
             var delta = context.ReadValue<Vector2>();
             
-            Movement.Move(delta);
+            MovementBehaviour.Move(delta);
         }
     
         public void PerformAttack()
         {
-            MeleeAttack.Attack();
+            AttackBehaviour.Attack();
         }
 
         public override void Destroy()

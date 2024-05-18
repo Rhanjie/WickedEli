@@ -1,4 +1,5 @@
 using Characters.Behaviours;
+using Characters.Interfaces;
 using UnityEngine;
 using Zenject;
 
@@ -6,43 +7,40 @@ namespace Characters
 {
     public abstract class LivingEntity : StaticEntity
     {
-        protected MovementBehaviour Movement;
-        protected MeleeAttackBehaviour MeleeAttack;
+        protected IMovementBehaviour MovementBehaviour;
+        protected IAttackBehaviour AttackBehaviour;
 
-        private static readonly int Velocity = Animator.StringToHash("Velocity");
-        
         public Transform LookAt
         {
             get => EntityReferences.lookAt;
             set
             {
                 EntityReferences.lookAt = value;
-            
-                Movement.SetTarget(value);
-                MeleeAttack.SetTarget(value);
+                AttackBehaviour.SetTarget(value);
             }
         }
+        
+        private static readonly int VelocityHash = Animator.StringToHash("Velocity");
 
         [Inject]
-        public void Construct(MovementBehaviour movement, MeleeAttackBehaviour meleeAttack)
+        public void Construct(IMovementBehaviour movementBehaviour, IAttackBehaviour attackBehaviour)
         {
-            Movement = movement;
-            MeleeAttack = meleeAttack;
+            MovementBehaviour = movementBehaviour;
+            AttackBehaviour = attackBehaviour;
 
             UpdateBehaviours();
         }
 
         private void UpdateBehaviours()
         {
-            Movement.SetTarget(EntityReferences.lookAt);
-            MeleeAttack.SetTarget(EntityReferences.lookAt);
+            AttackBehaviour.SetTarget(EntityReferences.lookAt);
         }
     
         protected override void Update()
         {
             base.Update();
         
-            EntityReferences.animator.SetFloat(Velocity, Movement.Velocity);
+            EntityReferences.animator.SetFloat(VelocityHash, MovementBehaviour.Velocity);
         }
     }
 }
