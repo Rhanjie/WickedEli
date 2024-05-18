@@ -20,9 +20,9 @@ MonoBehaviour:
   playerSettings:
     test: 123
   movementSettings:
-    speed: 10
-    acceleration: 5
-    friction: 50
+    speed: 20
+    acceleration: 20
+    friction: 10
   attackSettings:
     damage: 5
     range: 2

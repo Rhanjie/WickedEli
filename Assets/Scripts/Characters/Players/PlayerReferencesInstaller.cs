@@ -22,8 +22,8 @@ namespace Characters.Players
             Container.Bind<Transform>().FromNewComponentOnRoot().AsCached();
 
             //LivingEntity
-            Container.BindInterfacesAndSelfTo<MovementBehaviour>().AsTransient();
-            Container.BindInterfacesAndSelfTo<MeleeAttackBehaviour>().AsTransient();
+            Container.BindInterfacesTo<MovementBehaviour>().AsCached();
+            Container.BindInterfacesTo<MeleeAttackBehaviour>().AsCached();
 
             //IsometricObject, StaticEntity, Player
             Container.BindInstances(objectSettings, entityReferences, playerReferences);

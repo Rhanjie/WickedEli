@@ -108,13 +108,13 @@ namespace Characters.Behaviours
         private void CalculateMovementDirection()
         {
             var direction = GetDirection();
-            if (ShouldBeFlipped(direction.x))
+            if (ShouldBeFlipped(direction))
                 Flip();
         }
 
-        private Vector2 GetDirection()
+        private float GetDirection()
         {
-            return new Vector2(_horizontalMove, _verticalMove).normalized;
+            return -_horizontalMove;
         }
     
         private bool ShouldBeFlipped(float horizontalDirection)
