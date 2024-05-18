@@ -4,13 +4,13 @@ using Random = UnityEngine.Random;
 
 namespace Terrain.Noises
 {
-    public class DiamondSquareNoise : INoise
+    [CreateAssetMenu(fileName = "DiamondSquareNoise", menuName = "Generators/DiamondSquareNoise")]
+    public class DiamondSquareNoise : ScriptableObject, INoise
     {
         private int size;
     
-        private float range = 0.5f;
-
-        private int randomStart = 16;
+        public float range = 0.5f;
+        public int randomStart = 16;
 
         private float[,] noise;
 
