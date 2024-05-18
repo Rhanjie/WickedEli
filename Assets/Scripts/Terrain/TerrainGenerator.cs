@@ -4,7 +4,6 @@ using Terrain.Installers;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Zenject;
-using Random = UnityEngine.Random;
 
 namespace Terrain
 {
@@ -57,6 +56,9 @@ namespace Terrain
                     tilemap.SetTile(position, tileData.Value.GetRandomVariant());
                     tilemap.SetTileFlags(position, TileFlags.None);
                     tilemap.SetColor(position, color);
+
+                    _mapData[y, x] = tileData.Value;
+                    _mapData[y, x].color = color;
                 }
             }
         }

@@ -22,6 +22,21 @@ namespace Terrain
             
             CenterTerrain();
         }
+        
+        public TileData GetTileAtCell(int x, int y)
+        {
+            if (IsOutsideMap(x, y))
+                throw new ArgumentOutOfRangeException();
+            
+            return _mapData[y, x];
+        }
+
+        public TileData GetTileAtPosition(Vector3 position)
+        {
+            var cell = Tilemap.WorldToCell(position);
+            
+            return GetTileAtCell(cell.x, cell.y);
+        }
 
         public void SetTileAtCell(int x, int y, TileData data)
         {
@@ -30,13 +45,12 @@ namespace Terrain
             
             _mapData[y, x] = data;
         }
-
-        public TileData GetTile(int x, int y)
+        
+        public void SetTileAtPosition(Vector3 position, TileData data)
         {
-            if (IsOutsideMap(x, y))
-                throw new ArgumentOutOfRangeException();
+            var cell = Tilemap.WorldToCell(position);
             
-            return _mapData[y, x];
+            SetTileAtCell(cell.x, cell.y, data);
         }
 
         private bool IsOutsideMap(int x, int y)
