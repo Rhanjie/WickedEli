@@ -32,23 +32,23 @@ MonoBehaviour:
       serializedVersion: 2
       rgba: 0
     variants:
-    - {fileID: 11400000, guid: c0330bca674afbf47b2664a57ab79849, type: 2}
-    - {fileID: 11400000, guid: c0330bca674afbf47b2664a57ab79849, type: 2}
+    - {fileID: 11400000, guid: 6197473dce1477d42be4b9e2a2d757ca, type: 2}
+    - {fileID: 11400000, guid: eadfceaccc9b559478f4c2302736676f, type: 2}
     walkable: 0
     hurtable: 0
   - indices: {x: 11, y: 13}
     color:
       serializedVersion: 2
-      rgba: 6291427
+      rgba: 0
     variants:
-    - {fileID: 11400000, guid: c0330bca674afbf47b2664a57ab79849, type: 2}
+    - {fileID: 11400000, guid: aa9a7ad28e9eccb47a764ee5065ef83e, type: 2}
     walkable: 0
     hurtable: 0
   - indices: {x: 14, y: 50}
     color:
       serializedVersion: 2
-      rgba: 8835583
+      rgba: 0
     variants:
-    - {fileID: 11400000, guid: c0330bca674afbf47b2664a57ab79849, type: 2}
+    - {fileID: 11400000, guid: 240f6cbcb32222548be11429a5db1de8, type: 2}
     walkable: 0
     hurtable: 0
