@@ -74,13 +74,5 @@ namespace Characters
         
             gameObject.SetActive(false);
         }
-    
-        private void OnDrawGizmos()
-        {
-            var position = EntityReferences.body.transform.position;
-            var size = new Vector2(20, 13);
-        
-            Gizmos.DrawWireCube(position, size);
-        }
     }
 }

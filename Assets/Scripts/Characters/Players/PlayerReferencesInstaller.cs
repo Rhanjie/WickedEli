@@ -1,3 +1,5 @@
+using Characters.Behaviours;
+using Characters.Interfaces;
 using Terrain;
 using UnityEngine;
 using Zenject;
@@ -12,8 +14,15 @@ namespace Characters.Players
 
         public override void InstallBindings()
         {
-            Container.Bind<Renderer>().FromComponentsInChildren();
+            //IsometricObject
+            Container.Bind<Renderer>().FromComponentsInChildren().AsTransient();
+            Container.Bind<Transform>().FromComponentSibling().AsCached();
 
+            //LivingEntity
+            Container.Bind<IMovementBehaviour>().To<MovementBehaviour>().AsTransient();
+            Container.Bind<IAttackBehaviour>().To<MeleeAttackBehaviour>().AsTransient();
+
+            //IsometricObject, StaticEntity, Player
             Container.BindInstances(objectSettings, entityReferences, playerReferences);
             Container.BindInterfacesAndSelfTo<Player>().AsSingle();
         }

@@ -1,4 +1,3 @@
-using Characters.Behaviours;
 using Characters.Interfaces;
 using UnityEngine;
 using Zenject;
