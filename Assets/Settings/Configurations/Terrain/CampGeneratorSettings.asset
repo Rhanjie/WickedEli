@@ -30,21 +30,21 @@ MonoBehaviour:
   - indices: {x: 0, y: 10}
     color:
       serializedVersion: 2
-      rgba: 0
+      rgba: 4289527735
     variants:
     - {fileID: 11400000, guid: 6197473dce1477d42be4b9e2a2d757ca, type: 2}
     - {fileID: 11400000, guid: eadfceaccc9b559478f4c2302736676f, type: 2}
-    walkable: 0
+    walkable: 1
     hurtable: 0
     damage: 0
     friction: 30
   - indices: {x: 11, y: 13}
     color:
       serializedVersion: 2
-      rgba: 0
+      rgba: 9427711
     variants:
     - {fileID: 11400000, guid: aa9a7ad28e9eccb47a764ee5065ef83e, type: 2}
-    walkable: 0
+    walkable: 1
     hurtable: 1
     damage: 0
     friction: 0
