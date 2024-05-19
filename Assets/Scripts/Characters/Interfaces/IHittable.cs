@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Characters.Interfaces
 {
-    interface IHittable
+    public interface IHittable
     {
         public Transform Handler { get; }
 

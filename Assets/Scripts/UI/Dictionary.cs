@@ -6,17 +6,11 @@ namespace UI
 {
     public class Dictionary : MonoBehaviour
     {
-        [SerializeField] 
-        private Text titleObject;
-        
-        [SerializeField] 
-        private TextAnimator textAnimator;
-    
-        [SerializeField] 
-        private CanvasGroup canvasGroup;
+        [SerializeField] private Text titleObject;
+        [SerializeField] private TextAnimator textAnimator;
+        [SerializeField] private CanvasGroup canvasGroup;
 
-        [SerializeField] 
-        private float transitionTime;
+        [SerializeField] private float transitionTime;
 
         public void Open(string title, string content)
         {
@@ -24,10 +18,7 @@ namespace UI
 
             canvasGroup.DOFade(1, transitionTime)
                 .OnStart(() => textAnimator.Init(content))
-                .OnComplete(() => 
-                { 
-                    canvasGroup.interactable = canvasGroup.blocksRaycasts = true;
-                });
+                .OnComplete(() => { canvasGroup.interactable = canvasGroup.blocksRaycasts = true; });
         }
 
         public void Close()

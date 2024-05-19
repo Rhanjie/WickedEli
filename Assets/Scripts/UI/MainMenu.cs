@@ -6,17 +6,13 @@ namespace UI
 {
     public class MainMenu : MonoBehaviour
     {
-        [SerializeField]
-        private CanvasGroup mainGroup;
-    
-        [SerializeField]
-        private CanvasGroup settingsGroup;
-    
-        [SerializeField]
-        private AudioSource audioSource;
-    
-        [SerializeField]
-        private Slider volumeSlider;
+        [SerializeField] private CanvasGroup mainGroup;
+
+        [SerializeField] private CanvasGroup settingsGroup;
+
+        [SerializeField] private AudioSource audioSource;
+
+        [SerializeField] private Slider volumeSlider;
 
         private void Start()
         {
@@ -27,7 +23,7 @@ namespace UI
         {
             SceneManager.LoadScene("Gameplay");
         }
-    
+
         public void GoToSettings()
         {
             ToggleCanvasGroup(mainGroup, false);
@@ -43,7 +39,7 @@ namespace UI
         public void SetVolume(float value)
         {
             AudioListener.volume = value;
-        
+
             audioSource.Play();
         }
 

@@ -1,6 +1,6 @@
 namespace Characters.Interfaces
 {
-    interface IDestroyable
+    public interface IDestroyable
     {
         public void Destroy();
     }

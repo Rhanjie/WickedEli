@@ -1,4 +1,4 @@
-﻿namespace Terrain.Noises
+﻿namespace Map.Noises
 {
     public interface INoise
     {

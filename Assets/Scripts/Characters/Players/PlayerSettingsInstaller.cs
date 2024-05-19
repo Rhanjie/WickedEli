@@ -9,10 +9,10 @@ namespace Characters.Players
     {
         [SerializeField] private StaticEntity.Settings characterSettings;
         [SerializeField] private Player.Settings playerSettings;
-    
+
         [SerializeField] private MovementBehaviour.Settings movementSettings;
         [SerializeField] private MeleeAttackBehaviour.Settings attackSettings;
-    
+
         public override void InstallBindings()
         {
             Container.BindInstances(characterSettings, playerSettings);

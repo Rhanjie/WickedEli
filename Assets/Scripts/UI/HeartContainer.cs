@@ -7,14 +7,14 @@ namespace UI
 {
     public class HeartContainer : MonoBehaviour
     {
-        [SerializeField]
-        private Heart heartPrefab;
-    
-        private readonly List<Heart> _hearts = new();
+        [SerializeField] private Heart heartPrefab;
 
         public float heartWidth;
 
+        private readonly List<Heart> _hearts = new();
+
         private int _currentTestAmount = 1;
+
         public void Update()
         {
             //TODO: Only test
@@ -38,19 +38,19 @@ namespace UI
                 var lastHeart = _hearts.Count == 0
                     ? SpawnNewHeart()
                     : _hearts.Last();
-            
+
                 if (lastHeart == null || lastHeart.CurrentPieces == Heart.MaxPieces)
                     lastHeart = SpawnNewHeart();
 
                 health = lastHeart.AddPieces(health);
             }
         }
-    
+
         public void RemoveHealth(int health)
         {
             if (health <= 0 || _hearts.Count == 0)
                 return;
-        
+
             while (health > 0)
             {
                 var lastHeart = _hearts.Last();
@@ -74,12 +74,12 @@ namespace UI
             _hearts.Add(heart);
             return heart;
         }
-    
+
         private void DestroyHeart(Heart heart)
         {
             if (heart == null)
                 return;
-        
+
             _hearts.Remove(heart);
             Destroy(heart.gameObject);
         }
