@@ -16,9 +16,15 @@ namespace Map
         public Color32 color;
         public List<TileBase> variants;
 
-        [Title("Settings")] public bool walkable;
-
+        [Title("Settings")]
+        public bool walkable;
+        
         public bool hurtable;
+        [ShowIf("hurtable")]
+        public int damage;
+
+        [Range(0, 100)]
+        public float friction;
 
         public int CompareTo(object obj)
         {

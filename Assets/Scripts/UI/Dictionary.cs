@@ -7,9 +7,7 @@ namespace UI
     public class Dictionary : MonoBehaviour
     {
         [SerializeField] private Text titleObject;
-
         [SerializeField] private TextAnimator textAnimator;
-
         [SerializeField] private CanvasGroup canvasGroup;
 
         [SerializeField] private float transitionTime;

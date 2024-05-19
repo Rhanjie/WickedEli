@@ -1,5 +1,6 @@
 ﻿using System;
 using Characters.Interfaces;
+using Map;
 using UnityEngine;
 using Zenject;
 
@@ -9,10 +10,12 @@ namespace Characters.Behaviours
     {
         private Transform _handler;
 
-        private float _horizontalMove;
         private References _references;
         private Settings _settings;
+        
+        private float _horizontalMove;
         private float _verticalMove;
+        
         public Vector2 Position { get; private set; }
         public bool IsFacingRight { get; private set; }
 
@@ -30,6 +33,7 @@ namespace Characters.Behaviours
         }
 
         public float Velocity { get; protected set; }
+        public TileData TileBelow { get; set; }
 
         public void Move(Vector2 delta)
         {
@@ -71,11 +75,12 @@ namespace Characters.Behaviours
                 return Vector2.zero;
 
             var physics = _references.physics;
+            var friction = TileBelow.friction;
 
-            var frictionX = Mathf.Min(Mathf.Abs(physics.velocity.x), Mathf.Abs(_settings.friction));
+            var frictionX = Mathf.Min(Mathf.Abs(physics.velocity.x), Mathf.Abs(friction));
             frictionX *= -Mathf.Sign(physics.velocity.x);
 
-            var frictionY = Mathf.Min(Mathf.Abs(physics.velocity.y), Mathf.Abs(_settings.friction));
+            var frictionY = Mathf.Min(Mathf.Abs(physics.velocity.y), Mathf.Abs(friction));
             frictionY *= -Mathf.Sign(physics.velocity.y);
 
             return new Vector2(frictionX, frictionY);
@@ -121,7 +126,6 @@ namespace Characters.Behaviours
         {
             public float speed;
             public float acceleration;
-            public float friction;
         }
 
         [Serializable]

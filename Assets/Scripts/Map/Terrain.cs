@@ -26,7 +26,7 @@ namespace Map
         public TileData GetTileAtCell(int x, int y)
         {
             if (IsOutsideMap(x, y))
-                throw new ArgumentOutOfRangeException();
+                return default;
 
             return _mapData[y, x];
         }
