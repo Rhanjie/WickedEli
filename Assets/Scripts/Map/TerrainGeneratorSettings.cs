@@ -10,9 +10,11 @@ namespace Map
     public class TerrainGeneratorSettings : SerializedScriptableObject
     {
         public int size;
-        public List<TileData> tiles;
-
         [OdinSerialize] public INoise Noise;
+        
+        [Space]
+        
+        public List<TileData> tiles;
 
         private void OnValidate()
         {

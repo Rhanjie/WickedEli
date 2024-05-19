@@ -12,6 +12,7 @@ namespace Map
             Container.BindInstance(settings);
 
             Container.Bind<Tilemap>().FromComponentInChildren().AsSingle();
+            Container.Bind<TilemapCollider2D>().FromComponentInChildren().AsSingle();
             Container.Bind<TerrainGenerator>().FromNewComponentOnRoot().AsSingle();
         }
     }

@@ -50,7 +50,7 @@ namespace Characters
             MovementBehaviour.TileBelow = GetTileBelow();
             
             if (MovementBehaviour.TileBelow.hurtable)
-                Hit (MovementBehaviour.TileBelow.damage);
+                Hit(MovementBehaviour.TileBelow.damage);
         }
 
         private TileData GetTileBelow()

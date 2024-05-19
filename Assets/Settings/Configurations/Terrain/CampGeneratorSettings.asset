@@ -44,7 +44,7 @@ MonoBehaviour:
       rgba: 6291427
     variants:
     - {fileID: 11400000, guid: c0330bca674afbf47b2664a57ab79849, type: 2}
-    walkable: 1
+    walkable: 0
     hurtable: 1
     damage: 0
     friction: 0
