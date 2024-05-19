@@ -1,6 +1,5 @@
 using Characters.Behaviours;
-using Characters.Interfaces;
-using Terrain;
+using Map;
 using UnityEngine;
 using Zenject;
 
@@ -11,7 +10,7 @@ namespace Characters.Players
         [SerializeField] private IsometricObject.References objectSettings;
         [SerializeField] private StaticEntity.References entityReferences;
         [SerializeField] private Player.References playerReferences;
-        
+
         [SerializeField] private MovementBehaviour.References movementReferences;
         [SerializeField] private MeleeAttackBehaviour.References attackReferences;
 

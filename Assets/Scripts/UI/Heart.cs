@@ -5,15 +5,13 @@ namespace UI
 {
     public class Heart : MonoBehaviour
     {
-        [SerializeField]
-        private Image background;
-    
-        [SerializeField]
-        private Image image;
-
-        public int CurrentPieces { get; private set; } = 0;
-
         public const int MaxPieces = 4;
+
+        [SerializeField] private Image background;
+
+        [SerializeField] private Image image;
+
+        public int CurrentPieces { get; private set; }
 
         public void Init(Vector2 position)
         {
@@ -35,16 +33,16 @@ namespace UI
                 CurrentPieces += remaining;
                 remaining = 0;
             }
-        
+
             UpdateImage();
             return remaining;
         }
-    
+
         public int RemovePieces(int pieces)
         {
             //2 - 10 = -8 remaining
             //2 - 3 = -1
-        
+
             if (pieces <= 0)
                 return 0;
 
@@ -55,7 +53,10 @@ namespace UI
                 remaining = 0;
             }
 
-            else CurrentPieces = 0;
+            else
+            {
+                CurrentPieces = 0;
+            }
 
             UpdateImage();
             return -remaining;

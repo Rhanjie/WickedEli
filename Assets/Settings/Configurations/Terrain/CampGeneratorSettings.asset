@@ -36,6 +36,8 @@ MonoBehaviour:
     - {fileID: 11400000, guid: eadfceaccc9b559478f4c2302736676f, type: 2}
     walkable: 0
     hurtable: 0
+    damage: 0
+    friction: 30
   - indices: {x: 11, y: 13}
     color:
       serializedVersion: 2
@@ -43,7 +45,9 @@ MonoBehaviour:
     variants:
     - {fileID: 11400000, guid: aa9a7ad28e9eccb47a764ee5065ef83e, type: 2}
     walkable: 0
-    hurtable: 0
+    hurtable: 1
+    damage: 0
+    friction: 0
   - indices: {x: 14, y: 50}
     color:
       serializedVersion: 2
@@ -51,4 +55,6 @@ MonoBehaviour:
     variants:
     - {fileID: 11400000, guid: 240f6cbcb32222548be11429a5db1de8, type: 2}
     walkable: 0
-    hurtable: 0
+    hurtable: 1
+    damage: 0
+    friction: 10
