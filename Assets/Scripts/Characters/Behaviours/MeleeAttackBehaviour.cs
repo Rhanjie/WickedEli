@@ -76,18 +76,25 @@ namespace Characters.Behaviours
             
             _references.weapon.DOLocalRotate(newRotation, _settings.attackTime, RotateMode.FastBeyond360)
                 .OnStart(() => _references.slashEffect.emitting = true)
-                .SetEase(Ease.InCubic)
+                .SetEase(Ease.InQuint)
                 .SetRelative(true);
             
             _references.handPoint.DOLocalRotate(newRotation, _settings.attackTime, RotateMode.FastBeyond360)
                 .SetDelay(0.1f)
-                .SetEase(Ease.InCubic)
+                .SetEase(Ease.InQuint)
                 .SetRelative(true)
                 .OnComplete(() =>
                 {
                     _references.slashEffect.emitting = false;
-                    _isAnimation = false;
+                    Timing.RunCoroutine(LateOnAnimationCompleted(0.2f));
                 });
+        }
+
+        private IEnumerator<float> LateOnAnimationCompleted(float delay)
+        {
+            yield return Timing.WaitForSeconds(delay);
+            
+            _isAnimation = false;
         }
 
         private IEnumerator<float> StartHitting()
