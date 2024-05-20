@@ -73,21 +73,21 @@ namespace Characters.Behaviours
             var newRotation = new Vector3(0, 0, 180 * direction);
 
             Timing.RunCoroutine(StartHitting());
-
+            
+            _references.weapon.DOLocalRotate(newRotation, _settings.attackTime, RotateMode.FastBeyond360)
+                .OnStart(() => _references.slashEffect.emitting = true)
+                .SetEase(Ease.InCubic)
+                .SetRelative(true);
+            
             _references.handPoint.DOLocalRotate(newRotation, _settings.attackTime, RotateMode.FastBeyond360)
+                .SetDelay(0.1f)
                 .SetEase(Ease.InCubic)
                 .SetRelative(true)
-                .OnStart(() => _references.slashEffect.emitting = true)
                 .OnComplete(() =>
                 {
                     _references.slashEffect.emitting = false;
                     _isAnimation = false;
                 });
-
-            var newWeaponRotation = new Vector3(0, 0, 100 * direction);
-            _references.weapon.DOLocalRotate(newWeaponRotation, _settings.attackTime, RotateMode.FastBeyond360)
-                .SetEase(Ease.InCubic)
-                .SetRelative(true);
         }
 
         private IEnumerator<float> StartHitting()
