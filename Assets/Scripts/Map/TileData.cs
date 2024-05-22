@@ -14,7 +14,7 @@ namespace Map
         public Vector2 indices;
 
         public Color32 color;
-        public List<TileBase> variants;
+        public List<(TileBase tile, int chance)> variants;
 
         [Title("Settings")]
         public bool walkable;
@@ -38,10 +38,24 @@ namespace Map
         {
             if (variants == null || variants.Count == 0)
                 return null;
+            
+            var poolSize = 0;
+            for (var i = 0; i < variants.Count; i++)
+            {
+                poolSize += variants[i].chance;
+            }
 
-            var index = Random.Range(0, variants.Count);
+            var randomNumber = Random.Range(0, poolSize) + 1;
+            
+            var accumulatedProbability = 0;
+            for (var i = 0; i < variants.Count; i++)
+            {
+                accumulatedProbability += variants[i].chance;
+                if (randomNumber <= accumulatedProbability)
+                    return variants[i].tile;
+            }
 
-            return variants[index];
+            return null;
         }
 
         public int CompareTo(TileData compared)
