@@ -11,18 +11,20 @@ namespace Characters.Players
 {
     public class Player : LivingEntity
     {
-        private IInteractable _target;
-        protected References PlayerReferences;
-
         protected Settings PlayerSettings;
         
+        private IInteractable _target;
+        private Camera _mainCamera;
+        private HUD _hud;
+
         [Inject]
-        private void Construct(Settings settings, References references)
+        private void Construct(Settings settings, Camera mainCamera, HUD hud)
         {
             PlayerSettings = settings;
-            PlayerReferences = references;
+            _mainCamera = mainCamera;
+            _hud = hud;
 
-            OnHealthChanged += PlayerReferences.hud.UpdateHealth;
+            OnHealthChanged += _hud.UpdateHealth;
         }
 
         protected override void Update()
@@ -43,7 +45,7 @@ namespace Characters.Players
 
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             
-            OnHealthChanged -= PlayerReferences.hud.UpdateHealth;
+            OnHealthChanged -= _hud.UpdateHealth;
         }
 
         public void PerformMove(InputAction.CallbackContext context)
@@ -73,7 +75,7 @@ namespace Characters.Players
         private void ToggleInteraction(IInteractable interactable)
         {
             var foundInteractable = interactable != null;
-            PlayerReferences.hud.ToggleInteractionText(foundInteractable);
+            _hud.ToggleInteractionText(foundInteractable);
         }
 
         private void InteractionListener()
@@ -90,7 +92,7 @@ namespace Characters.Players
         private void UpdateTargetPosition()
         {
             var mousePosition = Mouse.current.position;
-            var convertedPosition = PlayerReferences.mainCamera.ScreenToWorldPoint(mousePosition.value);
+            var convertedPosition = _mainCamera.ScreenToWorldPoint(mousePosition.value);
 
             LookAt.transform.position = convertedPosition;
         }
@@ -99,13 +101,6 @@ namespace Characters.Players
         public new class Settings
         {
             public int test;
-        }
-
-        [Serializable]
-        public new class References
-        {
-            public HUD hud;
-            public Camera mainCamera;
         }
     }
 }

@@ -16,8 +16,7 @@ namespace Map
         protected virtual void Update()
         {
             foreach (var rendererComponent in _renderers)
-                rendererComponent.sortingOrder = -(int)(_references.attachedTo.position.y * IsometricRangePerYUnit) +
-                                                 _references.offset;
+                rendererComponent.sortingOrder = -(int)(_references.attachedTo.position.y * IsometricRangePerYUnit) + _references.offset;
         }
 
         [Inject]
