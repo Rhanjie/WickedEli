@@ -11,10 +11,21 @@ namespace Characters.Players
 {
     public class Player : LivingEntity
     {
-        private IInteractable _target;
-        protected References PlayerReferences;
-
         protected Settings PlayerSettings;
+        
+        private IInteractable _target;
+        private Camera _mainCamera;
+        private HUD _hud;
+
+        [Inject]
+        private void Construct(Settings settings, Camera mainCamera, HUD hud)
+        {
+            PlayerSettings = settings;
+            _mainCamera = mainCamera;
+            _hud = hud;
+
+            OnHealthChanged += _hud.UpdateHealth;
+        }
 
         protected override void Update()
         {
@@ -22,67 +33,19 @@ namespace Characters.Players
 
             UpdateTargetPosition();
 
-            InteractionChecker();
+            _target = FindInteractableObject();
+            ToggleInteraction(_target);
+            
             InteractionListener();
         }
 
-        private void OnDestroy()
+        public override void Destroy()
         {
-            OnHealthChanged -= PlayerReferences.hud.UpdateHealth;
-        }
+            //TODO: Gameover
 
-        [Inject]
-        private void Construct(Settings settings, References references)
-        {
-            PlayerSettings = settings;
-            PlayerReferences = references;
-
-            OnHealthChanged += PlayerReferences.hud.UpdateHealth;
-        }
-
-        private void InteractionChecker()
-        {
-            var position = EntityReferences.body.transform.position;
-            var size = new Vector2(3, 5);
-            var layerMask = LayerMask.GetMask("Interactable");
-
-            var results = Physics2D.OverlapBoxAll(position, size, layerMask).ToList();
-
-            var interactables = results
-                .Select(result => result.GetComponent<IInteractable>())
-                .ToArray();
-
-            if (interactables.Length == 0)
-            {
-                ClearInteraction();
-
-                return;
-            }
-
-            var foundTarget = interactables.First();
-            if (foundTarget == _target)
-                return;
-
-            _target = foundTarget;
-
-            PlayerReferences.hud.ToggleInteractionText(true);
-        }
-
-        private void ClearInteraction()
-        {
-            PlayerReferences.hud.ToggleInteractionText(false);
-            _target = null;
-        }
-
-        private void InteractionListener()
-        {
-            if (Keyboard.current.spaceKey.wasPressedThisFrame)
-            {
-                if (_target == null)
-                    return;
-
-                _target.Interact(this);
-            }
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            
+            OnHealthChanged -= _hud.UpdateHealth;
         }
 
         public void PerformMove(InputAction.CallbackContext context)
@@ -97,22 +60,39 @@ namespace Characters.Players
             AttackBehaviour.Attack();
         }
 
-        public override void Destroy()
+        private IInteractable FindInteractableObject()
         {
-            //TODO: Gameover
-
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            var position = EntityReferences.body.transform.position;
+            var layerMask = LayerMask.GetMask("Interactable");
+            
+            var target = Physics2D.OverlapCircle(position, 5f, layerMask);
+            if (target == null)
+                return null;
+            
+            return target.GetComponent<IInteractable>();
         }
 
-        public void OpenDictionary(string title, string content)
+        private void ToggleInteraction(IInteractable interactable)
         {
-            PlayerReferences.hud.OpenDictionary(title, content);
+            var foundInteractable = interactable != null;
+            _hud.ToggleInteractionText(foundInteractable);
+        }
+
+        private void InteractionListener()
+        {
+            if (Keyboard.current.spaceKey.wasPressedThisFrame)
+            {
+                if (_target == null)
+                    return;
+
+                _target.Interact(this);
+            }
         }
 
         private void UpdateTargetPosition()
         {
             var mousePosition = Mouse.current.position;
-            var convertedPosition = PlayerReferences.mainCamera.ScreenToWorldPoint(mousePosition.value);
+            var convertedPosition = _mainCamera.ScreenToWorldPoint(mousePosition.value);
 
             LookAt.transform.position = convertedPosition;
         }
@@ -121,13 +101,6 @@ namespace Characters.Players
         public new class Settings
         {
             public int test;
-        }
-
-        [Serializable]
-        public new class References
-        {
-            public HUD hud;
-            public Camera mainCamera;
         }
     }
 }

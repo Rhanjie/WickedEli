@@ -21,7 +21,8 @@ namespace UI
 
         public void ToggleInteractionText(bool value)
         {
-            interactionText.gameObject.SetActive(value);
+            if (interactionText.gameObject.activeSelf != value)
+                interactionText.gameObject.SetActive(value);
         }
 
         public void OpenDictionary(string title, string content)

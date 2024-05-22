@@ -1,5 +1,6 @@
 using Characters.Behaviours;
 using Map;
+using UI;
 using UnityEngine;
 using Zenject;
 
@@ -9,7 +10,6 @@ namespace Characters.Players
     {
         [SerializeField] private IsometricObject.References objectSettings;
         [SerializeField] private StaticEntity.References entityReferences;
-        [SerializeField] private Player.References playerReferences;
 
         [SerializeField] private MovementBehaviour.References movementReferences;
         [SerializeField] private MeleeAttackBehaviour.References attackReferences;
@@ -19,15 +19,17 @@ namespace Characters.Players
             //IsometricObject
             Container.Bind<Renderer>().FromComponentsInChildren().AsTransient();
             Container.Bind<Transform>().FromNewComponentOnRoot().AsCached();
-
+            Container.BindInstance(objectSettings);
+            
+            //StaticEntity
+            Container.BindInstance(entityReferences);
+            
             //LivingEntity
             Container.BindInterfacesTo<MovementBehaviour>().AsCached();
             Container.BindInterfacesTo<MeleeAttackBehaviour>().AsCached();
-
-            //IsometricObject, StaticEntity, Player
-            Container.BindInstances(objectSettings, entityReferences, playerReferences);
             Container.BindInstances(movementReferences, attackReferences);
-
+            
+            //Player
             Container.BindInterfacesAndSelfTo<Player>().AsSingle();
         }
     }
