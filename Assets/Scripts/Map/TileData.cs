@@ -8,13 +8,22 @@ using Random = UnityEngine.Random;
 namespace Map
 {
     [Serializable]
+    public struct TileVariant
+    {
+        [TableColumnWidth(100, Resizable = false)]
+        public int chance;
+        public TileBase tile;
+    }
+    
+    [Serializable]
     public struct TileData : IComparable
     {
         [Title("Parameters")] [MinMaxSlider(0, 1000, true)]
         public Vector2 indices;
 
         public Color32 color;
-        public List<(TileBase tile, int chance)> variants;
+        [ShowInInspector] [TableList]
+        public List<TileVariant> variants;
 
         [Title("Settings")]
         public bool walkable;
@@ -38,6 +47,9 @@ namespace Map
         {
             if (variants == null || variants.Count == 0)
                 return null;
+            
+            if (variants.Count == 1)
+                return variants[0].tile;
             
             var poolSize = 0;
             for (var i = 0; i < variants.Count; i++)
