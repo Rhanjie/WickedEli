@@ -15,22 +15,7 @@ namespace Characters.Players
         protected References PlayerReferences;
 
         protected Settings PlayerSettings;
-
-        protected override void Update()
-        {
-            base.Update();
-
-            UpdateTargetPosition();
-
-            InteractionChecker();
-            InteractionListener();
-        }
-
-        private void OnDestroy()
-        {
-            OnHealthChanged -= PlayerReferences.hud.UpdateHealth;
-        }
-
+        
         [Inject]
         private void Construct(Settings settings, References references)
         {
@@ -40,49 +25,25 @@ namespace Characters.Players
             OnHealthChanged += PlayerReferences.hud.UpdateHealth;
         }
 
-        private void InteractionChecker()
+        protected override void Update()
         {
-            var position = EntityReferences.body.transform.position;
-            var size = new Vector2(3, 5);
-            var layerMask = LayerMask.GetMask("Interactable");
+            base.Update();
 
-            var results = Physics2D.OverlapBoxAll(position, size, layerMask).ToList();
+            UpdateTargetPosition();
 
-            var interactables = results
-                .Select(result => result.GetComponent<IInteractable>())
-                .ToArray();
-
-            if (interactables.Length == 0)
-            {
-                ClearInteraction();
-
-                return;
-            }
-
-            var foundTarget = interactables.First();
-            if (foundTarget == _target)
-                return;
-
-            _target = foundTarget;
-
-            PlayerReferences.hud.ToggleInteractionText(true);
+            _target = FindInteractableObject();
+            ToggleInteraction(_target);
+            
+            InteractionListener();
         }
 
-        private void ClearInteraction()
+        public override void Destroy()
         {
-            PlayerReferences.hud.ToggleInteractionText(false);
-            _target = null;
-        }
+            //TODO: Gameover
 
-        private void InteractionListener()
-        {
-            if (Keyboard.current.spaceKey.wasPressedThisFrame)
-            {
-                if (_target == null)
-                    return;
-
-                _target.Interact(this);
-            }
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            
+            OnHealthChanged -= PlayerReferences.hud.UpdateHealth;
         }
 
         public void PerformMove(InputAction.CallbackContext context)
@@ -97,16 +58,33 @@ namespace Characters.Players
             AttackBehaviour.Attack();
         }
 
-        public override void Destroy()
+        private IInteractable FindInteractableObject()
         {
-            //TODO: Gameover
-
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            var position = EntityReferences.body.transform.position;
+            var layerMask = LayerMask.GetMask("Interactable");
+            
+            var target = Physics2D.OverlapCircle(position, 5f, layerMask);
+            if (target == null)
+                return null;
+            
+            return target.GetComponent<IInteractable>();
         }
 
-        public void OpenDictionary(string title, string content)
+        private void ToggleInteraction(IInteractable interactable)
         {
-            PlayerReferences.hud.OpenDictionary(title, content);
+            var foundInteractable = interactable != null;
+            PlayerReferences.hud.ToggleInteractionText(foundInteractable);
+        }
+
+        private void InteractionListener()
+        {
+            if (Keyboard.current.spaceKey.wasPressedThisFrame)
+            {
+                if (_target == null)
+                    return;
+
+                _target.Interact(this);
+            }
         }
 
         private void UpdateTargetPosition()
