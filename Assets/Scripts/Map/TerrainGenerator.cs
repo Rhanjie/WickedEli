@@ -45,11 +45,11 @@ namespace Map
                         throw new Exception($"Not found tile with index: {index}");
 
                     var position = new Vector3Int(x, y, 0);
-                    var color = tileData.Value.color;
+                    var color = tileData.Value.customColor;
                     if (color == Color.clear)
                         color = Color.white;
 
-                    var noiseColor = (tileData.Value.indices.x - noiseValue) * tileData.Value.heightColorAddition;
+                    var noiseColor = (Math.Abs(noiseValue) - tileData.Value.indices.x) * tileData.Value.heightColorAddition;
 
                     color.r = (byte)Mathf.Clamp(color.r - noiseColor, 0, 255);
                     color.g = (byte)Mathf.Clamp(color.g - noiseColor, 0, 255);
@@ -59,7 +59,7 @@ namespace Map
                     var tile = tileData.Value.GetRandomVariant();
                     var colliderType = tileData.Value.walkable
                         ? Tile.ColliderType.None
-                        : Tile.ColliderType.Sprite;
+                        : Tile.ColliderType.Grid;
 
                     _tilemap.SetTile(position, tile);
                     _tilemap.SetTileFlags(position, TileFlags.None);
@@ -67,10 +67,10 @@ namespace Map
                     _tilemap.SetColliderType(position, colliderType);
 
                     _mapData[y, x] = tileData.Value;
-                    _mapData[y, x].color = color;
+                    _mapData[y, x].customColor = color;
                 }
             }
-
+            
             _tilemapCollider.ProcessTilemapChanges();
         }
 
