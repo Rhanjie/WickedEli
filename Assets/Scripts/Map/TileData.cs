@@ -24,6 +24,9 @@ namespace Map
         public Color32 color;
         [ShowInInspector] [TableList]
         public List<TileVariant> variants;
+        
+        [Range(-10, 10)]
+        public float heightColorAddition;
 
         [Title("Settings")]
         public bool walkable;

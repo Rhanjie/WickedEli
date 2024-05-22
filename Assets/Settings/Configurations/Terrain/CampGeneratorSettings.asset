@@ -34,6 +34,7 @@ MonoBehaviour:
     variants:
     - chance: 0
       tile: {fileID: 11400000, guid: aa6ed8042bd00a94390539f723184c25, type: 2}
+    heightColorAddition: 5
     walkable: 0
     hurtable: 0
     damage: 0
@@ -49,6 +50,7 @@ MonoBehaviour:
       tile: {fileID: 11400000, guid: 9dd0295025851774a97343b80fba8db8, type: 2}
     - chance: 5
       tile: {fileID: 11400000, guid: 28faee53ceb47bd4dab0e27a582faa4f, type: 2}
+    heightColorAddition: 5
     walkable: 1
     hurtable: 0
     damage: 0
@@ -60,10 +62,11 @@ MonoBehaviour:
     variants:
     - chance: 0
       tile: {fileID: 11400000, guid: eecbef843375413409f260cda881868b, type: 2}
+    heightColorAddition: 4
     walkable: 1
     hurtable: 1
     damage: 0
-    friction: 0
+    friction: 1
   - indices: {x: 15, y: 50}
     color:
       serializedVersion: 2
@@ -71,6 +74,7 @@ MonoBehaviour:
     variants:
     - chance: 0
       tile: {fileID: 11400000, guid: eecbef843375413409f260cda881868b, type: 2}
+    heightColorAddition: 2
     walkable: 0
     hurtable: 1
     damage: 0

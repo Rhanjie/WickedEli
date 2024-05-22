@@ -49,7 +49,7 @@ namespace Map
                     if (color == Color.clear)
                         color = Color.white;
 
-                    var noiseColor = noiseValue * 5f;
+                    var noiseColor = noiseValue * tileData.Value.heightColorAddition;
 
                     color.r = (byte)Mathf.Clamp(color.r - noiseColor, 0, 255);
                     color.g = (byte)Mathf.Clamp(color.g - noiseColor, 0, 255);
