@@ -18,7 +18,7 @@ namespace Map
 
         private void OnValidate()
         {
-            tiles.Sort();
+            //tiles.Sort();
         }
 
         public TileData? TryGetFromIndex(int index)
