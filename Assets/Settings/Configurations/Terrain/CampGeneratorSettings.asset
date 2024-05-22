@@ -27,34 +27,59 @@ MonoBehaviour:
       Data: 0
   size: 64
   tiles:
-  - indices: {x: 0, y: 10}
-    color:
+  - name: Water
+    indices: {x: 0, y: 5}
+    customColor:
       serializedVersion: 2
       rgba: 0
+    heightColorAddition: 5
     variants:
-    - {fileID: 11400000, guid: 0ee0b8032e99fdf47a1409faa1d37ebf, type: 2}
-    - {fileID: 11400000, guid: c0330bca674afbf47b2664a57ab79849, type: 2}
+    - chance: 0
+      tile: {fileID: 11400000, guid: aa6ed8042bd00a94390539f723184c25, type: 2}
+    walkable: 0
+    hurtable: 0
+    damage: 0
+    friction: 0
+  - name: Grass
+    indices: {x: 6, y: 10}
+    customColor:
+      serializedVersion: 2
+      rgba: 0
+    heightColorAddition: 5
+    variants:
+    - chance: 60
+      tile: {fileID: 11400000, guid: d07f2813b61956b43ae1a427152db26b, type: 2}
+    - chance: 4
+      tile: {fileID: 11400000, guid: 9dd0295025851774a97343b80fba8db8, type: 2}
+    - chance: 5
+      tile: {fileID: 11400000, guid: 28faee53ceb47bd4dab0e27a582faa4f, type: 2}
     walkable: 1
     hurtable: 0
     damage: 0
     friction: 30
-  - indices: {x: 11, y: 13}
-    color:
+  - name: Dirt
+    indices: {x: 11, y: 14}
+    customColor:
       serializedVersion: 2
-      rgba: 6291427
+      rgba: 3178406
+    heightColorAddition: 4
     variants:
-    - {fileID: 11400000, guid: c0330bca674afbf47b2664a57ab79849, type: 2}
-    walkable: 0
+    - chance: 0
+      tile: {fileID: 11400000, guid: eecbef843375413409f260cda881868b, type: 2}
+    walkable: 1
     hurtable: 1
     damage: 0
     friction: 0
-  - indices: {x: 14, y: 50}
-    color:
+  - name: Stone
+    indices: {x: 15, y: 200}
+    customColor:
       serializedVersion: 2
-      rgba: 8835583
+      rgba: 6118750
+    heightColorAddition: 5
     variants:
-    - {fileID: 11400000, guid: c0330bca674afbf47b2664a57ab79849, type: 2}
+    - chance: 0
+      tile: {fileID: 11400000, guid: eecbef843375413409f260cda881868b, type: 2}
     walkable: 0
     hurtable: 1
     damage: 0
-    friction: 10
+    friction: 80

@@ -18,17 +18,27 @@ namespace Map
     [Serializable]
     public struct TileData : IComparable
     {
-        [Title("Parameters")] [MinMaxSlider(0, 1000, true)]
-        public Vector2 indices;
-
-        public Color32 color;
+        [Title("General")]
+        public string name;
+        [MinMaxSlider(0, 1000, true)]
+        public Vector2Int indices;
+        
+        [Title("Appearance")]
+        public Color32 customColor;
+        [Range(-20, 20)]
+        public float heightColorAddition;
+        
+        [Title("Tiles section")]
+        
         [ShowInInspector] [TableList]
         public List<TileVariant> variants;
 
         [Title("Settings")]
         public bool walkable;
-        
         public bool hurtable;
+        
+        [Space]
+        
         [ShowIf("hurtable")]
         public int damage;
 
