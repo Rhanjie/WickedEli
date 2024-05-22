@@ -19,13 +19,13 @@ namespace Map
     public struct TileData : IComparable
     {
         [Title("Parameters")] [MinMaxSlider(0, 1000, true)]
-        public Vector2 indices;
+        public Vector2Int indices;
 
         public Color32 color;
         [ShowInInspector] [TableList]
         public List<TileVariant> variants;
         
-        [Range(-10, 10)]
+        [Range(0, 20)]
         public float heightColorAddition;
 
         [Title("Settings")]
