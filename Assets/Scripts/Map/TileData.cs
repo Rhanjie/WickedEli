@@ -14,7 +14,7 @@ namespace Map
         public Vector2 indices;
 
         public Color32 color;
-        public List<Tile> variants;
+        public List<TileBase> variants;
 
         [Title("Settings")]
         public bool walkable;
@@ -34,7 +34,7 @@ namespace Map
             return indices.x.CompareTo(compared.indices.y);
         }
 
-        public Tile GetRandomVariant()
+        public TileBase GetRandomVariant()
         {
             if (variants == null || variants.Count == 0)
                 return null;
