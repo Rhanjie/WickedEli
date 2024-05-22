@@ -1,134 +1,139 @@
 ﻿using System;
 using Characters.Interfaces;
+using Map;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using Zenject;
 
-public class MovementBehaviour : MonoBehaviour, IMoveable
+namespace Characters.Behaviours
 {
-    public Vector2 Position { get; private set; }
-    public float Velocity { get; private set; }
-    public bool IsFacingRight { get; private set; }
-    
-    [SerializeField]
-    private Transform body;
-    
-    [SerializeField]
-    private Rigidbody2D physics;
-    
-    
-    private Camera _mainCamera;
-    private CharacterSettings _settings;
-    private Transform _lookAt;
-    
-    private float _horizontalMove;
-    private float _verticalMove;
-
-    public void UpdateSettings(CharacterSettings settings)
+    public class MovementBehaviour : IMovementBehaviour, IFixedTickable
     {
-        _settings = settings;
-    }
+        private Transform _handler;
 
-    private void FixedUpdate()
-    {
-        if (_lookAt != null)
-            CalculateTargetDirection();
+        private References _references;
+        private Settings _settings;
         
-        var movement = CalculateMovement();
-        ApplyForce(movement, ForceMode2D.Force);
-
-        var friction = CalculateFriction();
-        ApplyForce(friction, ForceMode2D.Impulse);
+        private float _horizontalMove;
+        private float _verticalMove;
         
-        Velocity = physics.velocity.magnitude;
-    }
-    
-    public void Move(Vector2 delta)
-    {
-        _horizontalMove = delta.x;
-        _verticalMove = delta.y;
-    }
+        public Vector2 Position { get; private set; }
+        public bool IsFacingRight { get; private set; }
 
-    public void Stop()
-    {
-        physics.velocity = Vector3.zero;
-        physics.angularVelocity = 0;
-
-        _horizontalMove = 0;
-        _verticalMove = 0;
-    }
-    
-    private Vector2 CalculateMovement()
-    {
-        if (_settings == null)
+        public void FixedTick()
         {
-            Debug.LogError("EH PROBLEM Z SETTIGSAMI");
+            var movement = CalculateMovement();
+            ApplyForce(movement, ForceMode2D.Force);
+
+            var friction = CalculateFriction();
+            ApplyForce(friction, ForceMode2D.Impulse);
+
+            CalculateMovementDirection();
+
+            Velocity = _references.physics.velocity.magnitude;
         }
-        
-        var targetSpeed = new Vector2(_horizontalMove, _verticalMove) * _settings.speed;
-        var speedDifference = targetSpeed - physics.velocity;
-        
-        var movement = speedDifference * _settings.acceleration;
-        return movement;
-    }
 
-    private Vector2 CalculateFriction()
-    {
-        if (Mathf.Abs(_horizontalMove) >= 0.01f)
-            return Vector2.zero;
+        public float Velocity { get; protected set; }
+        public TileData TileBelow { get; set; }
 
-        var frictionX = Mathf.Min(Mathf.Abs(physics.velocity.x), Mathf.Abs(_settings.friction));
-        frictionX *= -Mathf.Sign(physics.velocity.x);
-        
-        var frictionY = Mathf.Min(Mathf.Abs(physics.velocity.y), Mathf.Abs(_settings.friction));
-        frictionY *= -Mathf.Sign(physics.velocity.y);
-        
-        return new Vector2(frictionX, frictionY);
-    }
-    
-    public void ApplyForce(Vector2 force, ForceMode2D mode)
-    {
-        if (force == Vector2.zero)
-            return;
-        
-        physics.AddForce(force, mode);
-    }
-    
-    public void SetTarget(Transform target)
-    {
-        _lookAt = target;
-    }
+        public void Move(Vector2 delta)
+        {
+            delta = delta.normalized;
 
-    private void CalculateTargetDirection()
-    {
-        var direction = GetDirectionToMouse();
-        if (ShouldBeFlipped(direction.x))
-            Flip();
-    }
+            _horizontalMove = delta.x;
+            _verticalMove = delta.y;
+        }
 
-    private Vector2 GetDirectionToMouse()
-    {
-        var targetPosition = _lookAt.position;
-        var handPosition = transform.position;
-        var direction = new Vector2(
-            handPosition.x - targetPosition.x, 
-            handPosition.y - targetPosition.y
-        );
+        public void Stop()
+        {
+            _references.physics.velocity = Vector3.zero;
+            _references.physics.angularVelocity = 0;
 
-        return direction;
-    }
-    
-    private bool ShouldBeFlipped(float horizontalDirection)
-    {
-        return IsFacingRight && horizontalDirection < 0 || !IsFacingRight && horizontalDirection > 0;
-    }
-    
-    private void Flip()
-    {
-        IsFacingRight = !IsFacingRight;
+            _horizontalMove = 0;
+            _verticalMove = 0;
+        }
 
-        var localScale = body.localScale;
-        localScale.x *= -1f;
+        [Inject]
+        public void Construct(Transform handler, References references, Settings settings)
+        {
+            _handler = handler;
+            _references = references;
+            _settings = settings;
+        }
 
-        body.localScale = localScale;
+        private Vector2 CalculateMovement()
+        {
+            var targetSpeed = new Vector2(_horizontalMove, _verticalMove).normalized * _settings.speed;
+            var speedDifference = targetSpeed - _references.physics.velocity;
+
+            var movement = speedDifference * _settings.acceleration;
+            return movement;
+        }
+
+        private Vector2 CalculateFriction()
+        {
+            if (Mathf.Abs(_horizontalMove) >= 0.01f || Mathf.Abs(_verticalMove) >= 0.01f)
+                return Vector2.zero;
+
+            var physics = _references.physics;
+            var friction = TileBelow.friction;
+
+            var frictionX = Mathf.Min(Mathf.Abs(physics.velocity.x), Mathf.Abs(friction));
+            frictionX *= -Mathf.Sign(physics.velocity.x);
+
+            var frictionY = Mathf.Min(Mathf.Abs(physics.velocity.y), Mathf.Abs(friction));
+            frictionY *= -Mathf.Sign(physics.velocity.y);
+
+            return new Vector2(frictionX, frictionY);
+        }
+
+        public void ApplyForce(Vector2 force, ForceMode2D mode)
+        {
+            if (force == Vector2.zero)
+                return;
+
+            _references.physics.AddForce(force, mode);
+        }
+
+        private void CalculateMovementDirection()
+        {
+            var direction = GetDirection();
+            if (ShouldBeFlipped(direction))
+                Flip();
+        }
+
+        private float GetDirection()
+        {
+            return -_horizontalMove;
+        }
+
+        private bool ShouldBeFlipped(float horizontalDirection)
+        {
+            return (IsFacingRight && horizontalDirection < 0) || (!IsFacingRight && horizontalDirection > 0);
+        }
+
+        private void Flip()
+        {
+            IsFacingRight = !IsFacingRight;
+
+            var localScale = _references.body.localScale;
+            localScale.x *= -1f;
+
+            _references.body.localScale = localScale;
+        }
+
+        [Serializable]
+        public class Settings
+        {
+            public float speed;
+            public float acceleration;
+        }
+
+        [Serializable]
+        public class References
+        {
+            public Transform body;
+            public Rigidbody2D physics;
+            public Animator animator;
+        }
     }
 }

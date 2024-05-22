@@ -1,4 +1,7 @@
-interface IDestroyable
+namespace Characters.Interfaces
 {
-    public void Destroy();
+    public interface IDestroyable
+    {
+        public void Destroy();
+    }
 }
