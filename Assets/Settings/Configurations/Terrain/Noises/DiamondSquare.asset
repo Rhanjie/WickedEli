@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   seed: 10318
   randomStart: 16
-  startRandomRange: 5
+  startRandomRange: 4
   decreaseRandomRange: 1
   roughness: 2

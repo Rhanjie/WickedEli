@@ -27,22 +27,7 @@ MonoBehaviour:
       Data: 0
   size: 64
   tiles:
-  - indices: {x: 0, y: 8}
-    color:
-      serializedVersion: 2
-      rgba: 4294967295
-    variants:
-    - chance: 60
-      tile: {fileID: 11400000, guid: d07f2813b61956b43ae1a427152db26b, type: 2}
-    - chance: 20
-      tile: {fileID: 11400000, guid: 9dd0295025851774a97343b80fba8db8, type: 2}
-    - chance: 10
-      tile: {fileID: 11400000, guid: 28faee53ceb47bd4dab0e27a582faa4f, type: 2}
-    walkable: 1
-    hurtable: 0
-    damage: 0
-    friction: 30
-  - indices: {x: 9, y: 12}
+  - indices: {x: 0, y: 5}
     color:
       serializedVersion: 2
       rgba: 0
@@ -53,10 +38,25 @@ MonoBehaviour:
     hurtable: 0
     damage: 0
     friction: 0
+  - indices: {x: 6, y: 12}
+    color:
+      serializedVersion: 2
+      rgba: 4294967295
+    variants:
+    - chance: 60
+      tile: {fileID: 11400000, guid: d07f2813b61956b43ae1a427152db26b, type: 2}
+    - chance: 4
+      tile: {fileID: 11400000, guid: 9dd0295025851774a97343b80fba8db8, type: 2}
+    - chance: 5
+      tile: {fileID: 11400000, guid: 28faee53ceb47bd4dab0e27a582faa4f, type: 2}
+    walkable: 1
+    hurtable: 0
+    damage: 0
+    friction: 30
   - indices: {x: 13, y: 14}
     color:
       serializedVersion: 2
-      rgba: 680590
+      rgba: 3178406
     variants:
     - chance: 0
       tile: {fileID: 11400000, guid: eecbef843375413409f260cda881868b, type: 2}
