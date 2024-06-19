@@ -71,8 +71,6 @@ namespace Characters
         public override void Destroy()
         {
             //TODO: Effect
-
-            gameObject.SetActive(false);
         }
     }
 }

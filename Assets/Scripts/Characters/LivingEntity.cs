@@ -6,7 +6,7 @@ using Terrain = Map.Terrain;
 
 namespace Characters
 {
-    public abstract class LivingEntity : StaticEntity
+    public class LivingEntity : StaticEntity
     {
         protected IAttackBehaviour AttackBehaviour;
         protected IMovementBehaviour MovementBehaviour;

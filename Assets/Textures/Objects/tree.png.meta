@@ -104,11 +104,15 @@ TextureImporter:
         y: 0
         width: 120
         height: 155
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5280112, y: 0.028327428}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
+      physicsShape:
+      - - {x: -2, y: -75.5}
+        - {x: -2, y: -71.5}
+        - {x: 7, y: -71.5}
+        - {x: 7, y: -75.5}
       tessellationDetail: 0
       bones: []
       spriteID: 87d96741229b57c4ab647a5dd4c9a988
@@ -125,11 +129,15 @@ TextureImporter:
         y: 0
         width: 120
         height: 155
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.035}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
+      physicsShape:
+      - - {x: -3, y: -75.5}
+        - {x: -3, y: -70.5}
+        - {x: 3, y: -70.5}
+        - {x: 3, y: -75.5}
       tessellationDetail: 0
       bones: []
       spriteID: 16f287ebce15f7a40a7d6cc7639de5fc
@@ -146,11 +154,15 @@ TextureImporter:
         y: 0
         width: 120
         height: 155
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.48132578, y: 0.042800047}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
+      physicsShape:
+      - - {x: -7, y: -75.5}
+        - {x: -7, y: -67.5}
+        - {x: 2, y: -67.5}
+        - {x: 2, y: -75.5}
       tessellationDetail: 0
       bones: []
       spriteID: 3f055fce7301d1d4fa39e0c89d0904ad
@@ -167,11 +179,15 @@ TextureImporter:
         y: 0
         width: 120
         height: 155
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.49299723, y: 0.05362787}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
+      physicsShape:
+      - - {x: -5, y: -74.5}
+        - {x: -5, y: -65.5}
+        - {x: 4, y: -65.5}
+        - {x: 4, y: -74.5}
       tessellationDetail: 0
       bones: []
       spriteID: 6900fa56ab0f8c44b8701be8d7fb6d8c

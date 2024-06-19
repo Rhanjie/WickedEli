@@ -8,7 +8,7 @@ using Zenject;
 
 namespace Characters
 {
-    public abstract class StaticEntity : IsometricObject, IHittable, IDestroyable
+    public class StaticEntity : IsometricObject, IHittable, IDestroyable
     {
         private int _currentHealth;
         private bool _isInsensitive;
@@ -29,7 +29,10 @@ namespace Characters
             }
         }
 
-        public abstract void Destroy();
+        public virtual void Destroy()
+        {
+            gameObject.SetActive(false);
+        }
 
         public Transform Handler { get; protected set; }
 
