@@ -9,6 +9,8 @@ namespace Entities.Characters.Players
         
         public override void InstallBindings()
         {
+            base.InstallBindings();
+            
             Container.BindInstance(playerSettings);
         }
     }
