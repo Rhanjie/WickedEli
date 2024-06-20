@@ -110,12 +110,9 @@ namespace Map
             if (objectSettings == null)
                 return;
 
-            var entity = _factory.Create().transform;
+            var entity = _factory.Create(objectSettings).transform;
             entity.position = position;
             entity.parent = parent;
-
-            var context = entity.GetComponent<GameObjectContext>();
-            context.ScriptableObjectInstallers = new List<ScriptableObjectInstaller> { objectSettings };
         }
 
         public TileData[,] GetGeneratedTerrain()

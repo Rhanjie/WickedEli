@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using Entities.Characters.Interfaces;
+using Entities.Characters.Players;
 using Map;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -13,7 +15,33 @@ namespace Entities
     {
         public class Factory : PlaceholderFactory<StaticEntity>
         {
-            //TODO
+            public override StaticEntity Create()
+            {
+                
+                
+                return base.Create();
+            }
+        }
+        
+        public class CustomEnemyFactory : IFactory<StaticEntity>
+        {
+            [Inject]
+            private StaticEntity entityPrefab;
+            
+            private DiContainer _container;
+
+            public CustomEnemyFactory(DiContainer container)
+            {
+                _container = container;
+            }
+
+            public StaticEntity Create()
+            {
+                var context = entityPrefab.GetComponent<GameObjectContext>();
+                context.ScriptableObjectInstallers = new List<StaticEntitySettingsInstaller> { objectSettings };
+                
+                return _container.InstantiatePrefab(entityPrefab).GetComponent<StaticEntity>();
+            }
         }
         
         private int _currentHealth;
