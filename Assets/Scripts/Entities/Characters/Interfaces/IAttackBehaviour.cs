@@ -4,8 +4,8 @@ namespace Characters.Interfaces
 {
     public interface IAttackBehaviour
     {
-        void Attack();
+        public Transform LookAt { get; set; }
 
-        void SetTarget(Transform target);
+        void Attack();
     }
 }

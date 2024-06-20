@@ -2,6 +2,7 @@
 using Characters.Interfaces;
 using DG.Tweening;
 using Map;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 using Zenject;
@@ -82,9 +83,10 @@ namespace Characters
         public new class References
         {
             public SpriteRenderer body;
-            public Animator animator;
             public AudioSource audioSource;
-            public Transform lookAt;
+            
+            [Title("Optional")]
+            public Animator animator;
         }
     }
 }

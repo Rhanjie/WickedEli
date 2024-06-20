@@ -8,13 +8,18 @@ namespace Characters
         protected override void Update()
         {
             base.Update();
+            
+            TryToFindTarget();
 
-            FindTarget();
+            if (AttackBehaviour.LookAt == null)
+                MovementBehaviour.Stop();
 
-            if (LookAt != null)
-                FollowTarget();
-
-            else MovementBehaviour.Stop();
+            else FollowTarget();
+        }
+        
+        public override void Destroy()
+        {
+            //TODO: Effect
         }
 
         private void FollowTarget()
@@ -28,7 +33,7 @@ namespace Characters
         private Vector2 GetDirectionToTarget()
         {
             var position = transform.position;
-            var targetPosition = LookAt.transform.position;
+            var targetPosition = AttackBehaviour.LookAt.transform.position;
             var direction = new Vector2(targetPosition.x - position.x, targetPosition.y - position.y);
 
             return direction;
@@ -37,14 +42,14 @@ namespace Characters
         private bool IsTargetInRange()
         {
             var position = transform.position;
-            var targetPosition = LookAt.transform.position;
+            var targetPosition = AttackBehaviour.LookAt.transform.position;
 
             var distance = new Vector2(targetPosition.x - position.x, targetPosition.y - position.y).magnitude;
 
             return distance <= EntitySettings.range;
         }
 
-        private void FindTarget()
+        private void TryToFindTarget()
         {
             var position = EntityReferences.body.transform.position;
             var size = new Vector2(20, 13);
@@ -60,17 +65,12 @@ namespace Characters
                 return;
             }
 
-            LookAt = player.transform;
+            AttackBehaviour.LookAt = player.transform;
         }
 
         private void ResetTarget()
         {
-            LookAt = null;
-        }
-
-        public override void Destroy()
-        {
-            //TODO: Effect
+            AttackBehaviour.LookAt = null;
         }
     }
 }

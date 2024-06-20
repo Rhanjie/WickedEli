@@ -1,3 +1,4 @@
+using System;
 using Characters.Interfaces;
 using Map;
 using UnityEngine;
@@ -15,24 +16,12 @@ namespace Characters
 
         private static readonly int VelocityHash = Animator.StringToHash("Velocity");
 
-        public Transform LookAt
-        {
-            get => EntityReferences.lookAt;
-            set
-            {
-                EntityReferences.lookAt = value;
-                AttackBehaviour.SetTarget(value);
-            }
-        }
-
         [Inject]
         public void Construct(IMovementBehaviour movementBehaviour, IAttackBehaviour attackBehaviour, Terrain terrain)
         {
             MovementBehaviour = movementBehaviour;
             AttackBehaviour = attackBehaviour;
             TerrainHandler = terrain;
-
-            UpdateBehaviours();
         }
         
         protected override void Update()
@@ -56,11 +45,6 @@ namespace Characters
         private TileData GetTileBelow()
         {
             return TerrainHandler.GetTileAtPosition(transform.position);
-        }
-
-        private void UpdateBehaviours()
-        {
-            AttackBehaviour.SetTarget(EntityReferences.lookAt);
         }
     }
 }

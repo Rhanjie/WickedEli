@@ -10,16 +10,15 @@ namespace Characters.Behaviours
 {
     public class MeleeAttackBehaviour : IAttackBehaviour, ITickable
     {
-        private bool _canAttack = true;
-
         private Transform _handler;
-
-        private bool _isAnimation;
-
-        private Transform _lookAt;
         private References _references;
-        private bool _reversedAttack;
         private Settings _settings;
+        
+        private bool _canAttack = true;
+        private bool _isAnimation;
+        private bool _reversedAttack;
+
+        public Transform LookAt { get; set; }
 
         public void Attack()
         {
@@ -31,14 +30,9 @@ namespace Characters.Behaviours
             _reversedAttack = !_reversedAttack;
         }
 
-        public void SetTarget(Transform target)
-        {
-            _lookAt = target;
-        }
-
         public void Tick()
         {
-            if (!_isAnimation && _lookAt != null)
+            if (!_isAnimation && LookAt != null)
                 CalculateHandDirection();
         }
 
@@ -58,7 +52,7 @@ namespace Characters.Behaviours
 
         private Vector2 GetDirectionToTarget()
         {
-            var targetPosition = _lookAt.position;
+            var targetPosition = LookAt.position;
             var handPosition = _handler.position;
             var direction = new Vector2(handPosition.x - targetPosition.x, handPosition.y - targetPosition.y);
 

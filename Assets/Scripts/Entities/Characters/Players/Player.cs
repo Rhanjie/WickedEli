@@ -91,10 +91,13 @@ namespace Characters.Players
 
         private void UpdateTargetPosition()
         {
+            if (AttackBehaviour.LookAt == null)
+                return;
+            
             var mousePosition = Mouse.current.position;
             var convertedPosition = _mainCamera.ScreenToWorldPoint(mousePosition.value);
 
-            LookAt.transform.position = convertedPosition;
+            AttackBehaviour.LookAt.transform.position = convertedPosition;
         }
 
         [Serializable]

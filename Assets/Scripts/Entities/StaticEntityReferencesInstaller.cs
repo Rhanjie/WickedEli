@@ -1,19 +1,17 @@
+using Characters;
 using Characters.Behaviours;
+using Characters.Players;
 using Map;
-using UI;
 using UnityEngine;
 using Zenject;
 
-namespace Characters.Players
+namespace Entities
 {
-    public class PlayerReferencesInstaller : MonoInstaller
+    public class StaticEntityReferencesInstaller : MonoInstaller
     {
         [SerializeField] private IsometricObject.References objectSettings;
         [SerializeField] private StaticEntity.References entityReferences;
-
-        [SerializeField] private MovementBehaviour.References movementReferences;
-        [SerializeField] private MeleeAttackBehaviour.References attackReferences;
-
+    
         public override void InstallBindings()
         {
             //IsometricObject
@@ -23,14 +21,6 @@ namespace Characters.Players
             
             //StaticEntity
             Container.BindInstance(entityReferences);
-            
-            //LivingEntity
-            Container.BindInterfacesTo<MovementBehaviour>().AsCached();
-            Container.BindInterfacesTo<MeleeAttackBehaviour>().AsCached();
-            Container.BindInstances(movementReferences, attackReferences);
-            
-            //Player
-            Container.BindInterfacesAndSelfTo<Player>().AsSingle();
         }
     }
 }
