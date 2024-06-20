@@ -104,6 +104,9 @@ namespace Map
             _tilemap.SetTileFlags(position, TileFlags.None);
             _tilemap.SetColor(position, color);
             _tilemap.SetColliderType(position, colliderType);
+            
+            _mapData[position.y, position.x] = tileData;
+            _mapData[position.y, position.x].customColor = color;
         }
 
         private void GenerateObject(TileData tileData, Vector3 position, Transform parent)
