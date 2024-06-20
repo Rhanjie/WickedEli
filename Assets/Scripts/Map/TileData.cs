@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Entities.Characters.Players;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -8,11 +10,12 @@ using Random = UnityEngine.Random;
 namespace Map
 {
     [Serializable]
-    public struct TileVariant
+    public class Generable<T>
     {
         [TableColumnWidth(100, Resizable = false)]
-        public int chance;
-        public TileBase tile;
+        
+        [ShowInInspector] public int Chance { get; set; }
+        [ShowInInspector] public T Object { get; set; }
     }
     
     [Serializable]
@@ -31,7 +34,10 @@ namespace Map
         [Title("Tiles section")]
         
         [ShowInInspector] [TableList]
-        public List<TileVariant> variants;
+        public List<Generable<TileBase>> variants;
+        
+        [ShowInInspector] [TableList]
+        public List<Generable<StaticEntitySettingsInstaller>> objects;
 
         [Title("Settings")]
         public bool walkable;
@@ -53,31 +59,26 @@ namespace Map
             return indices.x.CompareTo(compared.indices.y);
         }
 
-        public TileBase GetRandomVariant()
+        public T GetRandomVariant<T>(List<Generable<T>> generables)
         {
-            if (variants == null || variants.Count == 0)
-                return null;
+            if (generables == null || generables.Count == 0)
+                return default;
             
-            if (variants.Count == 1)
-                return variants[0].tile;
+            if (generables.Count == 1)
+                return generables[0].Object;
             
-            var poolSize = 0;
-            for (var i = 0; i < variants.Count; i++)
-            {
-                poolSize += variants[i].chance;
-            }
-
+            var poolSize = generables.Sum(t => t.Chance);
             var randomNumber = Random.Range(0, poolSize) + 1;
             
             var accumulatedProbability = 0;
-            for (var i = 0; i < variants.Count; i++)
+            for (var i = 0; i < generables.Count; i++)
             {
-                accumulatedProbability += variants[i].chance;
+                accumulatedProbability += generables[i].Chance;
                 if (randomNumber <= accumulatedProbability)
-                    return variants[i].tile;
+                    return generables[i].Object;
             }
 
-            return null;
+            return default;
         }
 
         public int CompareTo(TileData compared)

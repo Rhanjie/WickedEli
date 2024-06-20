@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Entities.Characters.Players;
 using Map.Noises;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
