@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using DG.Tweening;
 using Entities.Characters.Interfaces;
 using Entities.Characters.Players;
@@ -8,6 +9,8 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 using Zenject;
+using Random = UnityEngine.Random;
+using Vector2 = UnityEngine.Vector2;
 
 namespace Entities
 {
@@ -74,7 +77,8 @@ namespace Entities
             if (EntitySettings.color != Color.clear)
                 EntityReferences.body.color = EntitySettings.color;
 
-            transform.localScale *= EntitySettings.scaleMultiplier;
+            var multiplier = EntitySettings.scaleMultiplier;
+            transform.localScale *= Random.Range(multiplier.x, multiplier.y);
         }
 
         private void HitAnimation()
@@ -91,15 +95,23 @@ namespace Entities
         [Serializable]
         public class Settings
         {
+            [Title("General")]
             public string title;
-            public int health;
-            public float insensitivityTime;
-            public float range;
-            
-            [Title("Appearance [Optional]")]
+            public string translationTag;
             public Sprite sprite;
+
+            [Title("Destroyable")]
+            public bool hittable = true;
+            [ShowIf("hittable")] public int health = 12; //3 hearts * 4 pieces
+            [ShowIf("hittable")] public float insensitivityTime = 2f;
+            
+            [Space]
+            public float visionRange = 10f;
+
+            [Title("Appearance [Optional]")]
             public Color color = Color.white;
-            public float scaleMultiplier = 1;
+            [MinMaxSlider(0.1f, 5f, true)]
+            public Vector2 scaleMultiplier = new(1, 1);
         }
 
         [Serializable]

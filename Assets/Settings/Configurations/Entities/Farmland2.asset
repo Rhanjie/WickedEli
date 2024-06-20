@@ -14,9 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   staticEntitySettings:
     title: Farmland
+    translationTag: 
+    sprite: {fileID: 697197559, guid: c4a5a310f5fb7744d9e833bf0dbdb7c5, type: 3}
+    hittable: 1
     health: 5
     insensitivityTime: 2
-    range: 0
-    sprite: {fileID: 697197559, guid: c4a5a310f5fb7744d9e833bf0dbdb7c5, type: 3}
+    visionRange: 0
     color: {r: 1, g: 1, b: 1, a: 1}
-    scaleMultiplier: 1
+    scaleMultiplier: {x: 0.86808044, y: 1}

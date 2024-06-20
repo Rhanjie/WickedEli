@@ -46,7 +46,7 @@ namespace Entities.Characters
 
             var distance = new Vector2(targetPosition.x - position.x, targetPosition.y - position.y).magnitude;
 
-            return distance <= EntitySettings.range;
+            return distance <= EntitySettings.visionRange;
         }
 
         private void TryToFindTarget()

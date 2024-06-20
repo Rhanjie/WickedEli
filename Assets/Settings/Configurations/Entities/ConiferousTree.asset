@@ -14,9 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   staticEntitySettings:
     title: Coniferous Tree
+    translationTag: 
+    sprite: {fileID: 1889908156, guid: 19f7712dd49798a4890761dbbc3340e9, type: 3}
+    hittable: 1
     health: 5
     insensitivityTime: 2
-    range: 0
-    sprite: {fileID: 1889908156, guid: 19f7712dd49798a4890761dbbc3340e9, type: 3}
+    visionRange: 0
     color: {r: 1, g: 1, b: 1, a: 1}
-    scaleMultiplier: 0.8
+    scaleMultiplier: {x: 0.79629636, y: 1.3888891}
