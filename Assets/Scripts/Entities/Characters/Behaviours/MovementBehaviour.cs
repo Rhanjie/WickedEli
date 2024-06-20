@@ -1,10 +1,10 @@
 ﻿using System;
-using Characters.Interfaces;
+using Entities.Characters.Interfaces;
 using Map;
 using UnityEngine;
 using Zenject;
 
-namespace Characters.Behaviours
+namespace Entities.Characters.Behaviours
 {
     public class MovementBehaviour : IMovementBehaviour, IFixedTickable
     {

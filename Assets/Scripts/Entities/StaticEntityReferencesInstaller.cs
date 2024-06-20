@@ -1,6 +1,3 @@
-using Characters;
-using Characters.Behaviours;
-using Characters.Players;
 using Map;
 using UnityEngine;
 using Zenject;

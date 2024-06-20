@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Characters.Interfaces;
 using DG.Tweening;
+using Entities.Characters.Interfaces;
 using MEC;
 using UnityEngine;
 using Zenject;
 
-namespace Characters.Behaviours
+namespace Entities.Characters.Behaviours
 {
     public class MeleeAttackBehaviour : IAttackBehaviour, ITickable
     {

@@ -1,13 +1,13 @@
 ﻿using System;
-using Characters.Interfaces;
 using DG.Tweening;
+using Entities.Characters.Interfaces;
 using Map;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 using Zenject;
 
-namespace Characters
+namespace Entities
 {
     public class StaticEntity : IsometricObject, IHittable, IDestroyable
     {

@@ -1,7 +1,7 @@
-using Characters.Players;
+using Entities.Characters.Players;
 using UnityEngine;
 
-namespace Characters
+namespace Entities.Characters
 {
     public class Character : LivingEntity
     {

@@ -1,4 +1,4 @@
-namespace Characters.Interfaces
+namespace Entities.Characters.Interfaces
 {
     public interface IJumpable
     {

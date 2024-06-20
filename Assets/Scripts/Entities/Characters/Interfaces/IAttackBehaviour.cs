@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Characters.Interfaces
+namespace Entities.Characters.Interfaces
 {
     public interface IAttackBehaviour
     {

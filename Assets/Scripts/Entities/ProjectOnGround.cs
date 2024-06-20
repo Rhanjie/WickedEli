@@ -2,20 +2,23 @@ using UnityEngine;
 
 //https://www.evozon.com/two-unity-tricks-isometric-games/
 
-[ExecuteInEditMode]
-public class ProjectOnGround : MonoBehaviour
+namespace Entities
 {
-    private Quaternion savedRotation;
-
-    private void OnRenderObject()
+    [ExecuteInEditMode]
+    public class ProjectOnGround : MonoBehaviour
     {
-        transform.rotation = savedRotation;
-    }
+        private Quaternion savedRotation;
 
-    private void OnWillRenderObject()
-    {
-        savedRotation = transform.rotation;
-        var eulers = savedRotation.eulerAngles;
-        transform.rotation = Quaternion.Euler(45f, eulers.y, eulers.z);
+        private void OnRenderObject()
+        {
+            transform.rotation = savedRotation;
+        }
+
+        private void OnWillRenderObject()
+        {
+            savedRotation = transform.rotation;
+            var eulers = savedRotation.eulerAngles;
+            transform.rotation = Quaternion.Euler(45f, eulers.y, eulers.z);
+        }
     }
 }

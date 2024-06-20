@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Interactable;
 using UI;
 using UnityEngine;
@@ -7,7 +6,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using Zenject;
 
-namespace Characters.Players
+namespace Entities.Characters.Players
 {
     public class Player : LivingEntity
     {

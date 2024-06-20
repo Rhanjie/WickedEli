@@ -1,5 +1,3 @@
-using Characters.Players;
-
 namespace Entities.Characters.Players
 {
     public class PlayerReferencesInstaller : LivingEntityReferencesInstaller

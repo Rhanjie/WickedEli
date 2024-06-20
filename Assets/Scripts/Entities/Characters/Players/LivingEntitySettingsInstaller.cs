@@ -1,7 +1,7 @@
-﻿using Characters.Behaviours;
+﻿using Entities.Characters.Behaviours;
 using UnityEngine;
 
-namespace Characters.Players
+namespace Entities.Characters.Players
 {
     [CreateAssetMenu(fileName = "LivingEntityInstaller", menuName = "Settings/LivingEntity")]
     public class LivingEntitySettingsInstaller : StaticEntitySettingsInstaller

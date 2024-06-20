@@ -1,11 +1,10 @@
-using System;
-using Characters.Interfaces;
+using Entities.Characters.Interfaces;
 using Map;
 using UnityEngine;
 using Zenject;
 using Terrain = Map.Terrain;
 
-namespace Characters
+namespace Entities
 {
     public class LivingEntity : StaticEntity
     {

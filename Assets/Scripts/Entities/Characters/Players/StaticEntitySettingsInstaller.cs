@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Zenject;
 
-namespace Characters.Players
+namespace Entities.Characters.Players
 {
     [CreateAssetMenu(fileName = "StaticEntityInstaller", menuName = "Settings/StaticEntity")]
     public class StaticEntitySettingsInstaller : ScriptableObjectInstaller<StaticEntitySettingsInstaller>

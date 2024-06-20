@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Characters.Players
+namespace Entities.Characters.Players
 {
     [CreateAssetMenu(fileName = "PlayerInstaller", menuName = "Settings/Player")]
     public class PlayerSettingsInstaller : LivingEntitySettingsInstaller

@@ -1,4 +1,4 @@
-using Characters.Behaviours;
+using Entities.Characters.Behaviours;
 using UnityEngine;
 
 namespace Entities
