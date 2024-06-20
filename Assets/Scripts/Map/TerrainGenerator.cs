@@ -14,18 +14,20 @@ namespace Map
     {
         [Inject] private Tilemap _tilemap;
         [Inject] private TilemapCollider2D _tilemapCollider;
+        [Inject] private StaticEntity _staticEntityPrefab;
 
         private TileData[,] _mapData;
         private TerrainGeneratorSettings _settings;
-        private StaticEntity.Factory _factory;
+        private DiContainer _diContainer;
         
         private const string GeneratedObjectsParentName = "Generated Objects";
 
         [Inject]
-        private void Construct(TerrainGeneratorSettings settings, StaticEntity.Factory factory)
+        private void Construct(TerrainGeneratorSettings settings, DiContainer diContainer, StaticEntity staticEntityPrefab)
         {
             _settings = settings;
-            _factory = factory;
+            _diContainer = diContainer;
+            _staticEntityPrefab = staticEntityPrefab;
         }
 
         [Button("Generate map")]
@@ -52,7 +54,7 @@ namespace Map
                         throw new Exception($"Not found tile with index: {index}");
 
                     var position = new Vector3Int(x, y, 0);
-                    var worldPosition = _tilemap.CellToWorld(position);
+                    var worldPosition = _tilemap.GetCellCenterWorld(position);
                     var color = CalculateColor(tileData.Value, noiseValue);
 
                     GenerateTile(tileData.Value, position, color);
@@ -109,10 +111,13 @@ namespace Map
             var objectSettings = tileData.GetRandomVariant(tileData.objects);
             if (objectSettings == null)
                 return;
+            
+            var context = _staticEntityPrefab.GetComponent<GameObjectContext>();
+            context.ScriptableObjectInstallers = new List<ScriptableObjectInstaller> { objectSettings };
 
-            var entity = _factory.Create(objectSettings).transform;
-            entity.position = position;
-            entity.parent = parent;
+            var entity = _diContainer.InstantiatePrefab(
+                _staticEntityPrefab, position, Quaternion.identity, parent
+            );
         }
 
         public TileData[,] GetGeneratedTerrain()
