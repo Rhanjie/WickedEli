@@ -19,6 +19,7 @@ MonoBehaviour:
     hittable: 0
     health: 5
     insensitivityTime: 2
+    hitSound: {fileID: 0}
     visionRange: 0
     color: {r: 1, g: 1, b: 1, a: 1}
     scaleMultiplier: {x: 0.925926, y: 1}

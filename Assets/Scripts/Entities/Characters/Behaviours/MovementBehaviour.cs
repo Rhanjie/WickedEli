@@ -126,6 +126,9 @@ namespace Entities.Characters.Behaviours
         {
             public float speed;
             public float acceleration;
+            
+            //TODO: Move to tile settings
+            public AudioClip stepSound;
         }
 
         [Serializable]

@@ -23,7 +23,8 @@ namespace Entities
         protected Settings EntitySettings;
 
         public UnityAction<int> OnHealthChanged;
-
+        
+        public Transform Handler { get; protected set; }
         public int CurrentHealth
         {
             get => _currentHealth;
@@ -40,11 +41,9 @@ namespace Entities
             gameObject.SetActive(false);
         }
 
-        public Transform Handler { get; protected set; }
-
         public void Hit(int damage)
         {
-            if (_isInsensitive)
+            if (_isInsensitive || !EntitySettings.hittable)
                 return;
 
             CurrentHealth -= damage;
@@ -84,9 +83,9 @@ namespace Entities
         private void HitAnimation()
         {
             if (EntityReferences.audioSource != null && !EntityReferences.audioSource.isPlaying)
-                EntityReferences.audioSource.Play();
+                EntityReferences.audioSource.PlayOneShot(EntitySettings.hitSound);
 
-            EntityReferences.body.DOColor(Color.black, EntitySettings.insensitivityTime)
+            EntityReferences.body.DOColor(Color.red, EntitySettings.insensitivityTime)
                 .SetLoops(2, LoopType.Yoyo)
                 .OnStart(() => _isInsensitive = true)
                 .OnComplete(() => _isInsensitive = false);
@@ -103,7 +102,8 @@ namespace Entities
             [Title("Destroyable")]
             public bool hittable = true;
             [ShowIf("hittable")] public int health = 12; //3 hearts * 4 pieces
-            [ShowIf("hittable")] public float insensitivityTime = 2f;
+            [ShowIf("hittable")] public float insensitivityTime = 1f;
+            [ShowIf("hittable")] public AudioClip hitSound;
             
             [Space]
             public float visionRange = 10f;

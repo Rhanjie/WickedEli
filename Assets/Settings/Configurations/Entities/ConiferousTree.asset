@@ -18,7 +18,8 @@ MonoBehaviour:
     sprite: {fileID: 1889908156, guid: 19f7712dd49798a4890761dbbc3340e9, type: 3}
     hittable: 1
     health: 5
-    insensitivityTime: 2
+    insensitivityTime: 0.5
+    hitSound: {fileID: 8300000, guid: 8237a58c47a4a5343ad2543be3a43b7e, type: 3}
     visionRange: 0
     color: {r: 1, g: 1, b: 1, a: 1}
     scaleMultiplier: {x: 0.79629636, y: 1.3888891}

@@ -100,15 +100,16 @@ namespace Entities.Characters.Behaviours
             yield return Timing.WaitForSeconds(_settings.attackTime / 1.5f);
 
             _references.slashEffect.emitting = true;
-            var results =
-                Physics2D.OverlapCircleAll(_references.hitPoint.position, _settings.range, _settings.layerMask);
+            var results = Physics2D.OverlapCircleAll(
+                _references.hitPoint.position, _settings.range, _settings.layerMask
+            );
 
             var hitAnything = results.Length > 0;
             PlaySound(hitAnything);
 
             foreach (var result in results)
             {
-                var hittable = result.transform.GetComponent<IHittable>();
+                var hittable = result.transform.GetComponentInParent<IHittable>();
                 if (hittable == null || hittable.Handler == _handler)
                     continue;
 
@@ -122,23 +123,22 @@ namespace Entities.Characters.Behaviours
 
         private void PlaySound(bool hitAnything)
         {
-            if (_references.audioSource == null)
+            if (_references.audioSource == null || hitAnything)
                 return;
 
-            _references.audioSource.PlayOneShot(hitAnything ? _settings.hitSound : _settings.missSound);
+            _references.audioSource.PlayOneShot(_settings.missSound);
         }
 
         [Serializable]
         public class Settings
         {
             //TODO: Move to Item class
-            public int damage;
-            public float range;
-            public float attackTime;
-            public float nextAttackDelay;
+            public int damage = 1;
+            public float range = 2;
+            public float attackTime = 0.5f;
+            public float nextAttackDelay = 0.25f;
 
             public LayerMask layerMask;
-            public AudioClip hitSound;
             public AudioClip missSound;
         }
 

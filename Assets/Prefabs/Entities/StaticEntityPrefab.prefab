@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2965792435086809103}
   - component: {fileID: 1162012190848741187}
   - component: {fileID: 4149853548381780301}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -289,7 +289,7 @@ GameObject:
   - component: {fileID: 6070541646405915723}
   - component: {fileID: 4802544823192089297}
   - component: {fileID: 9184873162433537491}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: StaticEntityPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -337,7 +337,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scriptableObjectInstallers:
-  - {fileID: 11400000, guid: 144480d29d7606b478fe61e921b64be3, type: 2}
+  - {fileID: 11400000, guid: ff18aa3060a25d64da86d87cfd9aa586, type: 2}
   _monoInstallers:
   - {fileID: 9184873162433537491}
   _installerPrefabs: []

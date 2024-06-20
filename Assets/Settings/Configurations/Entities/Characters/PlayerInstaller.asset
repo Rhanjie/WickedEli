@@ -13,22 +13,28 @@ MonoBehaviour:
   m_Name: PlayerInstaller
   m_EditorClassIdentifier: 
   staticEntitySettings:
-    title: 
+    title: Player
+    translationTag: PlayerName
+    sprite: {fileID: 1632368711, guid: c4a5a310f5fb7744d9e833bf0dbdb7c5, type: 3}
+    hittable: 1
     health: 10
-    insensitivityTime: 2
-    range: 5
+    insensitivityTime: 0.75
+    hitSound: {fileID: 8300000, guid: cb243e740f3865743964e18e4429b887, type: 3}
+    visionRange: 10
+    color: {r: 1, g: 1, b: 1, a: 1}
+    scaleMultiplier: {x: 1, y: 1}
   movementSettings:
     speed: 20
     acceleration: 20
+    stepSound: {fileID: 0}
   attackSettings:
-    damage: 5
+    damage: 1
     range: 2
     attackTime: 0.5
     nextAttackDelay: 0.25
     layerMask:
       serializedVersion: 2
       m_Bits: 64
-    hitSound: {fileID: 8300000, guid: 2ad8eeb3622977b449028c79103b2723, type: 3}
     missSound: {fileID: 8300000, guid: 91dd43d1eadad404f8275e5d221caaf8, type: 3}
   playerSettings:
     test: 123
