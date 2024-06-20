@@ -11,6 +11,11 @@ namespace Entities
 {
     public class StaticEntity : IsometricObject, IHittable, IDestroyable
     {
+        public class Factory : PlaceholderFactory<StaticEntity>
+        {
+            //TODO
+        }
+        
         private int _currentHealth;
         private bool _isInsensitive;
         

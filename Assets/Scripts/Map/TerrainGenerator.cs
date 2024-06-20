@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Entities;
 using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
@@ -11,18 +12,20 @@ namespace Map
 {
     public class TerrainGenerator : MonoBehaviour
     {
-        private TileData[,] _mapData;
-        
-        private TerrainGeneratorSettings _settings;
-        
         [Inject] private Tilemap _tilemap;
         [Inject] private TilemapCollider2D _tilemapCollider;
-        [Inject] private Transform _staticEntityPrefab;
+
+        private TileData[,] _mapData;
+        private TerrainGeneratorSettings _settings;
+        private StaticEntity.Factory _factory;
+        
+        private const string GeneratedObjectsParentName = "Generated Objects";
 
         [Inject]
-        private void Construct(TerrainGeneratorSettings settings)
+        private void Construct(TerrainGeneratorSettings settings, StaticEntity.Factory factory)
         {
             _settings = settings;
+            _factory = factory;
         }
 
         [Button("Generate map")]
@@ -30,6 +33,8 @@ namespace Map
         {
             if (!Application.isPlaying)
                 InjectDependenciesInEditMode();
+
+            var parent = GenerateObjectsParent();
 
             //TODO: Fix size
             var noiseData = _settings.Noise.Generate(6);
@@ -51,11 +56,23 @@ namespace Map
                     var color = CalculateColor(tileData.Value, noiseValue);
 
                     GenerateTile(tileData.Value, position, color);
-                    GenerateObject(tileData.Value, worldPosition);
+                    GenerateObject(tileData.Value, worldPosition, parent);
                 }
             }
             
             _tilemapCollider.ProcessTilemapChanges();
+        }
+        
+        private Transform GenerateObjectsParent()
+        {
+            var parent = transform.Find(GeneratedObjectsParentName);
+            if (parent != null)
+                DestroyImmediate(parent);
+                
+            parent = new GameObject(GeneratedObjectsParentName).transform;
+            parent.parent = transform;
+
+            return parent;
         }
 
         private Color CalculateColor(TileData tileData, float noiseValue)
@@ -87,15 +104,17 @@ namespace Map
             _tilemap.SetColliderType(position, colliderType);
         }
 
-        private void GenerateObject(TileData tileData, Vector3 position)
+        private void GenerateObject(TileData tileData, Vector3 position, Transform parent)
         {
             var objectSettings = tileData.GetRandomVariant(tileData.objects);
             if (objectSettings == null)
                 return;
 
-            var entity = Instantiate(_staticEntityPrefab, position, Quaternion.identity);
-            var context = entity.GetComponent<GameObjectContext>();
+            var entity = _factory.Create().transform;
+            entity.position = position;
+            entity.parent = parent;
 
+            var context = entity.GetComponent<GameObjectContext>();
             context.ScriptableObjectInstallers = new List<ScriptableObjectInstaller> { objectSettings };
         }
 
@@ -116,7 +135,7 @@ namespace Map
 
             const string staticEntityPrefabGuid = "5b501fee22682d0469142cd24662015d";
             var assetPath = AssetDatabase.GUIDToAssetPath(staticEntityPrefabGuid);
-            _staticEntityPrefab = AssetDatabase.LoadAssetAtPath<Transform>(assetPath);
+            //_staticEntityPrefab = AssetDatabase.LoadAssetAtPath<Transform>(assetPath);
 #endif
         }
     }
