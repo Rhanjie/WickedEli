@@ -57,6 +57,22 @@ namespace Entities
 
             Handler = transform;
             CurrentHealth = EntitySettings.health;
+            
+            Init();
+        }
+
+        public virtual void Init()
+        {
+            if (EntitySettings.color.a == 0)
+                EntitySettings.color.a = 255f;
+            
+            if (EntitySettings.sprite != null)
+                EntityReferences.body.sprite = EntitySettings.sprite;
+            
+            if (EntitySettings.color != Color.clear)
+                EntityReferences.body.color = EntitySettings.color;
+
+            transform.localScale *= EntitySettings.scaleMultiplier;
         }
 
         private void HitAnimation()
@@ -77,6 +93,11 @@ namespace Entities
             public int health;
             public float insensitivityTime;
             public float range;
+            
+            [Title("Appearance [Optional]")]
+            public Sprite sprite;
+            public Color color = Color.white;
+            public float scaleMultiplier = 1;
         }
 
         [Serializable]
