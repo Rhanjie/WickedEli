@@ -606,12 +606,8 @@ MonoBehaviour:
     offset: 0
   entityReferences:
     body: {fileID: 4049953656240933743}
-    animator: {fileID: 1356449264568908331}
     audioSource: {fileID: 7578155902178428243}
-    lookAt: {fileID: 1550727680177390006}
-  playerReferences:
-    hud: {fileID: 3491359489494137186}
-    mainCamera: {fileID: 0}
+    animator: {fileID: 1356449264568908331}
   movementReferences:
     body: {fileID: 7678435571045375785}
     physics: {fileID: 1547920222713669407}
@@ -622,6 +618,7 @@ MonoBehaviour:
     slashEffect: {fileID: 7977669838975612448}
     audioSource: {fileID: 7578155902178428243}
     hitPoint: {fileID: 4246844026310705007}
+    lookAt: {fileID: 1550727680177390006}
 --- !u!114 &7040617318775148013
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1378,17 +1375,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3491359489494137186 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2267880402417156995, guid: 767457d22badb1c4c9192825e3b3eb41, type: 3}
-  m_PrefabInstance: {fileID: 3389783082622630625}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6cc53f783ddc5bb4a9dc4a025bbaeb17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &7491762135088453972 stripped

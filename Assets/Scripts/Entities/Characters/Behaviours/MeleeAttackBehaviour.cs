@@ -42,6 +42,8 @@ namespace Entities.Characters.Behaviours
             _handler = handler;
             _references = references;
             _settings = settings;
+            
+            LookAt = references.lookAt;
         }
 
         private void CalculateHandDirection()
@@ -148,6 +150,7 @@ namespace Entities.Characters.Behaviours
             public TrailRenderer slashEffect;
             public AudioSource audioSource;
             public Transform hitPoint;
+            public Transform lookAt;
         }
     }
 }
