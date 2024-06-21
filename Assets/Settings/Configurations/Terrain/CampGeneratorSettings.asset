@@ -50,14 +50,14 @@ MonoBehaviour:
     variants:
     - <Chance>k__BackingField: 75
       <Object>k__BackingField: {fileID: 11400000, guid: d07f2813b61956b43ae1a427152db26b, type: 2}
-    - <Chance>k__BackingField: 5
+    - <Chance>k__BackingField: 2
       <Object>k__BackingField: {fileID: 11400000, guid: 9dd0295025851774a97343b80fba8db8, type: 2}
-    - <Chance>k__BackingField: 10
+    - <Chance>k__BackingField: 6
       <Object>k__BackingField: {fileID: 11400000, guid: 28faee53ceb47bd4dab0e27a582faa4f, type: 2}
     objects:
     - <Chance>k__BackingField: 85
       <Object>k__BackingField: {fileID: 0}
-    - <Chance>k__BackingField: 15
+    - <Chance>k__BackingField: 10
       <Object>k__BackingField: {fileID: 11400000, guid: ff18aa3060a25d64da86d87cfd9aa586, type: 2}
     - <Chance>k__BackingField: 5
       <Object>k__BackingField: {fileID: 11400000, guid: bd0e926effe6a3e4089a73b3207aaa7e, type: 2}
@@ -65,6 +65,10 @@ MonoBehaviour:
       <Object>k__BackingField: {fileID: 11400000, guid: 1c6526652b5b66e4886392936cc2b562, type: 2}
     - <Chance>k__BackingField: 2
       <Object>k__BackingField: {fileID: 11400000, guid: e50ec2d605ec1584494b1e075d500407, type: 2}
+    - <Chance>k__BackingField: 5
+      <Object>k__BackingField: {fileID: 11400000, guid: ffb72ba0aad1f0c42b72884e95d5af53, type: 2}
+    - <Chance>k__BackingField: 7
+      <Object>k__BackingField: {fileID: 11400000, guid: ef03f117cf956414289de912d042bb45, type: 2}
     walkable: 1
     hurtable: 0
     damage: 0
@@ -79,27 +83,27 @@ MonoBehaviour:
     - <Chance>k__BackingField: 0
       <Object>k__BackingField: {fileID: 11400000, guid: eecbef843375413409f260cda881868b, type: 2}
     objects:
-    - <Chance>k__BackingField: 20
-      <Object>k__BackingField: {fileID: 11400000, guid: ef03f117cf956414289de912d042bb45, type: 2}
+    - <Chance>k__BackingField: 10
+      <Object>k__BackingField: {fileID: 11400000, guid: 0ede261107e9a174485c72cf1fbd23c5, type: 2}
     - <Chance>k__BackingField: 80
       <Object>k__BackingField: {fileID: 0}
+    - <Chance>k__BackingField: 5
+      <Object>k__BackingField: {fileID: 11400000, guid: 1c6526652b5b66e4886392936cc2b562, type: 2}
     walkable: 1
-    hurtable: 1
+    hurtable: 0
     damage: 1
     friction: 0
   - name: Stone
     indices: {x: 15, y: 200}
     customColor:
       serializedVersion: 2
-      rgba: 6118750
+      rgba: 7303023
     heightColorAddition: 5
     variants:
     - <Chance>k__BackingField: 0
       <Object>k__BackingField: {fileID: 11400000, guid: eecbef843375413409f260cda881868b, type: 2}
-    objects:
-    - <Chance>k__BackingField: 0
-      <Object>k__BackingField: {fileID: 0}
+    objects: []
     walkable: 1
-    hurtable: 0
-    damage: 5
+    hurtable: 1
+    damage: 1
     friction: 100

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DiamondSquare
   m_EditorClassIdentifier: 
   seed: 10318
-  randomStart: 16
-  startRandomRange: 4
+  randomStart: 14
+  startRandomRange: 3.5
   decreaseRandomRange: 1
-  roughness: 2
+  roughness: 1.75
