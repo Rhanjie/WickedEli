@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3060320411028072850}
   - component: {fileID: 4433488118459436109}
-  - component: {fileID: 2965792435086809103}
   - component: {fileID: 1162012190848741187}
   - component: {fileID: 4149853548381780301}
   m_Layer: 6
@@ -87,55 +86,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!60 &2965792435086809103
-PolygonCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4287993623838075168}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.49299723, y: 0.05362787}
-    oldSize: {x: 12, y: 15.5}
-    newSize: {x: 15, y: 19.375}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -0.4159668, y: -0.5312317}
-      - {x: -0.4159668, y: 0.3687683}
-      - {x: 0.4840332, y: 0.3687683}
-      - {x: 0.4840332, y: -0.5312317}
-  m_UseDelaunayMesh: 0
 --- !u!61 &1162012190848741187
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -168,7 +118,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.059628963, y: 1.8985691}
+  m_Offset: {x: 0.059628963, y: 0.1}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.49299723, y: 0.05362787}
@@ -179,7 +129,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.2892141, y: 3.9953995}
+  m_Size: {x: 1, y: 0.8}
   m_EdgeRadius: 0
 --- !u!82 &4149853548381780301
 AudioSource:
