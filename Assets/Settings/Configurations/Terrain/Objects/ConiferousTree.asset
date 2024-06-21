@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 82a0c29fb829402fa71f49de813693e6, type: 3}
-  m_Name: Tree
+  m_Name: ConiferousTree
   m_EditorClassIdentifier: 
   staticEntitySettings:
-    title: Tree
+    title: Coniferous Tree
     translationTag: 
-    sprite: {fileID: 1640583642, guid: c455e14d4158404419d917544850a2e8, type: 3}
+    sprite: {fileID: 685975470, guid: 19f7712dd49798a4890761dbbc3340e9, type: 3}
     hittable: 1
-    health: 10
+    health: 5
     insensitivityTime: 0.35
     hitSound: {fileID: 8300000, guid: 8237a58c47a4a5343ad2543be3a43b7e, type: 3}
-    visionRange: 10
+    visionRange: 0
     color: {r: 1, g: 1, b: 1, a: 1}
-    scaleMultiplier: {x: 0.8173821, y: 1.0962232}
+    scaleMultiplier: {x: 0.79629636, y: 1}
