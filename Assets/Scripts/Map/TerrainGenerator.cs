@@ -35,11 +35,50 @@ namespace Map
         {
             if (!Application.isPlaying)
                 InjectDependenciesInEditMode();
+            
+            var noiseData = _settings.Noise.Generate((uint) _settings.size);
+            var indexData = ConvertNoiseToIndexData(noiseData);
+            
+            indexData = SmoothTheGround(indexData);
 
+            GenerateMapData(indexData);
+        }
+        
+        private float[,] ConvertNoiseToIndexData(float[,] noiseData)
+        {
+            for (var y = 0; y < noiseData.GetLength(0); y++)
+            {
+                for (var x = 0; x < noiseData.GetLength(1); x++)
+                {
+                    var noise = Math.Abs((int) Math.Round(noiseData[y, x]));
+                    var tileIndex = _settings.TryGetTileIndexFromNoiseValue(noise);
+                    
+                    if (!tileIndex.HasValue)
+                        throw new Exception($"Not found any tile for noise value: {noise}");
+
+                    noiseData[y, x] = tileIndex.Value;
+                }
+            }
+
+            return noiseData;
+        }
+
+        private float[,] SmoothTheGround(float[,] data)
+        {
+            for (var y = 0; y < data.GetLength(0); y++)
+            {
+                for (var x = 0; x < data.GetLength(1); x++)
+                {
+                    //TODO: Check every neighbor
+                }
+            }
+
+            return data;
+        }
+
+        private void GenerateMapData(float[,] noiseData)
+        {
             var parent = GenerateObjectsParent();
-
-            //TODO: Fix size
-            var noiseData = _settings.Noise.Generate(6);
             _mapData = new TileData[_settings.size, _settings.size];
             
             for (var y = 0; y < _mapData.GetLength(0); y++)
@@ -48,17 +87,19 @@ namespace Map
                 {
                     var noiseValue = noiseData[y, x];
                     var index = Math.Abs((int) Math.Round(noiseValue));
-                    var tileData = _settings.TryGetFromIndex(index);
+                    var tileIndex = _settings.TryGetTileIndexFromNoiseValue(index);
 
-                    if (!tileData.HasValue)
+                    if (!tileIndex.HasValue)
                         throw new Exception($"Not found tile with index: {index}");
 
+                    var tileData = _settings.tiles[tileIndex.Value];
+                    var color = CalculateColor(tileData, noiseValue);
+                    
                     var position = new Vector3Int(x, y, 0);
                     var worldPosition = _tilemap.GetCellCenterWorld(position);
-                    var color = CalculateColor(tileData.Value, noiseValue);
 
-                    GenerateTile(tileData.Value, position, color);
-                    GenerateObject(tileData.Value, worldPosition, parent);
+                    GenerateTile(tileData, position, color);
+                    GenerateObject(tileData, worldPosition, parent);
                 }
             }
             

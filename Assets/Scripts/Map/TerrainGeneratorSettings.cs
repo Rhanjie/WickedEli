@@ -22,11 +22,11 @@ namespace Map
             //tiles.Sort();
         }
 
-        public TileData? TryGetFromIndex(int index)
+        public int? TryGetTileIndexFromNoiseValue(int index)
         {
             for (var i = 0; i < tiles.Count; i++)
                 if (index >= tiles[i].indices.x && index <= tiles[i].indices.y)
-                    return tiles[i];
+                    return i;
 
             return null;
         }
