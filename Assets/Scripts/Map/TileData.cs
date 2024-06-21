@@ -13,9 +13,8 @@ namespace Map
     public class Generable<T>
     {
         [TableColumnWidth(100, Resizable = false)]
-        
-        [ShowInInspector] public int Chance { get; set; }
-        [ShowInInspector] public T Object { get; set; }
+        [field: SerializeField] public int Chance { get; set; }
+        [field: SerializeField] public T Object { get; set; }
     }
     
     [Serializable]
@@ -33,10 +32,10 @@ namespace Map
         
         [Title("Tiles section")]
         
-        [ShowInInspector] [TableList]
+        [SerializeField] [TableList]
         public List<Generable<TileBase>> variants;
         
-        [ShowInInspector] [TableList]
+        [SerializeField] [TableList]
         public List<Generable<StaticEntitySettingsInstaller>> objects;
 
         [Title("Settings")]
