@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using DG.Tweening;
 using Entities.Characters.Interfaces;
 using Map;
@@ -14,7 +15,8 @@ namespace Entities
     public class StaticEntity : IsometricObject, IHittable, IDestroyable
     {
         private int _currentHealth;
-        private bool _isInsensitive;
+        protected bool IsInsensitive;
+        protected bool IsDead;
         
         protected References EntityReferences;
         protected Settings EntitySettings;
@@ -31,25 +33,6 @@ namespace Entities
                 OnHealthChanged?.Invoke(difference);
                 _currentHealth = value;
             }
-        }
-
-        public virtual void Destroy()
-        {
-            PlaySound(true, EntitySettings.dieSound);
-            
-            gameObject.SetActive(false);
-        }
-
-        public void Hit(int damage)
-        {
-            if (_isInsensitive || !EntitySettings.hittable)
-                return;
-
-            CurrentHealth -= damage;
-            if (CurrentHealth <= 0)
-                Destroy();
-
-            else HitAnimation();
         }
 
         [Inject]
@@ -79,14 +62,38 @@ namespace Entities
             transform.localScale *= Random.Range(multiplier.x, multiplier.y);
         }
 
+        public void Hit(int damage)
+        {
+            if (IsDead || IsInsensitive || !EntitySettings.hittable)
+                return;
+
+            CurrentHealth -= damage;
+            if (CurrentHealth <= 0)
+                Destroy();
+
+            else HitAnimation();
+        }
+        
+        public virtual void Destroy()
+        {
+            IsDead = true;
+
+            EntityReferences.body.transform
+                .DORotate(new Vector3(0, 0, -80), 1f)
+                .OnStart(() => PlaySound(true, EntitySettings.dieSound))
+                .OnComplete(() => gameObject.SetActive(false));
+
+            EntityReferences.body.DOColor(Color.clear, 1f);
+        }
+
         private void HitAnimation()
         {
             PlaySound(true, EntitySettings.hitSound);
 
             EntityReferences.body.DOColor(Color.red, EntitySettings.insensitivityTime)
                 .SetLoops(2, LoopType.Yoyo)
-                .OnStart(() => _isInsensitive = true)
-                .OnComplete(() => _isInsensitive = false);
+                .OnStart(() => IsInsensitive = true)
+                .OnComplete(() => IsInsensitive = false);
         }
 
         public void PlaySound(bool force, AudioClip clip)

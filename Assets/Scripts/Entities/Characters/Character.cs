@@ -10,6 +10,9 @@ namespace Entities.Characters
         protected override void Update()
         {
             base.Update();
+
+            if (IsDead)
+                return;
             
             TryToFindTarget();
 
@@ -22,6 +25,8 @@ namespace Entities.Characters
         public override void Destroy()
         {
             base.Destroy();
+            
+            MovementBehaviour.Stop();
         }
 
         private void FollowTarget()
