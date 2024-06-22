@@ -25,17 +25,30 @@ namespace Map.Noises
 
         private Random randomEngine;
         private int size;
+        
+        private int ConvertToPowerOfTwo(int n)
+        {
+            var result = 0;
+            for (var i = n; i >= 1; i--)
+            {
+                if ((i & (i - 1)) == 0)
+                {
+                    result = i;
+                    break;
+                }
+            }
+            
+            return result * 2;
+        }
 
-        public float[,] Generate(uint sizePower)
+        public float[,] Generate(uint rawSize)
         {
             if (seed == 0)
                 seed = UnityEngine.Random.Range(0, 20000);
 
             randomEngine = new Random(seed);
-
-            //TODO: Change to universal solution
-            size = (int)Mathf.Pow(2, sizePower) + 1;
-
+            
+            size = ConvertToPowerOfTwo((int) rawSize) + 1;
             noise = new float[size, size];
 
             var randomRange = startRandomRange;

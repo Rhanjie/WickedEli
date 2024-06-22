@@ -1,5 +1,5 @@
-﻿using Characters;
-using Characters.Players;
+﻿using Entities;
+using Entities.Characters.Players;
 using UI;
 using UnityEngine;
 using Zenject;
