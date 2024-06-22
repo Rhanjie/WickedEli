@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -6,13 +7,13 @@ namespace UI
 {
     public class MainMenu : MonoBehaviour
     {
+        //TODO: Add injections and refactor
+        
         [SerializeField] private CanvasGroup mainGroup;
-
         [SerializeField] private CanvasGroup settingsGroup;
-
-        [SerializeField] private AudioSource audioSource;
-
         [SerializeField] private Slider volumeSlider;
+
+        private Coroutine _coroutine;
 
         private void Start()
         {
@@ -21,7 +22,17 @@ namespace UI
 
         public void StartGame()
         {
-            SceneManager.LoadScene("Gameplay");
+            if (_coroutine != null)
+                return;
+            
+            StartCoroutine(StartGameRoutine());
+        }
+
+        private IEnumerator StartGameRoutine()
+        {
+            yield return SceneManager.LoadSceneAsync("Gameplay", LoadSceneMode.Single);
+
+            _coroutine = null;
         }
 
         public void GoToSettings()
@@ -39,8 +50,6 @@ namespace UI
         public void SetVolume(float value)
         {
             AudioListener.volume = value;
-
-            audioSource.Play();
         }
 
         public void Quit()

@@ -1,10 +1,13 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Entities;
 using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Tilemaps;
 using Zenject;
 
@@ -19,9 +22,28 @@ namespace Map
         private TileData[,] _mapData;
         private TerrainGeneratorSettings _settings;
         private DiContainer _diContainer;
+        private float _progress;
+        
+        public static UnityAction<float> OnProgressUpdate;
+        public static UnityAction OnProgressFinished;
         
         private const string GeneratedObjectsParentName = "Generated Objects";
-        private const int MinNeighborsAmount = 2;
+        private const int MinNeighborsAmount = 3;
+        private const float MaxProgress = 100;
+        
+        public float Progress
+        {
+            get => _progress;
+            private set
+            {
+                _progress = value;
+                
+                if (_progress > MaxProgress)
+                    _progress = MaxProgress;
+                
+                OnProgressUpdate?.Invoke(_progress / MaxProgress);
+            }
+        }
 
         [Inject]
         private void Construct(TerrainGeneratorSettings settings, DiContainer diContainer, StaticEntity staticEntityPrefab)
@@ -32,20 +54,27 @@ namespace Map
         }
 
         [Button("Generate map")]
-        private void GenerateMap()
+        private async Task GenerateMap()
         {
             if (!Application.isPlaying)
                 InjectDependenciesInEditMode();
             
-            var noiseData = _settings.Noise.Generate((uint) _settings.size);
+            var noiseData = await Task.Run(() => _settings.Noise.Generate((uint) _settings.size));
             
-            var indexData = ConvertNoiseToIndexData(noiseData);
-            indexData = SmoothTheGround(indexData);
+            Progress += 10;
 
-            GenerateMapData(noiseData, indexData);
+            var indexData = await Task.Run(() => ConvertNoiseToIndexData(noiseData));
+            
+            Progress += 10;
+            
+            indexData = await Task.Run(() => SmoothTheGround(indexData));
+            
+            Progress += 10;
+
+            StartCoroutine(GenerateMapData(noiseData, indexData));
         }
         
-        private int[,] ConvertNoiseToIndexData(float[,] noiseData)
+        private Task<int[,]> ConvertNoiseToIndexData(float[,] noiseData)
         {
             var indexData = new int[noiseData.GetLength(0), noiseData.GetLength(1)];
             
@@ -62,11 +91,11 @@ namespace Map
                     indexData[y, x] = tileIndex.Value;
                 }
             }
-
-            return indexData;
+            
+            return Task.FromResult(indexData);
         }
 
-        private int[,] SmoothTheGround(int[,] data)
+        private Task<int[,]> SmoothTheGround(int[,] data)
         {
             for (var y = 1; y < data.GetLength(0) - 1; y++)
             {
@@ -94,11 +123,11 @@ namespace Map
                     data[y, x] = mostPopularTile.Key;
                 }
             }
-
-            return data;
+            
+            return Task.FromResult(data);
         }
 
-        private void GenerateMapData(float[,] noiseData, int[,] indexData)
+        private IEnumerator GenerateMapData(float[,] noiseData, int[,] indexData)
         {
             var parent = GenerateObjectsParent();
             _mapData = new TileData[_settings.size, _settings.size];
@@ -119,7 +148,13 @@ namespace Map
                     GenerateTile(tileData, position, color);
                     GenerateObject(tileData, worldPosition, parent);
                 }
+                
+                Progress += 1;
+                yield return null;
             }
+            
+            Progress = MaxProgress;
+            OnProgressFinished?.Invoke();
             
             _tilemapCollider.ProcessTilemapChanges();
         }
@@ -182,10 +217,10 @@ namespace Map
             );
         }
 
-        public TileData[,] GetGeneratedTerrain()
+        public async Task<TileData[,]> GetGeneratedTerrain()
         {
             if (_mapData == null)
-                GenerateMap();
+                await GenerateMap();
 
             return _mapData;
         }
