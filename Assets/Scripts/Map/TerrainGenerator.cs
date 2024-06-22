@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -63,12 +64,14 @@ namespace Map
             Progress += 10;
 
             var indexData = await Task.Run(() => ConvertNoiseToIndexData(noiseData));
+            
             Progress += 10;
+            
             indexData = await Task.Run(() => SmoothTheGround(indexData));
             
             Progress += 10;
 
-            GenerateMapData(noiseData, indexData);
+            StartCoroutine(GenerateMapData(noiseData, indexData));
         }
         
         private Task<int[,]> ConvertNoiseToIndexData(float[,] noiseData)
@@ -124,7 +127,7 @@ namespace Map
             return Task.FromResult(data);
         }
 
-        private void GenerateMapData(float[,] noiseData, int[,] indexData)
+        private IEnumerator GenerateMapData(float[,] noiseData, int[,] indexData)
         {
             var parent = GenerateObjectsParent();
             _mapData = new TileData[_settings.size, _settings.size];
@@ -147,6 +150,7 @@ namespace Map
                 }
                 
                 Progress += 1;
+                yield return null;
             }
             
             Progress = MaxProgress;
