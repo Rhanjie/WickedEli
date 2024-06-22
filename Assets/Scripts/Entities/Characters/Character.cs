@@ -1,4 +1,6 @@
+using System;
 using Entities.Characters.Players;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Entities.Characters
@@ -46,16 +48,17 @@ namespace Entities.Characters
 
             var distance = new Vector2(targetPosition.x - position.x, targetPosition.y - position.y).magnitude;
 
-            return distance <= EntitySettings.visionRange;
+            return distance <= 2f;
         }
 
         private void TryToFindTarget()
         {
+            //TODO: Refactor this method
+            
             var position = EntityReferences.body.transform.position;
-            var size = new Vector2(20, 13);
             var layerMask = LayerMask.GetMask("Player");
 
-            var result = Physics2D.OverlapBox(position, size, 0, layerMask);
+            var result = Physics2D.OverlapCircle(position, EntitySettings.visionRange, layerMask);
 
             var player = result != null ? result.GetComponent<Player>() : null;
             if (player == null)
@@ -71,6 +74,15 @@ namespace Entities.Characters
         private void ResetTarget()
         {
             AttackBehaviour.LookAt = null;
+        }
+        
+        [Serializable]
+        public class Settings
+        {
+            public enum Attitude { Hostile, Neutral, Friendly };
+
+            [Title("General")]
+            public Attitude attitude = Attitude.Neutral;
         }
     }
 }
