@@ -1,3 +1,4 @@
+using System;
 using Map;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,12 +13,16 @@ namespace UI
         {
             TerrainGenerator.OnProgressUpdate += ProgressAnimation;
             TerrainGenerator.OnProgressFinished += HideProgressScreen;
+            
+            Time.timeScale = 0f;
         }
 
         private void OnDisable()
         {
             TerrainGenerator.OnProgressUpdate -= ProgressAnimation;
             TerrainGenerator.OnProgressFinished -= HideProgressScreen;
+            
+            Time.timeScale = 1f;
         }
         
         private void ProgressAnimation(float progress)
