@@ -21,6 +21,7 @@ namespace Map
         private DiContainer _diContainer;
         
         private const string GeneratedObjectsParentName = "Generated Objects";
+        private const int MinNeighborsAmount = 2;
 
         [Inject]
         private void Construct(TerrainGeneratorSettings settings, DiContainer diContainer, StaticEntity staticEntityPrefab)
@@ -37,15 +38,17 @@ namespace Map
                 InjectDependenciesInEditMode();
             
             var noiseData = _settings.Noise.Generate((uint) _settings.size);
-            var indexData = ConvertNoiseToIndexData(noiseData);
             
+            var indexData = ConvertNoiseToIndexData(noiseData);
             indexData = SmoothTheGround(indexData);
 
-            GenerateMapData(indexData);
+            GenerateMapData(noiseData, indexData);
         }
         
-        private float[,] ConvertNoiseToIndexData(float[,] noiseData)
+        private int[,] ConvertNoiseToIndexData(float[,] noiseData)
         {
+            var indexData = new int[noiseData.GetLength(0), noiseData.GetLength(1)];
+            
             for (var y = 0; y < noiseData.GetLength(0); y++)
             {
                 for (var x = 0; x < noiseData.GetLength(1); x++)
@@ -56,27 +59,46 @@ namespace Map
                     if (!tileIndex.HasValue)
                         throw new Exception($"Not found any tile for noise value: {noise}");
 
-                    noiseData[y, x] = tileIndex.Value;
+                    indexData[y, x] = tileIndex.Value;
                 }
             }
 
-            return noiseData;
+            return indexData;
         }
 
-        private float[,] SmoothTheGround(float[,] data)
+        private int[,] SmoothTheGround(int[,] data)
         {
-            for (var y = 0; y < data.GetLength(0); y++)
+            for (var y = 1; y < data.GetLength(0) - 1; y++)
             {
-                for (var x = 0; x < data.GetLength(1); x++)
+                for (var x = 1; x < data.GetLength(1) - 1; x++)
                 {
-                    //TODO: Check every neighbor
+                    var index = data[y, x];
+                    var neighbors = new Dictionary<int, int>();
+                    for (var i = 0; i < _settings.tiles.Count; i++)
+                        neighbors.Add(i, 0);
+
+                    neighbors[data[y + 1, x]] += 1;
+                    neighbors[data[y - 1, x]] += 1;
+                    neighbors[data[y, x + 1]] += 1;
+                    neighbors[data[y, x - 1]] += 1;
+                    
+                    neighbors[data[y + 1, x + 1]] += 1;
+                    neighbors[data[y + 1, x - 1]] += 1;
+                    neighbors[data[y - 1, x + 1]] += 1;
+                    neighbors[data[y - 1, x - 1]] += 1;
+                    
+                    if (neighbors[index] >= MinNeighborsAmount)
+                        continue;
+                    
+                    var mostPopularTile = neighbors.OrderByDescending(pair => pair.Value).First();
+                    data[y, x] = mostPopularTile.Key;
                 }
             }
 
             return data;
         }
 
-        private void GenerateMapData(float[,] noiseData)
+        private void GenerateMapData(float[,] noiseData, int[,] indexData)
         {
             var parent = GenerateObjectsParent();
             _mapData = new TileData[_settings.size, _settings.size];
@@ -85,15 +107,11 @@ namespace Map
             {
                 for (var x = 0; x < _mapData.GetLength(1); x++)
                 {
-                    var noiseValue = noiseData[y, x];
-                    var index = Math.Abs((int) Math.Round(noiseValue));
-                    var tileIndex = _settings.TryGetTileIndexFromNoiseValue(index);
-
-                    if (!tileIndex.HasValue)
-                        throw new Exception($"Not found tile with index: {index}");
-
-                    var tileData = _settings.tiles[tileIndex.Value];
-                    var color = CalculateColor(tileData, noiseValue);
+                    var noise = noiseData[y, x];
+                    var index = indexData[y, x];
+                    
+                    var tileData = _settings.tiles[index];
+                    var color = CalculateColor(tileData, noise);
                     
                     var position = new Vector3Int(x, y, 0);
                     var worldPosition = _tilemap.GetCellCenterWorld(position);
