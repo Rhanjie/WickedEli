@@ -62,7 +62,7 @@ namespace Map
             //TODO: Add UnityMainThreadDispatcher package
             
             var noiseData = await Task.Run(() => _settings.Noise.Generate((uint) _settings.size));
-            _settings.size = noiseData.GetLength(0);
+            _settings.size = noiseData.GetLength(0) - 1;
             
             Progress += 10;
 
