@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Zenject;
@@ -14,12 +15,11 @@ namespace Map
         public Tilemap Tilemap { get; private set; }
 
         [Inject]
-        private void Construct(Tilemap tilemap, TerrainGenerator terrainGenerator)
+        private async void Construct(Tilemap tilemap, TerrainGenerator terrainGenerator)
         {
             Tilemap = tilemap;
             _terrainGenerator = terrainGenerator;
-            _mapData = _terrainGenerator.GetGeneratedTerrain();
-
+            _mapData = await _terrainGenerator.GetGeneratedTerrain();
             CenterTerrain();
         }
 

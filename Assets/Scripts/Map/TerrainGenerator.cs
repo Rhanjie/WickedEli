@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Entities;
 using Sirenix.OdinInspector;
 using UnityEditor;
@@ -52,20 +53,25 @@ namespace Map
         }
 
         [Button("Generate map")]
-        private void GenerateMap()
+        private async Task GenerateMap()
         {
             if (!Application.isPlaying)
                 InjectDependenciesInEditMode();
             
-            var noiseData = _settings.Noise.Generate((uint) _settings.size);
+            var noiseData = await Task.Run(() => _settings.Noise.Generate((uint) _settings.size));
+            
+            Progress += 10;
 
-            var indexData = ConvertNoiseToIndexData(noiseData);
-            indexData = SmoothTheGround(indexData);
+            var indexData = await Task.Run(() => ConvertNoiseToIndexData(noiseData));
+            Progress += 10;
+            indexData = await Task.Run(() => SmoothTheGround(indexData));
+            
+            Progress += 10;
 
             GenerateMapData(noiseData, indexData);
         }
         
-        private int[,] ConvertNoiseToIndexData(float[,] noiseData)
+        private Task<int[,]> ConvertNoiseToIndexData(float[,] noiseData)
         {
             var indexData = new int[noiseData.GetLength(0), noiseData.GetLength(1)];
             
@@ -83,11 +89,10 @@ namespace Map
                 }
             }
             
-            Progress += 10;
-            return indexData;
+            return Task.FromResult(indexData);
         }
 
-        private int[,] SmoothTheGround(int[,] data)
+        private Task<int[,]> SmoothTheGround(int[,] data)
         {
             for (var y = 1; y < data.GetLength(0) - 1; y++)
             {
@@ -115,9 +120,8 @@ namespace Map
                     data[y, x] = mostPopularTile.Key;
                 }
             }
-
-            Progress += 10;
-            return data;
+            
+            return Task.FromResult(data);
         }
 
         private void GenerateMapData(float[,] noiseData, int[,] indexData)
@@ -209,10 +213,10 @@ namespace Map
             );
         }
 
-        public TileData[,] GetGeneratedTerrain()
+        public async Task<TileData[,]> GetGeneratedTerrain()
         {
             if (_mapData == null)
-                GenerateMap();
+                await GenerateMap();
 
             return _mapData;
         }
