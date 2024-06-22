@@ -5,6 +5,7 @@ using Entities;
 using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Tilemaps;
 using Zenject;
 
@@ -19,9 +20,28 @@ namespace Map
         private TileData[,] _mapData;
         private TerrainGeneratorSettings _settings;
         private DiContainer _diContainer;
+        private float _progress;
+        
+        public static UnityAction<float> OnProgressUpdate;
+        public static UnityAction OnProgressFinished;
         
         private const string GeneratedObjectsParentName = "Generated Objects";
         private const int MinNeighborsAmount = 3;
+        private const float MaxProgress = 100;
+        
+        public float Progress
+        {
+            get => _progress;
+            private set
+            {
+                _progress = value;
+                
+                if (_progress > MaxProgress)
+                    _progress = MaxProgress;
+                
+                OnProgressUpdate?.Invoke(_progress / MaxProgress);
+            }
+        }
 
         [Inject]
         private void Construct(TerrainGeneratorSettings settings, DiContainer diContainer, StaticEntity staticEntityPrefab)
@@ -38,7 +58,7 @@ namespace Map
                 InjectDependenciesInEditMode();
             
             var noiseData = _settings.Noise.Generate((uint) _settings.size);
-            
+
             var indexData = ConvertNoiseToIndexData(noiseData);
             indexData = SmoothTheGround(indexData);
 
@@ -62,7 +82,8 @@ namespace Map
                     indexData[y, x] = tileIndex.Value;
                 }
             }
-
+            
+            Progress += 10;
             return indexData;
         }
 
@@ -95,6 +116,7 @@ namespace Map
                 }
             }
 
+            Progress += 10;
             return data;
         }
 
@@ -119,7 +141,12 @@ namespace Map
                     GenerateTile(tileData, position, color);
                     GenerateObject(tileData, worldPosition, parent);
                 }
+                
+                Progress += 1;
             }
+            
+            Progress = MaxProgress;
+            OnProgressFinished?.Invoke();
             
             _tilemapCollider.ProcessTilemapChanges();
         }
