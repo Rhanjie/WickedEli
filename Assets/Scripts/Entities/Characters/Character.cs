@@ -21,7 +21,7 @@ namespace Entities.Characters
         
         public override void Destroy()
         {
-            //TODO: Effect
+            base.Destroy();
         }
 
         private void FollowTarget()
