@@ -25,7 +25,7 @@ MonoBehaviour:
     - Name: Noise
       Entry: 10
       Data: 0
-  size: 64
+  size: 128
   tiles:
   - name: Water
     indices: {x: 0, y: 5}

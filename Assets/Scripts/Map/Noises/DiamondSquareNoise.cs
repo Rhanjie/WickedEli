@@ -29,6 +29,8 @@ namespace Map.Noises
         
         private int ConvertToPowerOfTwo(int n)
         {
+            n -= 1;
+            
             var result = 0;
             for (var i = n; i >= 1; i--)
             {

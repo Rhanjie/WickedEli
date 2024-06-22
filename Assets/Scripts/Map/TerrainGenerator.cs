@@ -59,7 +59,10 @@ namespace Map
             if (!Application.isPlaying)
                 InjectDependenciesInEditMode();
             
+            //TODO: Add UnityMainThreadDispatcher package
+            
             var noiseData = await Task.Run(() => _settings.Noise.Generate((uint) _settings.size));
+            _settings.size = noiseData.GetLength(0);
             
             Progress += 10;
 
