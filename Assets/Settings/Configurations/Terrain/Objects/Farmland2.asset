@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82a0c29fb829402fa71f49de813693e6, type: 3}
+  m_Name: Farmland2
+  m_EditorClassIdentifier: 
+  staticEntitySettings:
+    title: Farmland
+    translationTag: 
+    sprite: {fileID: 697197559, guid: c4a5a310f5fb7744d9e833bf0dbdb7c5, type: 3}
+    hittable: 0
+    health: 5
+    insensitivityTime: 2
+    hitSound: {fileID: 0}
+    visionRange: 0
+    color: {r: 1, g: 1, b: 1, a: 1}
+    scaleMultiplier: {x: 0.86808044, y: 1}

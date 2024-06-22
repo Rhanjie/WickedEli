@@ -1,4 +1,4 @@
-using Characters;
+using Entities;
 
 namespace Interactable
 {
