@@ -21,7 +21,7 @@ namespace Map
         private DiContainer _diContainer;
         
         private const string GeneratedObjectsParentName = "Generated Objects";
-        private const int MinNeighborsAmount = 2;
+        private const int MinNeighborsAmount = 3;
 
         [Inject]
         private void Construct(TerrainGeneratorSettings settings, DiContainer diContainer, StaticEntity staticEntityPrefab)
