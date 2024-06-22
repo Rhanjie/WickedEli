@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -6,13 +8,16 @@ namespace UI
 {
     public class MainMenu : MonoBehaviour
     {
+        //TODO: Add injections and refactor
+        
+        [SerializeField] private CanvasGroup mainMenu;
         [SerializeField] private CanvasGroup mainGroup;
-
         [SerializeField] private CanvasGroup settingsGroup;
-
-        [SerializeField] private AudioSource audioSource;
-
         [SerializeField] private Slider volumeSlider;
+        
+        [SerializeField] private Image loaderProgress;
+
+        private Coroutine _coroutine;
 
         private void Start()
         {
@@ -21,7 +26,38 @@ namespace UI
 
         public void StartGame()
         {
-            SceneManager.LoadScene("Gameplay");
+            if (_coroutine != null)
+                return;
+            
+            StartCoroutine(StartGameRoutine());
+        }
+
+        private IEnumerator StartGameRoutine()
+        {
+            mainMenu.alpha = 0;
+            mainMenu.interactable = mainMenu.blocksRaycasts = false;
+            
+            StartCoroutine(ProgressAnimation(0.5f));
+            
+            yield return SceneManager.LoadSceneAsync("Gameplay", LoadSceneMode.Additive);
+
+            _coroutine = null;
+        }
+
+        private IEnumerator ProgressAnimation(float speed)
+        {
+            loaderProgress.fillAmount = 0;
+            
+            while (loaderProgress.fillAmount < 1)
+            {
+                loaderProgress.fillAmount += Time.deltaTime * speed;
+                yield return null;
+            }
+
+            loaderProgress.fillAmount = 1;
+            
+            yield return SceneManager.UnloadSceneAsync("MainMenu");
+            
         }
 
         public void GoToSettings()
@@ -39,8 +75,6 @@ namespace UI
         public void SetVolume(float value)
         {
             AudioListener.volume = value;
-
-            audioSource.Play();
         }
 
         public void Quit()
