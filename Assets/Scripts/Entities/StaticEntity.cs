@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
 using DG.Tweening;
 using Entities.Characters.Interfaces;
-using Entities.Characters.Players;
 using Map;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -38,6 +35,8 @@ namespace Entities
 
         public virtual void Destroy()
         {
+            PlaySound(true, EntitySettings.dieSound);
+            
             gameObject.SetActive(false);
         }
 
@@ -82,13 +81,23 @@ namespace Entities
 
         private void HitAnimation()
         {
-            if (EntityReferences.audioSource != null && !EntityReferences.audioSource.isPlaying)
-                EntityReferences.audioSource.PlayOneShot(EntitySettings.hitSound);
+            PlaySound(true, EntitySettings.hitSound);
 
             EntityReferences.body.DOColor(Color.red, EntitySettings.insensitivityTime)
                 .SetLoops(2, LoopType.Yoyo)
                 .OnStart(() => _isInsensitive = true)
                 .OnComplete(() => _isInsensitive = false);
+        }
+
+        public void PlaySound(bool force, AudioClip clip)
+        {
+            if (EntityReferences.audioSource == null || clip == null)
+                return;
+            
+            if (!force && EntityReferences.audioSource.isPlaying)
+                return;
+            
+            EntityReferences.audioSource.PlayOneShot(clip);
         }
 
         [Serializable]
@@ -104,6 +113,7 @@ namespace Entities
             [ShowIf("hittable")] public int health = 12; //3 hearts * 4 pieces
             [ShowIf("hittable")] public float insensitivityTime = 1f;
             [ShowIf("hittable")] public AudioClip hitSound;
+            [ShowIf("hittable")] public AudioClip dieSound;
             
             [Space]
             public float visionRange = 10f;
