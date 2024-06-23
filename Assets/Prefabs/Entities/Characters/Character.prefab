@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: 4861517548632684125}
   - component: {fileID: 4076918675294851172}
   m_Layer: 7
-  m_Name: Enemy
+  m_Name: Character
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -460,8 +460,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.15, y: 0.2}
-  m_Size: {x: 1.0000005, y: 0.44194323}
+  m_Offset: {x: 0.15, y: 0.14}
+  m_Size: {x: 1.0000005, y: 0.3}
   m_Direction: 1
 --- !u!95 &1534536509297280380
 Animator:

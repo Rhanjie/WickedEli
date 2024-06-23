@@ -121,8 +121,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0034925656, y: 0.23952332}
-  m_Size: {x: 1.1930162, y: 0.50160325}
+  m_Offset: {x: -0.23999996, y: 0.1588407}
+  m_Size: {x: 1.1930163, y: 0.36392274}
   m_Direction: 1
 --- !u!95 &1356449264568908331
 Animator:
@@ -1048,7 +1048,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -1343
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.043137256, g: 0.09803922, b: 0.14901961, a: 1}
+  m_Color: {r: 0.3490566, g: 0.25467798, b: 0.12677999, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
@@ -1348,7 +1348,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5362483425935907765, guid: 767457d22badb1c4c9192825e3b3eb41, type: 3}
       propertyPath: m_BlockingMask.m_Bits
-      value: 511
+      value: 127
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

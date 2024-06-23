@@ -10,6 +10,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Tilemaps;
 using Zenject;
+using Random = UnityEngine.Random;
 
 namespace Map
 {
@@ -192,7 +193,7 @@ namespace Map
 
         private void GenerateTile(TileData tileData, Vector3Int position, Color color)
         {
-            var tile = tileData.GetRandomVariant(tileData.variants);
+            var tile = GetRandomVariant(tileData.variants);
             var colliderType = tileData.walkable
                 ? Tile.ColliderType.None
                 : Tile.ColliderType.Grid;
@@ -208,7 +209,7 @@ namespace Map
 
         private void GenerateObject(TileData tileData, Vector3 position, Transform parent)
         {
-            var objectSettings = tileData.GetRandomVariant(tileData.objects);
+            var objectSettings = GetRandomVariant(tileData.objects);
             if (objectSettings == null)
                 return;
             
@@ -226,6 +227,28 @@ namespace Map
                 await GenerateMap();
 
             return _mapData;
+        }
+        
+        public static T GetRandomVariant<T>(List<Generable<T>> generables)
+        {
+            if (generables == null || generables.Count == 0)
+                return default;
+            
+            if (generables.Count == 1)
+                return generables[0].Object;
+            
+            var poolSize = generables.Sum(t => t.Chance);
+            var randomNumber = Random.Range(0, poolSize) + 1;
+            
+            var accumulatedProbability = 0;
+            for (var i = 0; i < generables.Count; i++)
+            {
+                accumulatedProbability += generables[i].Chance;
+                if (randomNumber <= accumulatedProbability)
+                    return generables[i].Object;
+            }
+
+            return default;
         }
 
         private void InjectDependenciesInEditMode()

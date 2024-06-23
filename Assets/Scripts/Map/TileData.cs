@@ -58,28 +58,6 @@ namespace Map
             return indices.x.CompareTo(compared.indices.y);
         }
 
-        public T GetRandomVariant<T>(List<Generable<T>> generables)
-        {
-            if (generables == null || generables.Count == 0)
-                return default;
-            
-            if (generables.Count == 1)
-                return generables[0].Object;
-            
-            var poolSize = generables.Sum(t => t.Chance);
-            var randomNumber = Random.Range(0, poolSize) + 1;
-            
-            var accumulatedProbability = 0;
-            for (var i = 0; i < generables.Count; i++)
-            {
-                accumulatedProbability += generables[i].Chance;
-                if (randomNumber <= accumulatedProbability)
-                    return generables[i].Object;
-            }
-
-            return default;
-        }
-
         public int CompareTo(TileData compared)
         {
             return indices.x.CompareTo(compared.indices.y);
