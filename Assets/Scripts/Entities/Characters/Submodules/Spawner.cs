@@ -36,7 +36,7 @@ namespace Entities.Characters.Submodules
                 var chosenCharacterSettings = TerrainGenerator.GetRandomVariant(_settings.generables);
 
                 //TODO: Spawn in circle [spawnRange]
-                GenerateObject(chosenCharacterSettings, Vector3.down, transform);
+                GenerateObject(chosenCharacterSettings, transform.position, null);
             }
         }
         
