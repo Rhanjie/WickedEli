@@ -31,7 +31,8 @@ namespace Map
         private const string GeneratedObjectsParentName = "Generated Objects";
         private const int MinNeighborsAmount = 3;
         private const float MaxProgress = 100;
-        
+        private const int TotalSteps = 4;
+
         public float Progress
         {
             get => _progress;
@@ -39,8 +40,8 @@ namespace Map
             {
                 _progress = value;
                 
-                if (_progress > MaxProgress)
-                    _progress = MaxProgress;
+                if (_progress > MaxProgress - 1)
+                    _progress = MaxProgress - 1;
                 
                 OnProgressUpdate?.Invoke(_progress / MaxProgress);
             }
@@ -136,6 +137,10 @@ namespace Map
             var parent = GenerateObjectsParent();
             _mapData = new TileData[_settings.size, _settings.size];
             
+            var stepBreak = _settings.size / TotalSteps;
+            var remainingProgress = 100 - Progress;
+            var stepValue = remainingProgress / TotalSteps;
+            
             for (var y = 0; y < _mapData.GetLength(0); y++)
             {
                 for (var x = 0; x < _mapData.GetLength(1); x++)
@@ -153,8 +158,11 @@ namespace Map
                     GenerateObject(tileData, worldPosition, parent);
                 }
                 
-                Progress += 1;
-                yield return null;
+                if (y % stepBreak == 0)
+                {
+                    Progress += stepValue;
+                    yield return null;
+                }
             }
             
             Progress = MaxProgress;
