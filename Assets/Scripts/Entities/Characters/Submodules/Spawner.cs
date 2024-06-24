@@ -14,12 +14,14 @@ namespace Entities.Characters.Submodules
 {
     public class Spawner : MonoBehaviour
     {
+        private StaticEntity _entity;
         private Settings _settings;
         private DiContainer _diContainer;
 
         [Inject]
-        private void Construct(Settings settings, DiContainer diContainer)
+        private void Construct(StaticEntity entity, Settings settings, DiContainer diContainer)
         {
+            _entity = entity;
             _settings = settings;
             _diContainer = diContainer;
 
@@ -31,13 +33,27 @@ namespace Entities.Characters.Submodules
             while (true)
             {
                 var random = Random.Range(_settings.timeBetweenSpawns.x, _settings.timeBetweenSpawns.y);
-
                 yield return Timing.WaitForSeconds(random);
 
+                if (!IsPlayerNearby())
+                    continue;
+                
                 var chosenCharacterSettings = TerrainGenerator.GetRandomVariant(_settings.generables);
                 if (chosenCharacterSettings != null)
                     GenerateObject(chosenCharacterSettings, transform.position, null);
             }
+        }
+
+        private bool IsPlayerNearby()
+        {;
+            //TODO: Temporary solution
+            var layerMask = LayerMask.GetMask("Player");
+            var result = Physics2D.OverlapCircle(
+                transform.position, _entity.EntitySettings.visionRange, layerMask
+            );
+
+            var player = result != null ? result.GetComponent<Player>() : null;
+            return player != null;
         }
         
         private void GenerateObject(CharacterSettingsInstaller characterSettings, Vector3 position, Transform parent)
