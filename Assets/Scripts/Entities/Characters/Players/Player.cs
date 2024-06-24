@@ -25,6 +25,7 @@ namespace Entities.Characters.Players
             _mainCamera = mainCamera;
             _hud = hud;
 
+            _hud.Init(EntitySettings.health);
             OnHealthChanged += _hud.UpdateHealth;
         }
 

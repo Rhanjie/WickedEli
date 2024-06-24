@@ -13,18 +13,19 @@ namespace UI
 
         private readonly List<Heart> _hearts = new();
 
-        private int _currentTestAmount = 1;
-
         public void Update()
         {
             //TODO: Only test
             if (Application.isEditor)
             {
                 if (Keyboard.current.leftShiftKey.wasPressedThisFrame)
-                    AddHealth(_currentTestAmount++);
+                    AddHealth(1);
+                
+                if (Keyboard.current.leftAltKey.wasPressedThisFrame)
+                    AddMaxHealth(1, false);
 
                 if (Keyboard.current.leftCtrlKey.wasPressedThisFrame)
-                    RemoveHealth(--_currentTestAmount);
+                    RemoveHealth(1);
             }
         }
 
@@ -32,37 +33,36 @@ namespace UI
         {
             if (health <= 0)
                 return;
-
-            while (health > 0)
+            
+            for (var i = 0; i < _hearts.Count; i++)
             {
-                var lastHeart = _hearts.Count == 0
-                    ? SpawnNewHeart()
-                    : _hearts.Last();
-
-                if (lastHeart == null || lastHeart.CurrentPieces == Heart.MaxPieces)
-                    lastHeart = SpawnNewHeart();
-
-                health = lastHeart.AddPieces(health);
+                if (_hearts[i].CurrentPieces == Heart.MaxPieces)
+                    continue;
+                
+                health = _hearts[i].AddPieces(health);
             }
+        }
+
+        public void AddMaxHealth(int hearts, bool fill)
+        {
+            for (var i = 0; i < hearts; i++)
+                SpawnNewHeart();
+
+            if (fill)
+                AddHealth(hearts * 4);
         }
 
         public void RemoveHealth(int health)
         {
             if (health <= 0 || _hearts.Count == 0)
                 return;
-
-            while (health > 0)
+            
+            for (var i = _hearts.Count - 1; i >= 0; i--)
             {
-                var lastHeart = _hearts.Last();
-                if (lastHeart == null || lastHeart.CurrentPieces == 0)
-                {
-                    DestroyHeart(lastHeart);
-                    lastHeart = _hearts.Last();
-                }
-
-                health = lastHeart.RemovePieces(health);
-                if (lastHeart.CurrentPieces == 0)
-                    DestroyHeart(lastHeart);
+                if (_hearts[i].CurrentPieces == 0)
+                    continue;
+                
+                health = _hearts[i].RemovePieces(health);
             }
         }
 
