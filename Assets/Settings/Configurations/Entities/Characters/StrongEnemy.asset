@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e3218817804ac94185ef8734b7e0b10, type: 3}
+  m_Name: StrongEnemy
+  m_EditorClassIdentifier: 
+  staticEntitySettings:
+    title: Strong Enemy
+    translationTag: StrongEnemy
+    sprite: {fileID: -1288727257, guid: 54cd96754862bd0449370025be449b65, type: 3}
+    hittable: 1
+    health: 10
+    insensitivityTime: 0.5
+    hitSound: {fileID: 8300000, guid: 8540d7f2aff971c46bfb1d7b704345f4, type: 3}
+    dieSound: {fileID: 8300000, guid: 8540d7f2aff971c46bfb1d7b704345f4, type: 3}
+    visionRange: 20
+    color: {r: 0.6981132, g: 0.38891166, b: 0.1745283, a: 1}
+    scaleMultiplier: {x: 1.3, y: 1.4}
+  movementSettings:
+    speed: 10
+    acceleration: 5
+    stepSound: {fileID: 0}
+  attackSettings:
+    damage: 3
+    range: 3
+    attackTime: 0.7
+    nextAttackDelay: 0.5
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 8
+    missSound: {fileID: 8300000, guid: 91dd43d1eadad404f8275e5d221caaf8, type: 3}
+  characterSettings:
+    attitude: 0

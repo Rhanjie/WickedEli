@@ -17,5 +17,7 @@ MonoBehaviour:
     spawnRange: 5
     characterPrefab: {fileID: 3708847338692109560, guid: 3585c8e7dec2d914d9f9b66bc8f95393, type: 3}
     generables:
-    - <Chance>k__BackingField: 20
-      <Object>k__BackingField: {fileID: 11400000, guid: d99d637fe61fd1946aa49a1b8e65927f, type: 2}
+    - chance: 80
+      generableObject: {fileID: 11400000, guid: d99d637fe61fd1946aa49a1b8e65927f, type: 2}
+    - chance: 20
+      generableObject: {fileID: 11400000, guid: 19304dd4685f50748840e9bd9b7916de, type: 2}
