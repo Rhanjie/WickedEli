@@ -4,12 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Entities;
+using Entities.Characters.Players;
+using MEC;
 using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Tilemaps;
 using Zenject;
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 namespace Map
 {
@@ -30,7 +34,8 @@ namespace Map
         private const string GeneratedObjectsParentName = "Generated Objects";
         private const int MinNeighborsAmount = 3;
         private const float MaxProgress = 100;
-        
+        private const int TotalSteps = 4;
+
         public float Progress
         {
             get => _progress;
@@ -38,8 +43,8 @@ namespace Map
             {
                 _progress = value;
                 
-                if (_progress > MaxProgress)
-                    _progress = MaxProgress;
+                if (_progress > MaxProgress - 1)
+                    _progress = MaxProgress - 1;
                 
                 OnProgressUpdate?.Invoke(_progress / MaxProgress);
             }
@@ -59,7 +64,10 @@ namespace Map
             if (!Application.isPlaying)
                 InjectDependenciesInEditMode();
             
+            //TODO: Add UnityMainThreadDispatcher package
+            
             var noiseData = await Task.Run(() => _settings.Noise.Generate((uint) _settings.size));
+            _settings.size = noiseData.GetLength(0) - 1;
             
             Progress += 10;
 
@@ -71,7 +79,7 @@ namespace Map
             
             Progress += 10;
 
-            StartCoroutine(GenerateMapData(noiseData, indexData));
+            Timing.RunCoroutine(GenerateMapData(noiseData, indexData));
         }
         
         private Task<int[,]> ConvertNoiseToIndexData(float[,] noiseData)
@@ -127,10 +135,14 @@ namespace Map
             return Task.FromResult(data);
         }
 
-        private IEnumerator GenerateMapData(float[,] noiseData, int[,] indexData)
+        private IEnumerator<float> GenerateMapData(float[,] noiseData, int[,] indexData)
         {
             var parent = GenerateObjectsParent();
             _mapData = new TileData[_settings.size, _settings.size];
+            
+            var stepBreak = _settings.size / TotalSteps;
+            var remainingProgress = 100 - Progress;
+            var stepValue = remainingProgress / TotalSteps;
             
             for (var y = 0; y < _mapData.GetLength(0); y++)
             {
@@ -149,8 +161,11 @@ namespace Map
                     GenerateObject(tileData, worldPosition, parent);
                 }
                 
-                Progress += 1;
-                yield return null;
+                if (y % stepBreak == 0)
+                {
+                    Progress += stepValue;
+                    yield return Timing.WaitForOneFrame;
+                }
             }
             
             Progress = MaxProgress;
@@ -189,7 +204,7 @@ namespace Map
 
         private void GenerateTile(TileData tileData, Vector3Int position, Color color)
         {
-            var tile = tileData.GetRandomVariant(tileData.variants);
+            var tile = GetRandomVariant(tileData.variants);
             var colliderType = tileData.walkable
                 ? Tile.ColliderType.None
                 : Tile.ColliderType.Grid;
@@ -205,15 +220,30 @@ namespace Map
 
         private void GenerateObject(TileData tileData, Vector3 position, Transform parent)
         {
-            var objectSettings = tileData.GetRandomVariant(tileData.objects);
-            if (objectSettings == null)
+            var objectToGenerate = GetRandomVariant(tileData.objects);
+            if (objectToGenerate == null)
                 return;
-            
+
+            if (objectToGenerate is StaticEntitySettingsInstaller scriptableObject)
+                GenerateObjectFromScriptableObject(scriptableObject, position, parent);
+
+            else GenerateObjectFromPrefab(objectToGenerate as GameObject, position, parent);
+        }
+        
+        private void GenerateObjectFromScriptableObject(StaticEntitySettingsInstaller settings, Vector3 position, Transform parent)
+        {
             var context = _staticEntityPrefab.GetComponent<GameObjectContext>();
-            context.ScriptableObjectInstallers = new List<ScriptableObjectInstaller> { objectSettings };
+            context.ScriptableObjectInstallers = new List<ScriptableObjectInstaller> { settings };
 
             var entity = _diContainer.InstantiatePrefab(
                 _staticEntityPrefab, position, Quaternion.identity, parent
+            );
+        }
+
+        private void GenerateObjectFromPrefab(GameObject prefab, Vector3 position, Transform parent)
+        {
+            var entity = _diContainer.InstantiatePrefab(
+                prefab, position, Quaternion.identity, parent
             );
         }
 
@@ -223,6 +253,28 @@ namespace Map
                 await GenerateMap();
 
             return _mapData;
+        }
+        
+        public static T GetRandomVariant<T>(List<Generable<T>> generables)
+        {
+            if (generables == null || generables.Count == 0)
+                return default;
+            
+            if (generables.Count == 1)
+                return generables[0].generableObject;
+            
+            var poolSize = generables.Sum(t => t.chance);
+            var randomNumber = Random.Range(0, poolSize) + 1;
+            
+            var accumulatedProbability = 0;
+            for (var i = 0; i < generables.Count; i++)
+            {
+                accumulatedProbability += generables[i].chance;
+                if (randomNumber <= accumulatedProbability)
+                    return generables[i].generableObject;
+            }
+
+            return default;
         }
 
         private void InjectDependenciesInEditMode()

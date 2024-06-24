@@ -1,5 +1,7 @@
 using System;
+using DG.Tweening;
 using Interactable;
+using MEC;
 using UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -41,6 +43,9 @@ namespace Entities.Characters.Players
         public override void Destroy()
         {
             //TODO: Gameover
+
+            DOTween.KillAll();
+            Timing.KillCoroutines();
 
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             
