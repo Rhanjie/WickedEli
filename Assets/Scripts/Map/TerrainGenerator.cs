@@ -259,17 +259,17 @@ namespace Map
                 return default;
             
             if (generables.Count == 1)
-                return generables[0].Object;
+                return generables[0].generableObject;
             
-            var poolSize = generables.Sum(t => t.Chance);
+            var poolSize = generables.Sum(t => t.chance);
             var randomNumber = Random.Range(0, poolSize) + 1;
             
             var accumulatedProbability = 0;
             for (var i = 0; i < generables.Count; i++)
             {
-                accumulatedProbability += generables[i].Chance;
+                accumulatedProbability += generables[i].chance;
                 if (randomNumber <= accumulatedProbability)
-                    return generables[i].Object;
+                    return generables[i].generableObject;
             }
 
             return default;

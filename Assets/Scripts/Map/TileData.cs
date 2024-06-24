@@ -1,22 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
-using Sirenix.OdinInspector.Editor.Validation;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Object = UnityEngine.Object;
 
 namespace Map
 {
-    [Serializable]
-    public class Generable<T>
-    {
-        [TableColumnWidth(100, Resizable = false)]
-        [field: SerializeField] public int Chance { get; set; }
-        
-        [AssetsOnly] [field: SerializeField] public T Object { get; set; }
-    }
-    
     [Serializable]
     public struct TileData : IComparable
     {
