@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
+using MEC;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -28,9 +30,10 @@ namespace UI
             StartCoroutine(StartGameRoutine());
         }
 
-        private IEnumerator StartGameRoutine()
+        private IEnumerator<float> StartGameRoutine()
         {
-            yield return SceneManager.LoadSceneAsync("Gameplay", LoadSceneMode.Single);
+            var loadOperation = SceneManager.LoadSceneAsync("Gameplay", LoadSceneMode.Single);
+            yield return Timing.WaitUntilDone(loadOperation);
 
             _coroutine = null;
         }

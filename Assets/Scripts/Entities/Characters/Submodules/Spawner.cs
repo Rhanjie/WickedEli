@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Entities.Characters.Players;
 using Map;
+using MEC;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Zenject;
@@ -22,21 +23,20 @@ namespace Entities.Characters.Submodules
             _settings = settings;
             _diContainer = diContainer;
 
-            StartCoroutine(SpawnBehaviour());
+            Timing.RunCoroutine(SpawnBehaviour());
         }
 
-        private IEnumerator SpawnBehaviour()
+        private IEnumerator<float> SpawnBehaviour()
         {
             while (true)
             {
                 var random = Random.Range(_settings.timeBetweenSpawns.x, _settings.timeBetweenSpawns.y);
 
-                yield return new WaitForSeconds(random);
+                yield return Timing.WaitForSeconds(random);
 
                 var chosenCharacterSettings = TerrainGenerator.GetRandomVariant(_settings.generables);
-
-                //TODO: Spawn in circle [spawnRange]
-                GenerateObject(chosenCharacterSettings, transform.position, null);
+                if (chosenCharacterSettings != null)
+                    GenerateObject(chosenCharacterSettings, transform.position, null);
             }
         }
         

@@ -5,12 +5,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Entities;
 using Entities.Characters.Players;
+using MEC;
 using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Tilemaps;
 using Zenject;
+using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
 namespace Map
@@ -77,7 +79,7 @@ namespace Map
             
             Progress += 10;
 
-            StartCoroutine(GenerateMapData(noiseData, indexData));
+            Timing.RunCoroutine(GenerateMapData(noiseData, indexData));
         }
         
         private Task<int[,]> ConvertNoiseToIndexData(float[,] noiseData)
@@ -133,7 +135,7 @@ namespace Map
             return Task.FromResult(data);
         }
 
-        private IEnumerator GenerateMapData(float[,] noiseData, int[,] indexData)
+        private IEnumerator<float> GenerateMapData(float[,] noiseData, int[,] indexData)
         {
             var parent = GenerateObjectsParent();
             _mapData = new TileData[_settings.size, _settings.size];
@@ -162,7 +164,7 @@ namespace Map
                 if (y % stepBreak == 0)
                 {
                     Progress += stepValue;
-                    yield return null;
+                    yield return Timing.WaitForOneFrame;
                 }
             }
             
@@ -225,7 +227,7 @@ namespace Map
             if (objectToGenerate is StaticEntitySettingsInstaller scriptableObject)
                 GenerateObjectFromScriptableObject(scriptableObject, position, parent);
 
-            else GenerateObjectFromPrefab(objectToGenerate as StaticEntity, position, parent);
+            else GenerateObjectFromPrefab(objectToGenerate as GameObject, position, parent);
         }
         
         private void GenerateObjectFromScriptableObject(StaticEntitySettingsInstaller settings, Vector3 position, Transform parent)
@@ -238,7 +240,7 @@ namespace Map
             );
         }
 
-        private void GenerateObjectFromPrefab(StaticEntity prefab, Vector3 position, Transform parent)
+        private void GenerateObjectFromPrefab(GameObject prefab, Vector3 position, Transform parent)
         {
             var entity = _diContainer.InstantiatePrefab(
                 prefab, position, Quaternion.identity, parent
