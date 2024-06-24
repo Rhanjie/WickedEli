@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Entities;
+using Entities.Characters.Players;
 using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
@@ -217,15 +218,30 @@ namespace Map
 
         private void GenerateObject(TileData tileData, Vector3 position, Transform parent)
         {
-            var objectSettings = GetRandomVariant(tileData.objects);
-            if (objectSettings == null)
+            var objectToGenerate = GetRandomVariant(tileData.objects);
+            if (objectToGenerate == null)
                 return;
-            
+
+            if (objectToGenerate is StaticEntitySettingsInstaller scriptableObject)
+                GenerateObjectFromScriptableObject(scriptableObject, position, parent);
+
+            else GenerateObjectFromPrefab(objectToGenerate as StaticEntity, position, parent);
+        }
+        
+        private void GenerateObjectFromScriptableObject(StaticEntitySettingsInstaller settings, Vector3 position, Transform parent)
+        {
             var context = _staticEntityPrefab.GetComponent<GameObjectContext>();
-            context.ScriptableObjectInstallers = new List<ScriptableObjectInstaller> { objectSettings };
+            context.ScriptableObjectInstallers = new List<ScriptableObjectInstaller> { settings };
 
             var entity = _diContainer.InstantiatePrefab(
                 _staticEntityPrefab, position, Quaternion.identity, parent
+            );
+        }
+
+        private void GenerateObjectFromPrefab(StaticEntity prefab, Vector3 position, Transform parent)
+        {
+            var entity = _diContainer.InstantiatePrefab(
+                prefab, position, Quaternion.identity, parent
             );
         }
 

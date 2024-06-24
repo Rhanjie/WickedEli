@@ -2,6 +2,7 @@
 using System.Collections;
 using DG.Tweening;
 using Entities.Characters.Interfaces;
+using Entities.Characters.Players;
 using Map;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -12,7 +13,7 @@ using Vector2 = UnityEngine.Vector2;
 
 namespace Entities
 {
-    public class StaticEntity : IsometricObject, IHittable, IDestroyable
+    public class StaticEntity : IsometricObject, IHittable, IDestroyable, IGenerable
     {
         private int _currentHealth;
         protected bool IsInsensitive;

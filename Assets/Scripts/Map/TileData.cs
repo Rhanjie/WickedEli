@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Entities.Characters.Interfaces;
 using Entities.Characters.Players;
 using Sirenix.OdinInspector;
+using Sirenix.OdinInspector.Editor;
+using Sirenix.Serialization;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
@@ -14,12 +17,14 @@ namespace Map
     {
         [TableColumnWidth(100, Resizable = false)]
         [field: SerializeField] public int Chance { get; set; }
-        [field: SerializeField] public T Object { get; set; }
+
+        [OdinSerialize] public T Object;
     }
     
     [Serializable]
     public struct TileData : IComparable
     {
+        [Space] [Space] [Space]
         [Title("General")]
         public string name;
         [MinMaxSlider(0, 1000, true)]
@@ -32,11 +37,12 @@ namespace Map
         
         [Title("Tiles section")]
         
-        [SerializeField] [TableList]
+        [SerializeField] [TableList] [LabelText("Tile variants")]
         public List<Generable<TileBase>> variants;
         
+        [Title("Objects section")]
         [SerializeField] [TableList]
-        public List<Generable<StaticEntitySettingsInstaller>> objects;
+        public List<Generable<IGenerable>> objects;
 
         [Title("Settings")]
         public bool walkable;
