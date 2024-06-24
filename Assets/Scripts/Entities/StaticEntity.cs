@@ -20,7 +20,8 @@ namespace Entities
         protected bool IsDead;
         
         protected References EntityReferences;
-        protected Settings EntitySettings;
+        
+        public Settings EntitySettings { get; private set; }
 
         public UnityAction<int> OnHealthChanged;
         
@@ -124,7 +125,7 @@ namespace Entities
             [ShowIf("hittable")] public AudioClip dieSound;
             
             [Space]
-            public float visionRange = 10f;
+            public float visionRange = 20f;
 
             [Title("Appearance [Optional]")]
             public Color color = Color.white;
