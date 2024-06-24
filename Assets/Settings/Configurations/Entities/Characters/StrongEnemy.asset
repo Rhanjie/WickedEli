@@ -22,8 +22,8 @@ MonoBehaviour:
     hitSound: {fileID: 8300000, guid: 8540d7f2aff971c46bfb1d7b704345f4, type: 3}
     dieSound: {fileID: 8300000, guid: 8540d7f2aff971c46bfb1d7b704345f4, type: 3}
     visionRange: 20
-    color: {r: 0.6981132, g: 0.38891166, b: 0.1745283, a: 1}
-    scaleMultiplier: {x: 1.3, y: 1.4}
+    color: {r: 0.46011737, g: 1, b: 0.25, a: 1}
+    scaleMultiplier: {x: 1.5, y: 1.6}
   movementSettings:
     speed: 10
     acceleration: 5
@@ -31,8 +31,8 @@ MonoBehaviour:
   attackSettings:
     damage: 3
     range: 3
-    attackTime: 0.7
-    nextAttackDelay: 0.5
+    attackTime: 1
+    nextAttackDelay: 1
     layerMask:
       serializedVersion: 2
       m_Bits: 8
