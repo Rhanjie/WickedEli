@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Entities.Characters.Interfaces;
-using Entities.Characters.Players;
 using Sirenix.OdinInspector;
-using Sirenix.OdinInspector.Editor;
-using Sirenix.Serialization;
+using Sirenix.OdinInspector.Editor.Validation;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using Random = UnityEngine.Random;
+using Object = UnityEngine.Object;
 
 namespace Map
 {
@@ -17,8 +13,8 @@ namespace Map
     {
         [TableColumnWidth(100, Resizable = false)]
         [field: SerializeField] public int Chance { get; set; }
-
-        [OdinSerialize] public T Object;
+        
+        [AssetsOnly] [field: SerializeField] public T Object { get; set; }
     }
     
     [Serializable]
@@ -42,7 +38,7 @@ namespace Map
         
         [Title("Objects section")]
         [SerializeField] [TableList]
-        public List<Generable<IGenerable>> objects;
+        public List<Generable<Object>> objects;
 
         [Title("Settings")]
         public bool walkable;

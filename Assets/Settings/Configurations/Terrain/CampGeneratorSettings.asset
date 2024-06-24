@@ -102,7 +102,11 @@ MonoBehaviour:
     variants:
     - <Chance>k__BackingField: 0
       <Object>k__BackingField: {fileID: 11400000, guid: eecbef843375413409f260cda881868b, type: 2}
-    objects: []
+    objects:
+    - <Chance>k__BackingField: 100
+      <Object>k__BackingField: {fileID: 0}
+    - <Chance>k__BackingField: 1
+      <Object>k__BackingField: {fileID: 863363088228838444, guid: 10addde12d12a0a40804267baa244d90, type: 3}
     walkable: 1
     hurtable: 1
     damage: 1
