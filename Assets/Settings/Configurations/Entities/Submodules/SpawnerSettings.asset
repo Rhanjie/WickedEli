@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SpawnerSettings
   m_EditorClassIdentifier: 
   spawnerSettings:
-    timeBetweenSpawns: {x: 2.2759373, y: 6.0564914}
+    timeBetweenSpawns: {x: 2.666219, y: 5.083949}
     spawnRange: 5
     characterPrefab: {fileID: 3708847338692109560, guid: 3585c8e7dec2d914d9f9b66bc8f95393, type: 3}
     generables:
