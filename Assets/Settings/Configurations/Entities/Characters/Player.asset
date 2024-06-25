@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9d7be8a0411aafe42af3a13ddca08ab2, type: 3}
-  m_Name: PlayerInstaller
+  m_Name: Player
   m_EditorClassIdentifier: 
   staticEntitySettings:
     title: Player
@@ -20,6 +20,7 @@ MonoBehaviour:
     health: 10
     insensitivityTime: 0.75
     hitSound: {fileID: 8300000, guid: 5824c218db970a04bb2d9d27ef260108, type: 3}
+    dieSound: {fileID: 0}
     visionRange: 10
     color: {r: 1, g: 1, b: 1, a: 1}
     scaleMultiplier: {x: 1, y: 1}
@@ -29,12 +30,12 @@ MonoBehaviour:
     stepSound: {fileID: 0}
   attackSettings:
     damage: 1
-    range: 2
+    range: 4
     attackTime: 0.5
     nextAttackDelay: 0.25
     layerMask:
       serializedVersion: 2
-      m_Bits: 64
+      m_Bits: 192
     missSound: {fileID: 8300000, guid: 91dd43d1eadad404f8275e5d221caaf8, type: 3}
   playerSettings:
     test: 123

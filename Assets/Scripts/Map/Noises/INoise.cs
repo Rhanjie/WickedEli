@@ -1,7 +1,9 @@
-﻿namespace Map.Noises
+﻿using System.Threading.Tasks;
+
+namespace Map.Noises
 {
     public interface INoise
     {
-        public float[,] Generate(uint size);
+        public Task<float[,]> Generate(uint size);
     }
 }

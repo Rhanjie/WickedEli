@@ -17,9 +17,10 @@ MonoBehaviour:
     translationTag: 
     sprite: {fileID: -1949450881, guid: 4188013145081e44290417df504cedb3, type: 3}
     hittable: 1
-    health: 10
+    health: 7
     insensitivityTime: 0.35
     hitSound: {fileID: 8300000, guid: 8237a58c47a4a5343ad2543be3a43b7e, type: 3}
+    dieSound: {fileID: 8300000, guid: cb243e740f3865743964e18e4429b887, type: 3}
     visionRange: 10
     color: {r: 1, g: 1, b: 1, a: 1}
     scaleMultiplier: {x: 0.79203284, y: 1.0962232}

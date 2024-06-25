@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8fc9e68af25f9e4f81af72ac92b94e7, type: 3}
+  m_Name: SpawnerSettings
+  m_EditorClassIdentifier: 
+  spawnerSettings:
+    timeBetweenSpawns: {x: 2.666219, y: 5.083949}
+    spawnRange: 5
+    characterPrefab: {fileID: 3708847338692109560, guid: 3585c8e7dec2d914d9f9b66bc8f95393, type: 3}
+    generables:
+    - chance: 80
+      generableObject: {fileID: 11400000, guid: d99d637fe61fd1946aa49a1b8e65927f, type: 2}
+    - chance: 20
+      generableObject: {fileID: 11400000, guid: 19304dd4685f50748840e9bd9b7916de, type: 2}

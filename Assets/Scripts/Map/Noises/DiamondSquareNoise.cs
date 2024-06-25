@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Random = System.Random;
@@ -28,6 +29,8 @@ namespace Map.Noises
         
         private int ConvertToPowerOfTwo(int n)
         {
+            n -= 1;
+            
             var result = 0;
             for (var i = n; i >= 1; i--)
             {
@@ -41,7 +44,7 @@ namespace Map.Noises
             return result * 2;
         }
 
-        public float[,] Generate(uint rawSize)
+        public Task<float[,]> Generate(uint rawSize)
         {
             if (seed == 0)
                 seed = UnityEngine.Random.Range(0, 20000);
@@ -70,7 +73,7 @@ namespace Map.Noises
                 chunkSize /= 2;
             }
 
-            return noise;
+            return Task.FromResult(noise);
         }
 
         private void SquareStep(int chunkSize)
@@ -78,24 +81,30 @@ namespace Map.Noises
             var half = chunkSize / 2;
 
             for (var y = 0; y < size - 1; y += chunkSize)
-            for (var x = 0; x < size - 1; x += chunkSize)
-                try
+            {
+                for (var x = 0; x < size - 1; x += chunkSize)
                 {
-                    var left = noise[y, x];
-                    var right = noise[y, x + chunkSize];
-                    var upper = noise[y + chunkSize, x];
-                    var lower = noise[y + chunkSize, x + chunkSize];
+                    try
+                    {
+                        var left = noise[y, x];
+                        var right = noise[y, x + chunkSize];
+                        var upper = noise[y + chunkSize, x];
+                        var lower = noise[y + chunkSize, x + chunkSize];
 
-                    var average = (left + right + upper + lower) / 4f;
-                    var randomValue = UnityEngine.Random.value * (startRandomRange * 2.0f) - startRandomRange;
+                        var average = (left + right + upper + lower) / 4f;
 
-                    noise[y + half, x + half] = average + randomValue;
+                        var range = startRandomRange;
+                        var randomValue = (float) randomEngine.NextDouble() * (range * 2.0f) - range;
+
+                        noise[y + half, x + half] = average + randomValue;
+                    }
+
+                    catch (Exception exception)
+                    {
+                        Debug.LogError(exception.Message);
+                    }
                 }
-
-                catch (Exception exception)
-                {
-                    Debug.LogError(exception.Message);
-                }
+            }
         }
 
         private void DiamondStep(int chunkSize)
@@ -137,13 +146,15 @@ namespace Map.Noises
                 }
 
                 var average = (left + right + upper + lower) / count;
-                var randomValue = UnityEngine.Random.value * (startRandomRange * 2.0f) - startRandomRange;
+                var randomValue = (float) randomEngine.NextDouble() * (startRandomRange * 2.0f) - startRandomRange;
 
                 noise[y, x] = average + randomValue;
 
-                if (x == 0) noise[size - 1, y] = average;
-
-                if (y == 0) noise[x, size - 1] = average;
+                if (x == 0) 
+                    noise[size - 1, y] = average;
+                
+                if (y == 0)
+                    noise[x, size - 1] = average;
             }
         }
     }

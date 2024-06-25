@@ -1,5 +1,7 @@
 using System;
+using DG.Tweening;
 using Interactable;
+using MEC;
 using UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -23,6 +25,7 @@ namespace Entities.Characters.Players
             _mainCamera = mainCamera;
             _hud = hud;
 
+            _hud.Init(EntitySettings.health);
             OnHealthChanged += _hud.UpdateHealth;
         }
 
@@ -40,11 +43,8 @@ namespace Entities.Characters.Players
 
         public override void Destroy()
         {
-            //TODO: Gameover
-
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            
             OnHealthChanged -= _hud.UpdateHealth;
+            _hud.DisplaySummaryScreen();
         }
 
         public void PerformMove(InputAction.CallbackContext context)
@@ -86,6 +86,9 @@ namespace Entities.Characters.Players
 
                 _target.Interact(this);
             }
+            
+            if (Keyboard.current.escapeKey.wasPressedThisFrame)
+                _hud.BackToMainMenu();
         }
 
         private void UpdateTargetPosition()

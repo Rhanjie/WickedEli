@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
+using System.Collections;
 using DG.Tweening;
 using Entities.Characters.Interfaces;
 using Entities.Characters.Players;
@@ -14,13 +13,15 @@ using Vector2 = UnityEngine.Vector2;
 
 namespace Entities
 {
-    public class StaticEntity : IsometricObject, IHittable, IDestroyable
+    public class StaticEntity : IsometricObject, IHittable, IDestroyable, IGenerable
     {
         private int _currentHealth;
-        private bool _isInsensitive;
+        protected bool IsInsensitive;
+        protected bool IsDead;
         
         protected References EntityReferences;
-        protected Settings EntitySettings;
+        
+        public Settings EntitySettings { get; private set; }
 
         public UnityAction<int> OnHealthChanged;
         
@@ -34,23 +35,6 @@ namespace Entities
                 OnHealthChanged?.Invoke(difference);
                 _currentHealth = value;
             }
-        }
-
-        public virtual void Destroy()
-        {
-            gameObject.SetActive(false);
-        }
-
-        public void Hit(int damage)
-        {
-            if (_isInsensitive || !EntitySettings.hittable)
-                return;
-
-            CurrentHealth -= damage;
-            if (CurrentHealth <= 0)
-                Destroy();
-
-            else HitAnimation();
         }
 
         [Inject]
@@ -80,15 +64,49 @@ namespace Entities
             transform.localScale *= Random.Range(multiplier.x, multiplier.y);
         }
 
+        public void Hit(int damage)
+        {
+            if (IsDead || IsInsensitive || !EntitySettings.hittable)
+                return;
+
+            CurrentHealth -= damage;
+            if (CurrentHealth <= 0)
+                Destroy();
+
+            else HitAnimation();
+        }
+        
+        public virtual void Destroy()
+        {
+            IsDead = true;
+
+            EntityReferences.body.transform
+                .DORotate(new Vector3(0, 0, -80), 1f)
+                .OnStart(() => PlaySound(true, EntitySettings.dieSound))
+                .OnComplete(() => gameObject.SetActive(false));
+
+            EntityReferences.body.DOColor(Color.clear, 1f);
+        }
+
         private void HitAnimation()
         {
-            if (EntityReferences.audioSource != null && !EntityReferences.audioSource.isPlaying)
-                EntityReferences.audioSource.PlayOneShot(EntitySettings.hitSound);
+            PlaySound(true, EntitySettings.hitSound);
 
             EntityReferences.body.DOColor(Color.red, EntitySettings.insensitivityTime)
                 .SetLoops(2, LoopType.Yoyo)
-                .OnStart(() => _isInsensitive = true)
-                .OnComplete(() => _isInsensitive = false);
+                .OnStart(() => IsInsensitive = true)
+                .OnComplete(() => IsInsensitive = false);
+        }
+
+        public void PlaySound(bool force, AudioClip clip)
+        {
+            if (EntityReferences.audioSource == null || clip == null)
+                return;
+            
+            if (!force && EntityReferences.audioSource.isPlaying)
+                return;
+            
+            EntityReferences.audioSource.PlayOneShot(clip);
         }
 
         [Serializable]
@@ -104,9 +122,10 @@ namespace Entities
             [ShowIf("hittable")] public int health = 12; //3 hearts * 4 pieces
             [ShowIf("hittable")] public float insensitivityTime = 1f;
             [ShowIf("hittable")] public AudioClip hitSound;
+            [ShowIf("hittable")] public AudioClip dieSound;
             
             [Space]
-            public float visionRange = 10f;
+            public float visionRange = 20f;
 
             [Title("Appearance [Optional]")]
             public Color color = Color.white;
