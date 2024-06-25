@@ -46,6 +46,10 @@ namespace Entities.Characters.Submodules
 
         private bool IsPlayerNearby()
         {;
+            //TODO: Temporary fix. Sometimes spawner dependencies got inject before entity
+            if (_entity.EntitySettings == null)
+                return false;
+            
             //TODO: Temporary solution
             var layerMask = LayerMask.GetMask("Player");
             var result = Physics2D.OverlapCircle(
