@@ -10,7 +10,7 @@ namespace Map.Noises
     public class DiamondSquareNoise : ScriptableObject, INoise
     {
         [Tooltip("If zero, then seed will be randomized")] [SerializeField]
-        private int seed;
+        private int customSeed;
 
         [SerializeField] private int randomStart = 16;
 
@@ -26,6 +26,7 @@ namespace Map.Noises
 
         private Random randomEngine;
         private int size;
+        private int seed;
         
         private int ConvertToPowerOfTwo(int n)
         {
@@ -46,8 +47,8 @@ namespace Map.Noises
 
         public Task<float[,]> Generate(uint rawSize)
         {
-            if (seed == 0)
-                seed = UnityEngine.Random.Range(0, 20000);
+            seed = customSeed != 0 ? customSeed
+                : Guid.NewGuid().GetHashCode();
 
             randomEngine = new Random(seed);
             
