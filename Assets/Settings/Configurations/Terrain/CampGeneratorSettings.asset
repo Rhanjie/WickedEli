@@ -25,7 +25,7 @@ MonoBehaviour:
     - Name: Noise
       Entry: 10
       Data: 0
-  size: 64
+  size: 128
   tiles:
   - name: Water
     indices: {x: 0, y: 5}
@@ -35,7 +35,7 @@ MonoBehaviour:
     heightColorAddition: 5
     variants:
     - chance: 0
-      generableObject: {fileID: 11400000, guid: eadfceaccc9b559478f4c2302736676f, type: 2}
+      generableObject: {fileID: 11400000, guid: aa6ed8042bd00a94390539f723184c25, type: 2}
     objects: []
     walkable: 0
     hurtable: 0
@@ -89,7 +89,7 @@ MonoBehaviour:
       generableObject: {fileID: 0}
     - chance: 5
       generableObject: {fileID: 11400000, guid: 0ede261107e9a174485c72cf1fbd23c5, type: 2}
-    - chance: 1
+    - chance: 2
       generableObject: {fileID: 863363088228838444, guid: 10addde12d12a0a40804267baa244d90, type: 3}
     walkable: 1
     hurtable: 0
@@ -104,11 +104,7 @@ MonoBehaviour:
     variants:
     - chance: 0
       generableObject: {fileID: 11400000, guid: eecbef843375413409f260cda881868b, type: 2}
-    objects:
-    - chance: 100
-      generableObject: {fileID: 0}
-    - chance: 2
-      generableObject: {fileID: 863363088228838444, guid: 10addde12d12a0a40804267baa244d90, type: 3}
+    objects: []
     walkable: 1
     hurtable: 1
     damage: 1

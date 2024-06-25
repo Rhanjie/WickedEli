@@ -1,0 +1,18 @@
+{
+    "name": "MeasuringTool",
+    "rootNamespace": "",
+    "references": [
+        "GUID:7baf29b496105964aa81a1bb480c4f20"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
