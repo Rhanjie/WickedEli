@@ -19,6 +19,8 @@ namespace UI
 
         private void Start()
         {
+            Time.timeScale = 1f;
+            
             volumeSlider.SetValueWithoutNotify(AudioListener.volume);
         }
 

@@ -1,4 +1,7 @@
+using DG.Tweening;
+using MEC;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace UI
@@ -6,10 +9,9 @@ namespace UI
     public class HUD : MonoBehaviour
     {
         [SerializeField] private Text interactionText;
-
         [SerializeField] private Dictionary dictionary;
-
         [SerializeField] private HeartContainer heartContainer;
+        [SerializeField] private CanvasGroup summaryScreen;
 
         public void Init(int health)
         {
@@ -18,6 +20,22 @@ namespace UI
             
             AddMaxHealth(hearts, false);
             UpdateHealth(health);
+        }
+
+        public void DisplaySummaryScreen()
+        {
+            summaryScreen.alpha = 1f;
+            summaryScreen.interactable = summaryScreen.blocksRaycasts = true;
+            
+            Time.timeScale = 0f;
+        }
+
+        public void BackToMainMenu()
+        {
+            DOTween.KillAll();
+            Timing.KillCoroutines();
+            
+            SceneManager.LoadScene(0);
         }
 
         public void UpdateHealth(int difference)

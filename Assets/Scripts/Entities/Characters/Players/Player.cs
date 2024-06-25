@@ -43,14 +43,8 @@ namespace Entities.Characters.Players
 
         public override void Destroy()
         {
-            //TODO: Gameover
-
-            DOTween.KillAll();
-            Timing.KillCoroutines();
-
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            
             OnHealthChanged -= _hud.UpdateHealth;
+            _hud.DisplaySummaryScreen();
         }
 
         public void PerformMove(InputAction.CallbackContext context)
@@ -92,6 +86,9 @@ namespace Entities.Characters.Players
 
                 _target.Interact(this);
             }
+            
+            if (Keyboard.current.escapeKey.wasPressedThisFrame)
+                _hud.BackToMainMenu();
         }
 
         private void UpdateTargetPosition()

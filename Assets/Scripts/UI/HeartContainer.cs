@@ -18,14 +18,8 @@ namespace UI
             //TODO: Only test
             if (Application.isEditor)
             {
-                if (Keyboard.current.leftShiftKey.wasPressedThisFrame)
-                    AddHealth(1);
-                
                 if (Keyboard.current.leftAltKey.wasPressedThisFrame)
                     AddMaxHealth(1, false);
-
-                if (Keyboard.current.leftCtrlKey.wasPressedThisFrame)
-                    RemoveHealth(1);
             }
         }
 
