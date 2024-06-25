@@ -91,7 +91,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   background: {fileID: 6827536015656517092}
   image: {fileID: 740544693656325149}
-  currentPieces: 4
 --- !u!1 &3258648346006153129
 GameObject:
   m_ObjectHideFlags: 0
@@ -164,6 +163,6 @@ MonoBehaviour:
   m_FillMethod: 4
   m_FillAmount: 1
   m_FillClockwise: 1
-  m_FillOrigin: 2
+  m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
