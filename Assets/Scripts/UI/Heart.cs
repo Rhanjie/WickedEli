@@ -16,6 +16,9 @@ namespace UI
         public void Init(Vector2 position)
         {
             transform.localPosition = position;
+
+            CurrentPieces = 0;
+            UpdateImage();
         }
 
         public int AddPieces(int pieces)
