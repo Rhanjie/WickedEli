@@ -25,5 +25,5 @@ git lfs install
 5. Open the project
 
 ## Images
-![Image #1](https://i.imgur.com/HYNyWqa.jpeg)
-![Image #2](https://i.imgur.com/87WFmw9.jpeg)
+![Image #1]([https://i.imgur.com/HYNyWqa.jpeg](https://i.imgur.com/2HCQfd2.jpeg))
+![Image #2]([https://i.imgur.com/87WFmw9.jpeg](https://i.imgur.com/RWVfPW7.jpeg))
