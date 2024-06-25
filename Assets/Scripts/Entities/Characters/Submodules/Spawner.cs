@@ -40,29 +40,35 @@ namespace Entities.Characters.Submodules
                 
                 var chosenCharacterSettings = TerrainGenerator.GetRandomVariant(_settings.generables);
                 if (chosenCharacterSettings != null)
-                    GenerateObject(chosenCharacterSettings, transform.position, null);
+                    GenerateObject(chosenCharacterSettings, transform.position);
             }
         }
 
         private bool IsPlayerNearby()
         {;
+            //TODO: Temporary fix. Sometimes spawner dependencies got inject before entity
+            var visionRange = 50f;
+
+            if (_entity.EntitySettings != null)
+                visionRange = _entity.EntitySettings.visionRange;
+            
             //TODO: Temporary solution
             var layerMask = LayerMask.GetMask("Player");
             var result = Physics2D.OverlapCircle(
-                transform.position, _entity.EntitySettings.visionRange, layerMask
+                transform.position, visionRange, layerMask
             );
 
             var player = result != null ? result.GetComponent<Player>() : null;
             return player != null;
         }
         
-        private void GenerateObject(CharacterSettingsInstaller characterSettings, Vector3 position, Transform parent)
+        private void GenerateObject(CharacterSettingsInstaller characterSettings, Vector3 position)
         {
             var context = _settings.characterPrefab.GetComponent<GameObjectContext>();
             context.ScriptableObjectInstallers = new List<ScriptableObjectInstaller> { characterSettings };
 
             var entity = _diContainer.InstantiatePrefab(
-                _settings.characterPrefab, position, Quaternion.identity, parent
+                _settings.characterPrefab, position, Quaternion.identity, null
             );
         }
 
