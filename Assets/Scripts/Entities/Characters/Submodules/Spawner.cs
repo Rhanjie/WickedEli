@@ -40,7 +40,7 @@ namespace Entities.Characters.Submodules
                 
                 var chosenCharacterSettings = TerrainGenerator.GetRandomVariant(_settings.generables);
                 if (chosenCharacterSettings != null)
-                    GenerateObject(chosenCharacterSettings, transform.position, null);
+                    GenerateObject(chosenCharacterSettings, transform.position);
             }
         }
 
@@ -62,13 +62,13 @@ namespace Entities.Characters.Submodules
             return player != null;
         }
         
-        private void GenerateObject(CharacterSettingsInstaller characterSettings, Vector3 position, Transform parent)
+        private void GenerateObject(CharacterSettingsInstaller characterSettings, Vector3 position)
         {
             var context = _settings.characterPrefab.GetComponent<GameObjectContext>();
             context.ScriptableObjectInstallers = new List<ScriptableObjectInstaller> { characterSettings };
 
             var entity = _diContainer.InstantiatePrefab(
-                _settings.characterPrefab, position, Quaternion.identity, parent
+                _settings.characterPrefab, position, Quaternion.identity, null
             );
         }
 
